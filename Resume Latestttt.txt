@@ -1,0 +1,63 @@
+ULAR KIMSANOV
+AI/ML ENGINEER | FULL-STACK DEVELOPER | MULTI-AGENT SYSTEMS SPECIALIST
+Philadelphia, PA | +1 (267) 625-3611 | ularkimsanov7@gmail.com | linkedin.com/in/ukimsanov| github.com/ukimsanov
+
+EDUCATION
+Arcadia University - Glenside, PA
+Bachelor of Science in Computer Science, Expected May 2027
+
+GPA: 3.94 / 4.00
+
+Honors: Dean’s Distinguished List (4x), Dean’s Honors List (4x)
+Relevant Coursework: Data Structures & Algorithms, Operating Systems, Machine Learning (Deep Learning & Neural
+Networks), Database Systems, Computer Architecture, Object-Oriented Programming
+
+SKILLS
+AI/ML & Agent Systems: Prompt Engineering, LangChain, LangGraph, CrewAI, Multi-Agent Systems, LangSmith, OpenAI API, RAG, NLP,
+Machine Learning, PyTorch, TensorFlow, Computer Vision
+Programming Languages: Python, JavaScript, TypeScript, Java, C/C++, HTML/CSS, SQL, Bash, Swift
+Frameworks & Libraries: React, Next.js, SvelteKit, FastAPI, Node.js, TailwindCSS, Shadcn UI, Aceternity UI, Material UI, Express.js
+Cloud & DevOps: Google Cloud Platform, AWS, Vercel, Cloudflare Workers, Docker, Kubernetes, CI/CD
+Databases: PostgreSQL, MySQL, Supabase, Cloudflare D1, SQLite, MongoDB
+Tools & Platforms: Git, WebSocket, Capacitor, N8N, ClickUp, Zendesk, Jira, Figma, Jupyter
+
+EXPERIENCE
+National Science Foundation (NSF) - Remote
+Software Engineer & Research Assistant
+
+Jan 2025 - Present
+
+Engineered full-stack cybersecurity education platform using Next.js, TypeScript, and FastAPI, achieving <60s user onboarding
+Designed 22+ interactive learning modules with TailwindCSS, Shadcn UI, and Aceternity UI, maintaining 78% completion rate
+across 120+ testing students
+Implemented cloud-native backend using Cloudflare Workers and D1 database, ensuring 99.9% uptime and scalable user
+authentication
+Astera Holdings - Remote
+Full-stack & AI Developer Intern
+
+Summer 2025
+
+Led multi-agent AI system development using LangChain, LangGraph, and CrewAI designing complex prompt chains to steer
+agent behavior for sports prediction platform potentially serving 10,000+ users with real-time WebSocket connections
+Co-led the development of cross-platform mobile application using SvelteKit, Capacitor, and TypeScript, implementing realtime sports data integration via SportsDataIO and OptiOdds APIs
+Mentored 8+ junior interns in full-stack development, AI agent orchestration, and agile methodologies, accelerating team
+onboarding by 50%
+Developed a real-time backend infrastructure using Python, FastAPI, and WebSockets, ensuring seamless, low-latency
+communication between the mobile app and the AI engine.
+
+PROJECTS
+Horizon Banking App (Next.js | TypeScript | Appwrite | TailwindCSS | Plaid | Dwolla)
+Built core banking UI & real-time transfers for 1,000+ users; onboarding tests showed a 40 % jump in engagement.
+Designed Appwrite cloud functions for payments, hitting <50 ms median latency across 10k simulated transactions.
+Implemented responsive dashboard using TailwindCSS and Chat.js, deployed on Vercel cutting page-load 50 % and sustaining
+99.9 % uptime.
+YouTube Lecture Notes AI Agent (Python, CrewAI, LangChain, OpenAI API, N8N)
+Created automated workflow system extracting structured notes from video content using multi-agent collaboration
+Processed 100+ educational videos with 90% accuracy in key concept identification and summarization
+Integrated N8N automation for seamless content pipeline from video input to formatted documentation output
+
+AWARDS & COMPETITIONS
+National Cyber League (NCL) - Top 3% (Spring 2025), Top 4% (Fall 2024)
+ICPC Regional Programming Contest 2024 - Team ranked 8th out of 92 teams
+
+
