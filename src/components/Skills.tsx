@@ -10,17 +10,20 @@ const Skills = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="p-10 w-full"
+      className="py-16 w-full"
     >
-      <h2 className="text-3xl font-bold text-center mb-6">Skills</h2>
-      <div className="flex flex-wrap justify-center gap-2">
+      <h2 className="text-3xl font-bold mb-12">Skills</h2>
+      <div className="flex flex-wrap gap-3">
         {resumeData.skills.map((skill, index) => (
-          <div
+          <motion.div
             key={index}
-            className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.05 * index }}
+            className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm hover:bg-secondary/80 transition-colors"
           >
             {skill}
-          </div>
+          </motion.div>
         ))}
       </div>
     </motion.section>
