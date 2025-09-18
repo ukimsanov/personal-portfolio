@@ -3,8 +3,8 @@ import { resumeData } from "@/data/resume";
 
 const Footer = () => {
   return (
-    <footer className="text-center p-4 w-full">
-      <p>{resumeData.footer}</p>
+    <footer className="py-8 w-full border-t border-border/40 mt-16">
+      <p className="text-muted-foreground">{resumeData.footer}</p>
     </footer>
   );
 };
