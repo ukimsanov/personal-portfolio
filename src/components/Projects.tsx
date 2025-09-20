@@ -1,5 +1,6 @@
 
 "use client";
+import React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { resumeData } from "@/data/resume";
@@ -69,7 +70,7 @@ export function Projects() {
                     {project.description[0]}
                   </p>
                   
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 pt-2">
                     {project.link.href && (
                       <a
                         href={project.link.href}
@@ -90,22 +91,22 @@ export function Projects() {
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-sm"
                       >
                         <ExternalLink className="w-4 h-4" />
-                        <span>Live Demo</span>
+                        <span>Website</span>
                       </a>
                     )}
                   </div>
                 </div>
 
                 {/* Right side - Project Preview */}
-                <div className="w-48 p-6 flex items-center">
+                <div className="w-72 pr-6 flex items-center">
                   {project.imageUrl ? (
                     <img
                       src={project.imageUrl}
                       alt={project.title}
-                      className="w-full h-32 object-cover rounded-lg border border-border"
+                      className="w-full h-48 object-cover rounded-lg border border-border"
                     />
                   ) : (
-                    <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center border border-border">
+                    <div className="w-full h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
                       <span className="text-muted-foreground text-sm">Preview</span>
                     </div>
                   )}
@@ -190,11 +191,11 @@ export function Projects() {
                     <img
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
-                      className="w-full rounded-lg border border-border"
+                      className="w-full max-h-96 object-cover rounded-lg border border-border"
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
+                  <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
                     <span className="text-muted-foreground">Project Preview</span>
                   </div>
                 )}

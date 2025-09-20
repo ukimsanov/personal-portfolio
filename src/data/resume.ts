@@ -112,20 +112,26 @@ export const resumeData: {
     "Jira",
     "Figma",
     "Jupyter",
+    "SSE",
+    "Swagger",
+    "RESTful APIs",
+    "GraphQL",
+    "Agile",
   ],
   projects: [
     {
-      title: "Multi-Agent Sports Analytics Platform",
+      title: "Multi-Agent Sports Analytics App",
       techStack: ["LangChain", "LangGraph", "CrewAI", "SvelteKit", "Python", "FastAPI", "TypeScript"],
       description: [
-        "Led the architecture and development of a multi-agent AI system for sports analytics and prediction platform.",
-        "Engineered complex prompt chains and agent workflows to process real-time data, steering agent behavior towards accurate outcome prediction for a target user base of over 10,000.",
+        "Led the architecture and development of a multi-agent AI system for sports analytics and prediction app.",
+        "Engineered using LangChain, LangGraph, and CrewAI, the complex prompt chains to steer agent behavior for sports prediction app potentially serving 50,000+ users with SSE connections.",
         "Co-led the full-stack development of cross-platform mobile application using SvelteKit, Capacitor, and TypeScript.",
-        "Integrated real-time sports data feeds from SportsDataIO and OptiOdds APIs via backend built with Python, FastAPI, and WebSocket for low-latency communication.",
+        "Integrated real-time sports data feeds from SportsDataIO and OptiOdds APIs via backend built with Python, FastAPI, and SSE for low-latency communication.",
+        "Mentored 8+ junior interns in full-stack development, AI agent orchestration, and agile methodologies, accelerating team onboarding by 50%.",
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/multi-agent-sports-analytics-app",
       },
     },
     {
@@ -139,7 +145,7 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/nsf-cybersecurity-education-platform",
       },
     },
     {
@@ -152,10 +158,10 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/horizon-banking-app",
       },
-      websiteUrl: "", // TODO: Add website URL
-      imageUrl: "", // TODO: Add project image
+      websiteUrl: "https://horizon-banking-app.vercel.app",
+      imageUrl: "/images/projects/horizon-banking-app.png",
     },
     {
       title: "YouTube Lecture Notes AI Agent",
@@ -167,7 +173,7 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/youtube-lecture-notes-ai-agent",
       },
     },
     {
@@ -181,7 +187,7 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/crypto-list",
       },
     },
     {
@@ -194,7 +200,7 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "", // TODO: Add link
+        href: "https://github.com/ukimsanov/mnist-neural-network-classifier",
       },
     },
   ],

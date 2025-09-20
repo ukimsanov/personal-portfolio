@@ -51,7 +51,7 @@ const Hero = () => {
         </motion.a>
         
         <motion.a
-          href="/Resume Latestttt.pdf"
+          href="/cv.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="p-4 rounded-full border border-border/70 hover:border-border transition-all duration-300 ease-in-out hover:shadow-md"
