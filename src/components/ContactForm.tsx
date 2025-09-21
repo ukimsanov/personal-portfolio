@@ -392,7 +392,7 @@ const ContactForm = () => {
       transition={{ duration: 0.5, delay: 0.6 }}
       className="py-14 w-full flex flex-col items-center"
     >
-      <h2 className="text-2xl font-bold mb-4 text-center">Get In Touch</h2>
+      <h2 className="text-2xl font-bold mb-8 text-center">Get In Touch</h2>
       
       <p className="mb-12 leading-relaxed max-w-xl text-center text-muted-foreground">
         I&apos;m always interested in new opportunities and exciting projects. 
