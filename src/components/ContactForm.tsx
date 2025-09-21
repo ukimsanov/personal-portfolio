@@ -59,17 +59,17 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   const isTextarea = type === "textarea";
   
-  const inputClasses = `w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-offset-0 ${
+  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-offset-0 text-base ${
     hasError 
       ? 'border-red-500 focus:ring-red-500 bg-red-50 dark:bg-red-900/10' 
       : 'border-border bg-background focus:ring-blue-500 focus:border-transparent'
   } ${isTextarea ? 'resize-vertical' : ''}`;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5 sm:space-y-2">
       <label 
         htmlFor={name} 
-        className="text-sm font-medium text-foreground"
+        className="text-sm font-medium text-foreground block"
       >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
@@ -464,10 +464,10 @@ const ContactForm = () => {
         className="w-full max-w-2xl mx-auto"
       >
         <Card className="w-full">
-        <div className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="p-4 sm:p-6 lg:p-8">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Name and Email Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <InputField
                 label="Name"
                 name="name"
@@ -544,7 +544,7 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={status.type === 'loading'}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base min-h-[48px]"
             >
               {status.type === 'loading' ? (
                 <>
