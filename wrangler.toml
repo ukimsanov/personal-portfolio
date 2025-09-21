@@ -2,6 +2,12 @@
   name = "personal-portfolio"
   compatibility_date = "2025-03-25"
   compatibility_flags = ["nodejs_compat"]
+  
+  [[d1_databases]]
+  binding = "DB"
+  database_name = "contact-me-personal-portfolio"
+  database_id = "5176217d-caa7-49d5-8204-18e736d3a170"
+  
   [assets]
   directory = ".open-next/assets"
   binding = "ASSETS"

@@ -1,19 +1,162 @@
 
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
+import { Mail, Phone, Linkedin, Github, FileText } from "lucide-react";
 
 const Hero = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  const titleVariants = {
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: shouldReduceMotion ? 0.1 : 0.9,
+        ease: "easeOut" as const
+      }
+    }
+  };
+
+  const descriptionVariants = {
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: shouldReduceMotion ? 0.1 : 0.7,
+        delay: shouldReduceMotion ? 0 : 0.3,
+        ease: "easeOut" as const
+      }
+    }
+  };
+
+  const iconsContainerVariants = {
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 15 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: shouldReduceMotion ? 0.1 : 0.4,
+        delay: shouldReduceMotion ? 0 : 0.4,
+        ease: "easeOut" as const
+      }
+    }
+  };
+
+  const iconVariants = {
+    initial: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 },
+    animate: (index: number) => ({
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: shouldReduceMotion ? 0.1 : 0.3,
+        delay: shouldReduceMotion ? 0 : 0.5 + index * 0.1,
+        ease: "easeOut" as const
+      }
+    })
+  };
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="text-center p-10"
-    >
-      <h1 className="text-5xl font-bold">{resumeData.name}</h1>
-      <p className="text-xl mt-4">{resumeData.title}</p>
-    </motion.section>
+    <section className="mt-16 w-full">
+      <div className="text-left mb-8">
+        <motion.h1 
+          className="text-5xl font-bold mb-8"
+          variants={titleVariants}
+          initial="initial"
+          animate="animate"
+        >
+          {resumeData.name}
+        </motion.h1>
+        <motion.p 
+          className="text-xl text-foreground/70 max-w-3xl"
+          variants={descriptionVariants}
+          initial="initial"
+          animate="animate"
+        >
+          {resumeData.title}
+        </motion.p>
+      </div>
+      
+      {/* Contact Icons in Circles */}
+      <motion.div 
+        className="flex items-center gap-4 mb-8"
+        variants={iconsContainerVariants}
+        initial="initial"
+        animate="animate"
+      >
+        <motion.a
+          href={`mailto:${resumeData.contact.email}`}
+          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={0}
+          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
+          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
+        >
+          <Mail className="w-4 h-4" />
+        </motion.a>
+        
+        <motion.a
+          href={resumeData.contact.socials[1].url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={1}
+          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
+          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
+        >
+          <Github className="w-4 h-4" />
+        </motion.a>
+        
+        <motion.a
+          href={resumeData.contact.socials[0].url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={2}
+          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
+          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
+        >
+          <Linkedin className="w-4 h-4" />
+        </motion.a>
+        
+        <motion.a
+          href="/cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={3}
+          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
+          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
+        >
+          <FileText className="w-4 h-4" />
+        </motion.a>
+        
+        <motion.a
+          href={`tel:${resumeData.contact.tel}`}
+          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={4}
+          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
+          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
+        >
+          <Phone className="w-4 h-4" />
+        </motion.a>
+      </motion.div>
+    </section>
   );
 };
 
