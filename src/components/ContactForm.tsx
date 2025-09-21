@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -384,23 +384,86 @@ const ContactForm = () => {
     }
   };
 
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.section
       id="contact-form"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.6 }}
+      initial={{ 
+        opacity: 0, 
+        y: shouldReduceMotion ? 20 : 50 
+      }}
+      whileInView={{ 
+        opacity: 1, 
+        y: 0 
+      }}
+      transition={{ 
+        duration: shouldReduceMotion ? 0.3 : 0.6,
+        ease: [0.25, 0.1, 0.25, 1] as const
+      }}
+      viewport={{ once: true, amount: 0.2 }}
       className="py-14 w-full flex flex-col items-center"
     >
-      <h2 className="text-2xl font-bold mb-8 text-center">Get In Touch</h2>
+      <motion.h2 
+        initial={{ 
+          opacity: 0, 
+          y: shouldReduceMotion ? 10 : 30 
+        }}
+        whileInView={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          duration: shouldReduceMotion ? 0.2 : 0.5,
+          delay: shouldReduceMotion ? 0.05 : 0.1,
+          ease: [0.25, 0.1, 0.25, 1] as const
+        }}
+        viewport={{ once: true }}
+        className="text-2xl font-bold mb-8 text-center"
+      >
+        Get In Touch
+      </motion.h2>
       
-      <p className="mb-12 leading-relaxed max-w-xl text-center text-muted-foreground">
+      <motion.p 
+        initial={{ 
+          opacity: 0, 
+          y: shouldReduceMotion ? 10 : 20 
+        }}
+        whileInView={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          duration: shouldReduceMotion ? 0.2 : 0.5,
+          delay: shouldReduceMotion ? 0.1 : 0.2,
+          ease: [0.25, 0.1, 0.25, 1] as const
+        }}
+        viewport={{ once: true }}
+        className="mb-12 leading-relaxed max-w-xl text-center text-muted-foreground"
+      >
         I&apos;m always interested in new opportunities and exciting projects. 
         Whether you have a question, want to collaborate, or just want to say hello, 
         feel free to reach out!
-      </p>
+      </motion.p>
       
-      <Card className="w-full max-w-2xl mx-auto">
+      <motion.div
+        initial={{ 
+          opacity: 0, 
+          y: shouldReduceMotion ? 10 : 30 
+        }}
+        whileInView={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          duration: shouldReduceMotion ? 0.2 : 0.5,
+          delay: shouldReduceMotion ? 0.15 : 0.3,
+          ease: [0.25, 0.1, 0.25, 1] as const
+        }}
+        viewport={{ once: true }}
+        className="w-full max-w-2xl mx-auto"
+      >
+        <Card className="w-full">
         <div className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name and Email Row */}
@@ -498,6 +561,7 @@ const ContactForm = () => {
           </form>
         </div>
       </Card>
+      </motion.div>
     </motion.section>
   );
 };

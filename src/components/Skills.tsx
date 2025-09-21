@@ -1,6 +1,6 @@
 
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
 
 // Skill badges mapping with accurate brand colors and logos
@@ -85,16 +85,56 @@ const skillBadges: Record<string, string> = {
 };
 
 const Skills = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Mobile-optimized animation variants
+  const sectionVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 10 : 50 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: shouldReduceMotion ? 0.3 : 0.6,
+        ease: [0.25, 0.1, 0.25, 1] as const
+      }
+    }
+  };
+
+  const headerVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 5 : 30 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: shouldReduceMotion ? 0.2 : 0.5,
+        delay: shouldReduceMotion ? 0.1 : 0.2,
+        ease: [0.25, 0.1, 0.25, 1] as const
+      }
+    }
+  };
+
   return (
     <motion.section
       id="skills"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
+      initial="hidden"
+      whileInView="visible"
+      variants={sectionVariants}
+      viewport={{ once: true, amount: 0.3 }}
       className="py-16 w-screen relative left-1/2 right-1/2 -mx-[50vw]"
     >
       <div className="w-full px-2 sm:px-4">
-        <h2 className="text-2xl font-bold mb-12 text-center">Skills</h2>
+        <motion.h2 
+          variants={headerVariants}
+          className="text-2xl font-bold mb-12 text-center"
+        >
+          Skills
+        </motion.h2>
         <div className="flex flex-wrap gap-3 justify-center">
           {resumeData.skills.map((skill, index) => {
             const badgeUrl = skillBadges[skill];
@@ -102,9 +142,22 @@ const Skills = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.05 * index }}
+                initial={{ 
+                  opacity: 0, 
+                  scale: shouldReduceMotion ? 0.9 : 0.5,
+                  y: shouldReduceMotion ? 5 : 20 
+                }}
+                whileInView={{ 
+                  opacity: 1, 
+                  scale: 1,
+                  y: 0 
+                }}
+                transition={{ 
+                  duration: shouldReduceMotion ? 0.2 : 0.4,
+                  delay: shouldReduceMotion ? index * 0.01 : index * 0.03,
+                  ease: [0.25, 0.1, 0.25, 1] as const
+                }}
+                viewport={{ once: true, amount: 0.1 }}
                 className="hover:scale-105 transition-transform"
               >
                 {badgeUrl ? (

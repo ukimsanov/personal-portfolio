@@ -1,7 +1,7 @@
 
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { resumeData } from "@/data/resume";
 import { Card } from "@/components/ui/card";
@@ -32,53 +32,108 @@ export function Projects() {
     setSelectedProject(null);
   };
 
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.section
       id="projects"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
+      initial={{ 
+        opacity: 0, 
+        y: shouldReduceMotion ? 20 : 50 
+      }}
+      animate={{ 
+        opacity: 1, 
+        y: 0 
+      }}
+      transition={{ 
+        duration: shouldReduceMotion ? 0.3 : 0.6,
+        ease: [0.25, 0.1, 0.25, 1] as const,
+        delay: shouldReduceMotion ? 0.2 : 0.4 
+      }}
       className="py-14 w-full"
     >
-      <h2 className="text-2xl font-bold mb-8">Projects</h2>
+      <motion.h2 
+        initial={{ 
+          opacity: 0, 
+          y: shouldReduceMotion ? 10 : 30 
+        }}
+        animate={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          duration: shouldReduceMotion ? 0.2 : 0.5,
+          delay: shouldReduceMotion ? 0.25 : 0.5,
+          ease: [0.25, 0.1, 0.25, 1] as const
+        }}
+        className="text-2xl font-bold mb-8"
+      >
+        Projects
+      </motion.h2>
       <div className="space-y-6">
         {projects.map((project, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 * index }}
+            initial={{ 
+              opacity: 0, 
+              y: shouldReduceMotion ? 10 : 30 
+            }}
+            {...(index === 0 
+              ? {
+                  animate: { 
+                    opacity: 1, 
+                    y: 0 
+                  },
+                  transition: { 
+                    duration: shouldReduceMotion ? 0.2 : 0.5,
+                    delay: shouldReduceMotion ? 0.3 : 0.6,
+                    ease: [0.25, 0.1, 0.25, 1] as const
+                  }
+                }
+              : {
+                  whileInView: { 
+                    opacity: 1, 
+                    y: 0 
+                  },
+                  transition: { 
+                    duration: shouldReduceMotion ? 0.2 : 0.5,
+                    delay: shouldReduceMotion ? index * 0.05 : index * 0.1,
+                    ease: [0.25, 0.1, 0.25, 1] as const
+                  },
+                  viewport: { once: true, amount: 0.1 }
+                }
+            )}
           >
             <Card className="w-full hover:shadow-lg transition-shadow duration-300">
-              <div className="flex">
-                {/* Left side - Project Info */}
-                <div className="flex-1 p-6">
+              <div className="flex flex-col lg:flex-row">
+                {/* Project Info */}
+                <div className="flex-1 p-4 sm:p-6">
                   <div className="mb-4">
                     <h3 
-                      className="text-xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer inline-block"
+                      className="text-lg sm:text-xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer inline-block"
                       onClick={() => handleProjectClick(index)}
                     >
                       {project.title}
                     </h3>
                   </div>
                   
-                  <div className="text-sm text-muted-foreground mb-3">
+                  <div className="text-xs sm:text-sm text-muted-foreground mb-3 leading-relaxed">
                     {project.techStack.join(" • ")}
                   </div>
                   
-                  <p className="text-muted-foreground leading-relaxed mb-4">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
                     {project.description[0]}
                   </p>
                   
-                  <div className="flex items-center gap-4 pt-2">
+                  <div className="flex items-center gap-3 sm:gap-4 pt-2">
                     {project.link.href && (
                       <a
                         href={project.link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
                       >
-                        <Github className="w-4 h-4" />
+                        <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>GitHub</span>
                       </a>
                     )}
@@ -88,26 +143,26 @@ export function Projects() {
                         href={project.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>Website</span>
                       </a>
                     )}
                   </div>
                 </div>
 
-                {/* Right side - Project Preview */}
-                <div className="w-72 pr-6 flex items-center">
+                {/* Project Preview */}
+                <div className="lg:w-72 p-4 sm:p-6 lg:pr-6 lg:pl-0 lg:py-6 flex items-center">
                   {project.imageUrl ? (
                     <img
                       src={project.imageUrl}
                       alt={project.title}
-                      className="w-full h-48 object-cover rounded-lg border border-border"
+                      className="w-full h-32 sm:h-40 lg:h-48 object-cover rounded-lg border border-border"
                     />
                   ) : (
-                    <div className="w-full h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
-                      <span className="text-muted-foreground text-sm">Preview</span>
+                    <div className="w-full h-32 sm:h-40 lg:h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
+                      <span className="text-muted-foreground text-xs sm:text-sm">Preview</span>
                     </div>
                   )}
                 </div>
