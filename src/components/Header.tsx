@@ -77,6 +77,13 @@ const Header = () => {
         >
           Skills
         </a>
+        <a 
+          href="#contact-form" 
+          onClick={(e) => handleNavClick(e, 'contact-form')}
+          className="text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
+        >
+          Contact
+        </a>
       </nav>
       <ThemeToggler />
     </motion.header>
