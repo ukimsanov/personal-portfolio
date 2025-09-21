@@ -12,7 +12,7 @@ const Skills = () => {
       transition={{ duration: 0.5, delay: 0.2 }}
       className="py-16 w-full"
     >
-      <h2 className="text-2xl font-bold mb-12">Skills</h2>
+      <h2 className="text-2xl font-bold mb-6">Skills</h2>
       <div className="flex flex-wrap gap-3">
         {resumeData.skills.map((skill, index) => (
           <motion.div

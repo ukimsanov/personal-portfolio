@@ -390,18 +390,18 @@ const ContactForm = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.6 }}
-      className="py-14 w-full"
+      className="py-14 w-full flex flex-col items-center"
     >
-      <h2 className="text-2xl font-bold mb-12">Get In Touch</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Get In Touch</h2>
       
-      <Card className="w-full max-w-2xl">
+      <p className="mb-12 leading-relaxed max-w-xl text-center text-muted-foreground">
+        I&apos;m always interested in new opportunities and exciting projects. 
+        Whether you have a question, want to collaborate, or just want to say hello, 
+        feel free to reach out!
+      </p>
+      
+      <Card className="w-full max-w-2xl mx-auto">
         <div className="p-8">
-          <p className="text-muted-foreground mb-8 leading-relaxed">
-            I&apos;m always interested in new opportunities and exciting projects. 
-            Whether you have a question, want to collaborate, or just want to say hello, 
-            feel free to reach out!
-          </p>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name and Email Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

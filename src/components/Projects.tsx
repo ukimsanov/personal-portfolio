@@ -40,7 +40,7 @@ export function Projects() {
       transition={{ duration: 0.5, delay: 0.4 }}
       className="py-14 w-full"
     >
-      <h2 className="text-2xl font-bold mb-12">Projects</h2>
+      <h2 className="text-2xl font-bold mb-8">Projects</h2>
       <div className="space-y-6">
         {projects.map((project, index) => (
           <motion.div
