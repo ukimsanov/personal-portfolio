@@ -165,7 +165,7 @@ function validateContactForm(data: unknown): ValidationResult {
 // Sanitize input data
 function sanitizeInput(data: Record<string, unknown>) {
   return {
-    name: String(data.name || '').trim().substring(0, 100),
+    name: String(data.name || '').trim().substring(0, 50),
     email: String(data.email || '').trim().toLowerCase().substring(0, 255),
     phone: data.phone ? String(data.phone).trim().substring(0, 20) : '',
     description: String(data.description || '').trim().substring(0, 1000)
