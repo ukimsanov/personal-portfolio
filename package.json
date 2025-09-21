@@ -12,7 +12,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.7.1",
+    "@opennextjs/cloudflare": "^1.8.3",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-slot": "^1.2.3",
     "autoprefixer": "^10.4.20",
@@ -38,6 +38,6 @@
     "eslint-config-next": "15.5.2",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5",
-    "wrangler": "^4.33.2"
+    "wrangler": "^4.38.0"
   }
 }

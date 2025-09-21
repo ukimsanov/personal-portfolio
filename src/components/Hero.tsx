@@ -13,7 +13,7 @@ const Hero = () => {
       className="mt-16 w-full"
     >
       <div className="text-left mb-8">
-        <h1 className="text-6xl font-bold mb-8">{resumeData.name}</h1>
+        <h1 className="text-5xl font-bold mb-8">{resumeData.name}</h1>
         <p className="text-xl text-foreground/70 max-w-3xl">{resumeData.title}</p>
       </div>
       
