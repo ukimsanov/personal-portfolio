@@ -1,9 +1,26 @@
 
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { ThemeToggler } from "./ThemeToggler";
 
 const Header = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  const headerVariants = {
+    initial: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 0 : -20 
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: shouldReduceMotion ? 0.1 : 0.8,
+        ease: "easeOut" as const
+      }
+    }
+  };
   const smoothScrollTo = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (element) {
@@ -39,7 +56,12 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between w-full py-6">
+    <motion.header 
+      className="flex items-center justify-between w-full py-6"
+      variants={headerVariants}
+      initial="initial"
+      animate="animate"
+    >
       <nav className="flex items-center gap-6">
         <a 
           href="#projects" 
@@ -57,7 +79,7 @@ const Header = () => {
         </a>
       </nav>
       <ThemeToggler />
-    </header>
+    </motion.header>
   );
 };
 
