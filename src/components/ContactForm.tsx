@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import Turnstile from "@/components/ui/Turnstile";
 
 interface ContactFormData {
   name: string;
@@ -227,6 +228,8 @@ const ContactForm = () => {
     message: ''
   });
 
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
   // Validate a single field
   const validateField = (fieldName: keyof ContactFormData, value: string): string | undefined => {
     switch (fieldName) {
@@ -321,6 +324,15 @@ const ContactForm = () => {
       return;
     }
 
+    // Validate CAPTCHA token
+    if (!turnstileToken) {
+      setStatus({
+        type: 'error',
+        message: 'Please complete the CAPTCHA verification.'
+      });
+      return;
+    }
+
     setStatus({ type: 'loading', message: 'Sending message...' });
 
     try {
@@ -329,7 +341,10 @@ const ContactForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken
+        }),
       });
 
       if (!response.ok) {
@@ -362,6 +377,7 @@ const ContactForm = () => {
       });
       setFieldErrors({});
       setTouchedFields(new Set());
+      setTurnstileToken(null);
 
     } catch (error) {
       setStatus({
@@ -521,6 +537,30 @@ const ContactForm = () => {
               hasError={touchedFields.has('description') && !!fieldErrors.description}
               errorMessage={fieldErrors.description}
             />
+
+            {/* Turnstile CAPTCHA */}
+            <div className="flex justify-center">
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
+                onSuccess={setTurnstileToken}
+                onError={() => {
+                  setTurnstileToken(null);
+                  setStatus({
+                    type: 'error',
+                    message: 'CAPTCHA verification failed. Please try again.'
+                  });
+                }}
+                onExpired={() => {
+                  setTurnstileToken(null);
+                  setStatus({
+                    type: 'error',
+                    message: 'CAPTCHA verification expired. Please complete it again.'
+                  });
+                }}
+                theme="auto"
+                size="normal"
+              />
+            </div>
 
             {/* Status Message */}
             {status.message && (

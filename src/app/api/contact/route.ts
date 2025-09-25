@@ -22,6 +22,7 @@ interface FieldErrors {
   email?: string;
   phone?: string;
   description?: string;
+  turnstileToken?: string;
 }
 
 interface ValidationResult {
@@ -114,6 +115,50 @@ const validateDescription = (description: string): { isValid: boolean; error?: s
   }
   
   return { isValid: true };
+};
+
+// Validate Turnstile token with Cloudflare Siteverify API
+const validateTurnstileToken = async (token: string, remoteIP?: string): Promise<{ isValid: boolean; error?: string }> => {
+  if (!token) {
+    return { isValid: false, error: "CAPTCHA verification is required" };
+  }
+
+  const secretKey = process.env.TURNSTILE_SECRET_KEY;
+  if (!secretKey) {
+    console.error('TURNSTILE_SECRET_KEY not configured');
+    return { isValid: false, error: "CAPTCHA verification unavailable" };
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('secret', secretKey);
+    formData.append('response', token);
+    if (remoteIP) {
+      formData.append('remoteip', remoteIP);
+    }
+
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      console.error('Turnstile verification request failed:', response.status);
+      return { isValid: false, error: "CAPTCHA verification failed" };
+    }
+
+    const result = await response.json();
+    
+    if (result.success) {
+      return { isValid: true };
+    } else {
+      console.error('Turnstile verification failed:', result['error-codes']);
+      return { isValid: false, error: "CAPTCHA verification failed" };
+    }
+  } catch (error) {
+    console.error('Error validating Turnstile token:', error);
+    return { isValid: false, error: "CAPTCHA verification failed" };
+  }
 };
 
 // Contact form validation with field-specific errors
@@ -256,6 +301,24 @@ export async function POST(request: NextRequest) {
         fieldErrors: validation.fieldErrors
       }, { status: 400 });
     }
+
+    // Validate Turnstile CAPTCHA token
+    const turnstileToken = body.turnstileToken;
+    const clientIP = request.headers.get('cf-connecting-ip') || 
+                     request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip');
+    
+    const turnstileValidation = await validateTurnstileToken(turnstileToken, clientIP || undefined);
+    if (!turnstileValidation.isValid) {
+      console.error('❌ Turnstile validation failed:', turnstileValidation.error);
+      return NextResponse.json({
+        success: false,
+        message: turnstileValidation.error || 'CAPTCHA verification failed',
+        fieldErrors: { turnstileToken: turnstileValidation.error }
+      }, { status: 400 });
+    }
+
+    console.log('✅ Turnstile validation passed');
     
     // Sanitize input
     const sanitizedData = sanitizeInput(body);

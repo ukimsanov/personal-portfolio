@@ -7,6 +7,13 @@
   binding = "DB"
   database_name = "contact-me-personal-portfolio"
   database_id = "5176217d-caa7-49d5-8204-18e736d3a170"
+
+# Environment variables (secrets should be set using 'wrangler secret put')
+[vars]
+NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAB3bEMvn_6FTfB4y"
+# Secrets (set using: wrangler secret put TURNSTILE_SECRET_KEY)
+# TURNSTILE_SECRET_KEY = "your-secret-key-here"
+# DISCORD_WEBHOOK_URL = "your-discord-webhook-ur1-here"
   
   [assets]
   directory = ".open-next/assets"
