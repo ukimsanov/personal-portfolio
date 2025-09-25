@@ -154,7 +154,7 @@ const Skills = () => {
                 }}
                 transition={{ 
                   duration: shouldReduceMotion ? 0.2 : 0.4,
-                  delay: shouldReduceMotion ? index * 0.01 : index * 0.03,
+                  delay: shouldReduceMotion ? Math.min(index * 0.01, 0.2) : Math.min(index * 0.03, 0.5),
                   ease: [0.25, 0.1, 0.25, 1] as const
                 }}
                 viewport={{ once: true, amount: 0.1 }}
