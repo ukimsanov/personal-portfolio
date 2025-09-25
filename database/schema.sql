@@ -1,10 +1,9 @@
 -- Database setup for contact-me-personal-portfolio
--- Enhanced schema with validation constraints and best practices
+-- Robust schema with validation constraints and performance optimization
 -- Run this SQL in your Cloudflare D1 database
 
 -- Create the contacts table with proper constraints
 CREATE TABLE IF NOT EXISTS contacts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL CHECK(
         length(trim(name)) >= 2 AND 
         length(trim(name)) <= 50
@@ -24,8 +23,7 @@ CREATE TABLE IF NOT EXISTS contacts (
         length(trim(description)) >= 2 AND 
         length(trim(description)) <= 1000
     ),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- Indexes for performance optimization
@@ -33,17 +31,9 @@ CREATE INDEX IF NOT EXISTS idx_contacts_email ON contacts(email);
 CREATE INDEX IF NOT EXISTS idx_contacts_created_at ON contacts(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_contacts_name ON contacts(name);
 
--- Trigger to update the updated_at timestamp
-CREATE TRIGGER IF NOT EXISTS contacts_updated_at 
-    AFTER UPDATE ON contacts
-BEGIN
-    UPDATE contacts SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-END;
-
--- Optional: Create a view for easy querying (excludes sensitive info if needed)
+-- Optional: Create a view for easy querying
 CREATE VIEW IF NOT EXISTS contacts_summary AS
 SELECT 
-    id,
     name,
     email,
     CASE 
@@ -54,6 +44,5 @@ SELECT
         WHEN length(description) > 100 THEN '...' 
         ELSE '' 
     END as description_preview,
-    created_at,
-    updated_at
+    created_at
 FROM contacts;
