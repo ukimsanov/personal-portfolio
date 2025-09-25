@@ -13,6 +13,7 @@ interface D1Database {
 // Cloudflare environment with D1 binding
 interface CloudflareEnv {
   DB: D1Database;
+  DISCORD_WEBHOOK_URL?: string;
   [key: string]: unknown;
 }
 
@@ -172,6 +173,76 @@ function sanitizeInput(data: Record<string, unknown>) {
   };
 }
 
+// Send data to Discord webhook
+async function sendToDiscord(data: { name: string; email: string; phone: string; description: string }, env?: CloudflareEnv) {
+  // Try to get webhook URL from environment variables or Cloudflare env
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL || env?.DISCORD_WEBHOOK_URL;
+  
+  if (!webhookUrl) {
+    console.warn('❌ Discord webhook URL not configured in environment variables');
+    return false;
+  }
+  
+  console.log('🔗 Discord webhook URL found, preparing message...');
+  
+  const embed = {
+    title: "New Contact Form Submission",
+    color: 0x3b82f6, // Blue color
+    fields: [
+      {
+        name: "👤 Name",
+        value: data.name,
+        inline: true
+      },
+      {
+        name: "📧 Email",
+        value: data.email,
+        inline: true
+      },
+      {
+        name: "📞 Phone",
+        value: data.phone || "Not provided",
+        inline: true
+      },
+      {
+        name: "💬 Message",
+        value: data.description.length > 1000 ? data.description.substring(0, 1000) + "..." : data.description,
+        inline: false
+      }
+    ],
+    timestamp: new Date().toISOString(),
+    footer: {
+      text: "Personal Portfolio Contact Form"
+    }
+  };
+
+  const payload = {
+    embeds: [embed]
+  };
+
+  try {
+    console.log('📤 Sending Discord webhook request...');
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      console.error('❌ Discord webhook failed:', response.status, response.statusText);
+      return false;
+    }
+
+    console.log('✅ Discord webhook response received successfully');
+    return true;
+  } catch (error) {
+    console.error('❌ Discord webhook error:', error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -189,8 +260,20 @@ export async function POST(request: NextRequest) {
     // Sanitize input
     const sanitizedData = sanitizeInput(body);
     
+    // Track success of operations
+    let dbSuccess = false;
+    let discordSuccess = false;
+    
+    console.log('📝 Processing contact form submission:', {
+      name: sanitizedData.name,
+      email: sanitizedData.email,
+      phone: sanitizedData.phone || 'Not provided',
+      descriptionLength: sanitizedData.description.length
+    });
+    
     // Try to save to database
     try {
+      console.log('💾 Attempting to save to database...');
       const cloudflareContext = getCloudflareContext();
       const env = cloudflareContext.env as CloudflareEnv;
       
@@ -211,22 +294,54 @@ export async function POST(request: NextRequest) {
           .run();
         
         if (result.success) {
-          return NextResponse.json({
-            success: true,
-            message: 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.'
-          });
+          dbSuccess = true;
+          console.log('✅ Database save successful!');
+        } else {
+          console.log('❌ Database save failed - result not successful');
         }
+      } else {
+        console.log('❌ Database not available (env.DB not found)');
       }
     } catch (dbError) {
-      console.error('Database error:', dbError);
-      // Continue to fallback
+      console.error('❌ Database error:', dbError);
     }
     
-    // Fallback: Return success even if database isn't available
-    return NextResponse.json({
-      success: true,
-      message: 'Thank you! Your message has been received. I\'ll get back to you soon.'
+    // Try to send to Discord webhook
+    try {
+      console.log('🎮 Attempting to send to Discord webhook...');
+      const cloudflareContext = getCloudflareContext();
+      const env = cloudflareContext.env as CloudflareEnv;
+      discordSuccess = await sendToDiscord(sanitizedData, env);
+      
+      if (discordSuccess) {
+        console.log('✅ Discord webhook sent successfully!');
+      } else {
+        console.log('❌ Discord webhook failed (returned false)');
+      }
+    } catch (discordError) {
+      console.error('❌ Discord webhook error:', discordError);
+    }
+    
+    // Return appropriate response based on what succeeded
+    console.log('📊 Operation results:', { 
+      database: dbSuccess ? '✅' : '❌', 
+      discord: discordSuccess ? '✅' : '❌' 
     });
+    
+    if (dbSuccess || discordSuccess) {
+      console.log('🎉 Contact form submission processed successfully!');
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.'
+      });
+    } else {
+      console.log('⚠️ Both database and Discord failed, using fallback response');
+      // Fallback: Return success even if both fail (graceful degradation)
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you! Your message has been received. I\'ll get back to you soon.'
+      });
+    }
     
   } catch (error) {
     console.error('Contact form error:', error);
