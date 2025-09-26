@@ -1,15 +1,17 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import Turnstile from "@/components/Turnstile";
 
 interface ContactFormData {
   name: string;
   email: string;
   phone: string;
   description: string;
+  turnstileToken: string;
 }
 
 interface FormStatus {
@@ -22,6 +24,7 @@ interface FieldErrors {
   email?: string;
   phone?: string;
   description?: string;
+  turnstile?: string;
 }
 
 interface ValidationResult {
@@ -216,7 +219,8 @@ const ContactForm = () => {
     name: '',
     email: '',
     phone: '',
-    description: ''
+    description: '',
+    turnstileToken: ''
   });
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -226,6 +230,61 @@ const ContactForm = () => {
     type: 'idle',
     message: ''
   });
+
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
+
+  // Turnstile handlers
+  const handleTurnstileVerify = (token: string) => {
+    setFormData(prev => ({
+      ...prev,
+      turnstileToken: token
+    }));
+    
+    // Clear turnstile error if present
+    if (fieldErrors.turnstile) {
+      setFieldErrors(prev => ({
+        ...prev,
+        turnstile: undefined
+      }));
+    }
+  };
+
+  const handleTurnstileError = () => {
+    setFormData(prev => ({
+      ...prev,
+      turnstileToken: ''
+    }));
+    setFieldErrors(prev => ({
+      ...prev,
+      turnstile: 'Captcha verification failed. Please try again.'
+    }));
+  };
+
+  const handleTurnstileExpire = () => {
+    setFormData(prev => ({
+      ...prev,
+      turnstileToken: ''
+    }));
+    setFieldErrors(prev => ({
+      ...prev,
+      turnstile: 'Captcha verification expired. Please try again.'
+    }));
+  };
+
+  const resetTurnstile = () => {
+    const container = turnstileRef.current;
+    if (container) {
+      const turnstileContainer = container as HTMLDivElement & { _turnstileReset?: () => void };
+      if (turnstileContainer._turnstileReset) {
+        turnstileContainer._turnstileReset();
+      }
+    }
+    setFormData(prev => ({
+      ...prev,
+      turnstileToken: ''
+    }));
+  };
 
   // Validate a single field
   const validateField = (fieldName: keyof ContactFormData, value: string): string | undefined => {
@@ -242,6 +301,8 @@ const ContactForm = () => {
       case 'description':
         const descResult = validateDescription(value);
         return descResult.isValid ? undefined : descResult.error;
+      case 'turnstileToken':
+        return value ? undefined : 'Please complete the captcha verification';
       default:
         return undefined;
     }
@@ -292,7 +353,8 @@ const ContactForm = () => {
     (Object.keys(formData) as Array<keyof ContactFormData>).forEach(field => {
       const error = validateField(field, formData[field]);
       if (error) {
-        errors[field] = error;
+        // Type assertion is safe here as we know field is a key of ContactFormData
+        (errors as Record<string, string>)[field] = error;
         hasErrors = true;
       }
     });
@@ -358,10 +420,12 @@ const ContactForm = () => {
         name: '',
         email: '',
         phone: '',
-        description: ''
+        description: '',
+        turnstileToken: ''
       });
       setFieldErrors({});
       setTouchedFields(new Set());
+      resetTurnstile();
 
     } catch (error) {
       setStatus({
@@ -521,6 +585,38 @@ const ContactForm = () => {
               hasError={touchedFields.has('description') && !!fieldErrors.description}
               errorMessage={fieldErrors.description}
             />
+
+            {/* Turnstile Captcha */}
+            {siteKey && (
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-sm font-medium text-foreground block">
+                  Captcha Verification <span className="text-red-500">*</span>
+                </label>
+                <div ref={turnstileRef}>
+                  <Turnstile
+                    siteKey={siteKey}
+                    onVerify={handleTurnstileVerify}
+                    onError={handleTurnstileError}
+                    onExpire={handleTurnstileExpire}
+                    onTimeout={handleTurnstileError}
+                    theme="auto"
+                    size="normal"
+                    className="w-full"
+                  />
+                </div>
+                {fieldErrors.turnstile && (
+                  <motion.p
+                    role="alert"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                  >
+                    <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                    {fieldErrors.turnstile}
+                  </motion.p>
+                )}
+              </div>
+            )}
 
             {/* Status Message */}
             {status.message && (
