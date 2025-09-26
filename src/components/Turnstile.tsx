@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, memo } from "react";
 
 // Extend the global Window interface to include turnstile
 declare global {
@@ -43,7 +43,6 @@ interface TurnstileProps {
   size?: 'normal' | 'compact';
   className?: string;
   tabIndex?: number;
-  retry?: 'auto' | 'never';
 }
 
 const Turnstile: React.FC<TurnstileProps> = ({
@@ -55,8 +54,7 @@ const Turnstile: React.FC<TurnstileProps> = ({
   theme = 'auto',
   size = 'normal',
   className = '',
-  tabIndex,
-  retry = 'auto'
+  tabIndex
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
@@ -69,16 +67,19 @@ const Turnstile: React.FC<TurnstileProps> = ({
       return;
     }
 
-    // Prevent duplicate rendering
+    // Prevent duplicate rendering - if we already have a widget, don't render again
     if (hasRenderedRef.current && widgetIdRef.current) {
       try {
+        // Try to get the widget's current state
         const response = window.turnstile.getResponse(widgetIdRef.current);
+        // If we can get a response (even empty string), widget exists
         if (response !== undefined) {
-          // Widget still exists, don't re-render
+          console.debug('Turnstile widget already exists, skipping render');
           return;
         }
       } catch {
         // Widget doesn't exist, continue with rendering
+        console.debug('Turnstile widget not found, will render new one');
       }
     }
 
@@ -100,8 +101,8 @@ const Turnstile: React.FC<TurnstileProps> = ({
     isLoadingRef.current = true;
 
     try {
-      // Clear container before rendering to prevent duplicates
-      if (containerRef.current) {
+      // Only clear container if we're re-rendering after an error
+      if (widgetIdRef.current && containerRef.current) {
         containerRef.current.innerHTML = '';
       }
 
@@ -131,8 +132,8 @@ const Turnstile: React.FC<TurnstileProps> = ({
         theme,
         size,
         tabindex: tabIndex,
-        retry,
-        'refresh-expired': 'auto'
+        retry: 'never',
+        'refresh-expired': 'manual'
       });
 
       widgetIdRef.current = widgetId;
@@ -145,7 +146,7 @@ const Turnstile: React.FC<TurnstileProps> = ({
         onError?.();
       }
     }
-  }, [siteKey, onVerify, onError, onExpire, onTimeout, theme, size, tabIndex, retry]);
+  }, [siteKey, onVerify, onError, onExpire, onTimeout, theme, size, tabIndex]);
 
   // Reset the widget
   const reset = useCallback(() => {
@@ -262,4 +263,13 @@ const Turnstile: React.FC<TurnstileProps> = ({
   );
 };
 
-export default Turnstile;
+// Memoize the component to prevent unnecessary re-renders
+export default memo(Turnstile, (prevProps, nextProps) => {
+  // Only re-render if key props change
+  return (
+    prevProps.siteKey === nextProps.siteKey &&
+    prevProps.theme === nextProps.theme &&
+    prevProps.size === nextProps.size &&
+    prevProps.className === nextProps.className
+  );
+});
