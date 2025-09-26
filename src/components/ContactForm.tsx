@@ -124,14 +124,14 @@ const InputField: React.FC<InputFieldProps> = ({
 };
 
 // Validation functions following best practices
-const validateName = (name: string): ValidationResult => {
+const validateName = (name: string, hasTyped: boolean = true): ValidationResult => {
   const trimmed = name.trim();
   
   if (!trimmed) {
-    return { isValid: false, error: "Name is required" };
+    return { isValid: false }; // No error message for empty fields
   }
   
-  if (trimmed.length < 2) {
+  if (trimmed.length < 2 && hasTyped) {
     return { isValid: false, error: "Name must be at least 2 characters long" };
   }
   
@@ -148,11 +148,11 @@ const validateName = (name: string): ValidationResult => {
   return { isValid: true };
 };
 
-const validateEmail = (email: string): ValidationResult => {
+const validateEmail = (email: string, hasTyped: boolean = true): ValidationResult => {
   const trimmed = email.trim();
   
   if (!trimmed) {
-    return { isValid: false, error: "Email is required" };
+    return { isValid: false }; // No error message for empty fields
   }
   
   if (trimmed.length > 254) {
@@ -161,7 +161,7 @@ const validateEmail = (email: string): ValidationResult => {
   
   // RFC 5322 compliant email regex - balanced approach
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(trimmed)) {
+  if (!emailRegex.test(trimmed) && hasTyped) {
     return { isValid: false, error: "Please enter a valid email address (e.g., name@example.com)" };
   }
   
@@ -196,14 +196,14 @@ const validatePhone = (phone: string): ValidationResult => {
   return { isValid: true };
 };
 
-const validateDescription = (description: string): ValidationResult => {
+const validateDescription = (description: string, hasTyped: boolean = true): ValidationResult => {
   const trimmed = description.trim();
   
   if (!trimmed) {
-    return { isValid: false, error: "Message is required" };
+    return { isValid: false }; // No error message for empty fields
   }
   
-  if (trimmed.length < 2) {
+  if (trimmed.length < 2 && hasTyped) {
     return { isValid: false, error: "Message must be at least 2 characters long" };
   }
   
@@ -225,6 +225,7 @@ const ContactForm = () => {
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+  const [typedFields, setTypedFields] = useState<Set<string>>(new Set());
   const [showTurnstile, setShowTurnstile] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -290,19 +291,19 @@ const ContactForm = () => {
   };
 
   // Validate a single field
-  const validateField = (fieldName: keyof ContactFormData, value: string): string | undefined => {
+  const validateField = (fieldName: keyof ContactFormData, value: string, hasTyped: boolean = true): string | undefined => {
     switch (fieldName) {
       case 'name':
-        const nameResult = validateName(value);
+        const nameResult = validateName(value, hasTyped);
         return nameResult.isValid ? undefined : nameResult.error;
       case 'email':
-        const emailResult = validateEmail(value);
+        const emailResult = validateEmail(value, hasTyped);
         return emailResult.isValid ? undefined : emailResult.error;
       case 'phone':
         const phoneResult = validatePhone(value);
         return phoneResult.isValid ? undefined : phoneResult.error;
       case 'description':
-        const descResult = validateDescription(value);
+        const descResult = validateDescription(value, hasTyped);
         return descResult.isValid ? undefined : descResult.error;
       case 'turnstileToken':
         return value ? undefined : 'Please complete the captcha verification';
@@ -325,7 +326,9 @@ const ContactForm = () => {
   const handleFieldBlur = (fieldName: keyof ContactFormData) => {
     setTouchedFields(prev => new Set(prev).add(fieldName));
 
-    const error = validateField(fieldName, formData[fieldName]);
+    // Only show specific validation errors if user has typed in this field
+    const hasTyped = typedFields.has(fieldName);
+    const error = validateField(fieldName, formData[fieldName], hasTyped);
     const newErrors = {
       ...fieldErrors,
       [fieldName]: error
@@ -353,6 +356,11 @@ const ContactForm = () => {
     const { name, value } = e.target;
     const fieldName = name as keyof ContactFormData;
     
+    // Track that user has typed in this field
+    if (value.trim().length > 0) {
+      setTypedFields(prev => new Set(prev).add(fieldName));
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -360,7 +368,8 @@ const ContactForm = () => {
 
     // Clear error immediately if field becomes valid (real-time feedback)
     if (touchedFields.has(fieldName)) {
-      const error = validateField(fieldName, value);
+      const hasTyped = typedFields.has(fieldName) || value.trim().length > 0;
+      const error = validateField(fieldName, value, hasTyped);
       const newErrors = {
         ...fieldErrors,
         [fieldName]: error
@@ -395,7 +404,9 @@ const ContactForm = () => {
     let hasErrors = false;
 
     (Object.keys(formData) as Array<keyof ContactFormData>).forEach(field => {
-      const error = validateField(field, formData[field]);
+      // For form submission, we need to validate all fields as if they were typed
+      // This ensures required field validation happens on submit
+      const error = validateField(field, formData[field], true);
       if (error) {
         // Type assertion is safe here as we know field is a key of ContactFormData
         (errors as Record<string, string>)[field] = error;
@@ -403,8 +414,23 @@ const ContactForm = () => {
       }
     });
 
+    // Also check for empty required fields
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+      hasErrors = true;
+    }
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+      hasErrors = true;
+    }
+    if (!formData.description.trim()) {
+      errors.description = "Message is required";
+      hasErrors = true;
+    }
+
     setFieldErrors(errors);
     setTouchedFields(new Set(Object.keys(formData)));
+    setTypedFields(new Set(Object.keys(formData))); // Mark all as typed for error display
     return !hasErrors;
   };
 
@@ -469,6 +495,7 @@ const ContactForm = () => {
       });
       setFieldErrors({});
       setTouchedFields(new Set());
+      setTypedFields(new Set());
       setShowTurnstile(false);
       setIsFormValid(false);
       hasRenderedTurnstile.current = false;
