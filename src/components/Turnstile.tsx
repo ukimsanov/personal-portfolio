@@ -67,12 +67,17 @@ const Turnstile: React.FC<TurnstileProps> = ({
       return;
     }
 
-    // Clean up existing widget
+    // Clean up existing widget only if it exists
     if (widgetIdRef.current) {
       try {
-        window.turnstile.remove(widgetIdRef.current);
+        // Check if the widget ID is valid before attempting to remove
+        const response = window.turnstile.getResponse(widgetIdRef.current);
+        if (response !== undefined) {
+          window.turnstile.remove(widgetIdRef.current);
+        }
       } catch (error) {
-        console.warn('Failed to remove existing Turnstile widget:', error);
+        // Widget likely doesn't exist, no need to warn
+        console.debug('Turnstile widget not found for removal:', error);
       }
       widgetIdRef.current = null;
     }
@@ -117,9 +122,13 @@ const Turnstile: React.FC<TurnstileProps> = ({
   const reset = useCallback(() => {
     if (widgetIdRef.current && window.turnstile) {
       try {
-        window.turnstile.reset(widgetIdRef.current);
+        // Check if widget exists before resetting
+        const response = window.turnstile.getResponse(widgetIdRef.current);
+        if (response !== undefined) {
+          window.turnstile.reset(widgetIdRef.current);
+        }
       } catch (error) {
-        console.warn('Failed to reset Turnstile widget:', error);
+        console.debug('Turnstile widget not found for reset:', error);
       }
     }
   }, []);
@@ -149,6 +158,33 @@ const Turnstile: React.FC<TurnstileProps> = ({
     let attempts = 0;
     const maxAttempts = 20; // Wait up to 10 seconds (20 * 500ms)
     
+    const loadTurnstileScript = () => {
+      // Check if script is already loaded
+      if (window.turnstile) {
+        renderTurnstile();
+        return;
+      }
+
+      // Check if script tag already exists
+      const existingScript = document.querySelector('script[src*="turnstile"]');
+      if (existingScript) {
+        checkTurnstileReady();
+        return;
+      }
+
+      // Load the script dynamically
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => checkTurnstileReady();
+      script.onerror = () => {
+        console.error('Failed to load Turnstile script');
+        onError?.();
+      };
+      document.head.appendChild(script);
+    };
+
     const checkTurnstileReady = () => {
       if (window.turnstile) {
         renderTurnstile();
@@ -161,16 +197,21 @@ const Turnstile: React.FC<TurnstileProps> = ({
       }
     };
 
-    checkTurnstileReady();
+    loadTurnstileScript();
 
     // Cleanup on unmount
     return () => {
       if (widgetIdRef.current && window.turnstile) {
         try {
-          window.turnstile.remove(widgetIdRef.current);
+          // Check if widget exists before cleaning up
+          const response = window.turnstile.getResponse(widgetIdRef.current);
+          if (response !== undefined) {
+            window.turnstile.remove(widgetIdRef.current);
+          }
         } catch (error) {
-          console.warn('Failed to cleanup Turnstile widget:', error);
+          console.debug('Turnstile widget already cleaned up:', error);
         }
+        widgetIdRef.current = null;
       }
     };
   }, [renderTurnstile, onError]);
