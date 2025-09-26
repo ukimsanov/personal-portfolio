@@ -161,7 +161,6 @@ export const resumeData: {
         href: "https://github.com/ukimsanov/horizon-banking-app",
       },
       websiteUrl: "https://horizon-banking-app.vercel.app",
-      imageUrl: "/images/projects/horizon-banking-app.png",
     },
     {
       title: "YouTube Lecture Notes AI Agent",

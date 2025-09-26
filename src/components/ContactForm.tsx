@@ -225,6 +225,8 @@ const ContactForm = () => {
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+  const [showTurnstile, setShowTurnstile] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const [status, setStatus] = useState<FormStatus>({
     type: 'idle',
@@ -233,6 +235,7 @@ const ContactForm = () => {
 
   const turnstileRef = useRef<HTMLDivElement>(null);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
+  const hasRenderedTurnstile = useRef(false);
 
   // Turnstile handlers
   const handleTurnstileVerify = (token: string) => {
@@ -308,15 +311,40 @@ const ContactForm = () => {
     }
   };
 
+  // Check if all required fields are valid
+  const checkFormValidity = (data: ContactFormData = formData, errors: FieldErrors = fieldErrors) => {
+    const nameValid = data.name.trim().length >= 2 && !errors.name;
+    const emailValid = data.email.trim().length > 0 && !errors.email;
+    const descriptionValid = data.description.trim().length >= 2 && !errors.description;
+    const phoneValid = !errors.phone; // Phone is optional
+
+    return nameValid && emailValid && descriptionValid && phoneValid;
+  };
+
   // Handle field blur - validate and show errors
   const handleFieldBlur = (fieldName: keyof ContactFormData) => {
     setTouchedFields(prev => new Set(prev).add(fieldName));
-    
+
     const error = validateField(fieldName, formData[fieldName]);
-    setFieldErrors(prev => ({
-      ...prev,
+    const newErrors = {
+      ...fieldErrors,
       [fieldName]: error
-    }));
+    };
+    setFieldErrors(newErrors);
+
+    // Check if we should show Turnstile
+    const updatedTouchedFields = new Set(touchedFields).add(fieldName);
+    const requiredFieldsTouched = updatedTouchedFields.has('name') &&
+                                   updatedTouchedFields.has('email') &&
+                                   updatedTouchedFields.has('description');
+
+    if (requiredFieldsTouched && checkFormValidity(formData, newErrors)) {
+      setShowTurnstile(true);
+      hasRenderedTurnstile.current = true;
+    }
+
+    // Update form validity
+    setIsFormValid(checkFormValidity(formData, newErrors));
   };
 
   const handleInputChange = (
@@ -333,10 +361,26 @@ const ContactForm = () => {
     // Clear error immediately if field becomes valid (real-time feedback)
     if (touchedFields.has(fieldName)) {
       const error = validateField(fieldName, value);
-      setFieldErrors(prev => ({
-        ...prev,
+      const newErrors = {
+        ...fieldErrors,
         [fieldName]: error
-      }));
+      };
+      setFieldErrors(newErrors);
+
+      // Update form validity and check if we should show Turnstile
+      const newFormData = { ...formData, [name]: value };
+      const formValid = checkFormValidity(newFormData, newErrors);
+      setIsFormValid(formValid);
+
+      // Show Turnstile if all required fields are touched and valid
+      const requiredFieldsTouched = touchedFields.has('name') &&
+                                     touchedFields.has('email') &&
+                                     touchedFields.has('description');
+
+      if (requiredFieldsTouched && formValid && !hasRenderedTurnstile.current) {
+        setShowTurnstile(true);
+        hasRenderedTurnstile.current = true;
+      }
     }
 
     // Clear general status when user starts typing
@@ -425,6 +469,9 @@ const ContactForm = () => {
       });
       setFieldErrors({});
       setTouchedFields(new Set());
+      setShowTurnstile(false);
+      setIsFormValid(false);
+      hasRenderedTurnstile.current = false;
       resetTurnstile();
 
     } catch (error) {
@@ -586,8 +633,8 @@ const ContactForm = () => {
               errorMessage={fieldErrors.description}
             />
 
-            {/* Turnstile Captcha */}
-            {siteKey && (
+            {/* Turnstile Captcha - Only show when form is valid */}
+            {siteKey && showTurnstile && (
               <div className="space-y-1.5 sm:space-y-2">
                 <label className="text-sm font-medium text-foreground block">
                   Captcha Verification <span className="text-red-500">*</span>
@@ -639,8 +686,8 @@ const ContactForm = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={status.type === 'loading'}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base min-h-[48px]"
+              disabled={status.type === 'loading' || !isFormValid || (showTurnstile && !formData.turnstileToken)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base min-h-[48px]"
             >
               {status.type === 'loading' ? (
                 <>
