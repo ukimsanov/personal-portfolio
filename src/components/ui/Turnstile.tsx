@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 // Extend the global Window interface to include turnstile
 declare global {
@@ -62,16 +62,15 @@ export default function Turnstile({
 }: TurnstileProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Check if Turnstile script is loaded
-  const checkTurnstileLoaded = () => {
+  const checkTurnstileLoaded = useCallback(() => {
     return typeof window !== 'undefined' && window.turnstile;
-  };
+  }, []);
 
   // Render the widget
-  const renderWidget = () => {
+  const renderWidget = useCallback(() => {
     if (!containerRef.current || !checkTurnstileLoaded() || !siteKey) {
       return;
     }
@@ -116,28 +115,16 @@ export default function Turnstile({
       });
 
       widgetIdRef.current = widgetId;
-      setIsLoaded(true);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load verification';
       setError(errorMessage);
       onError?.(errorMessage);
     }
-  };
+  }, [siteKey, theme, size, action, onSuccess, onError, onExpired, onTimeout, checkTurnstileLoaded]);
 
-  // Reset the widget
-  const resetWidget = () => {
-    if (widgetIdRef.current && checkTurnstileLoaded()) {
-      try {
-        window.turnstile!.reset(widgetIdRef.current);
-        setError(null);
-      } catch (err) {
-        console.error('Failed to reset Turnstile widget:', err);
-      }
-    }
-  };
 
-  // Expose reset function via ref (if needed)
-  const reset = () => resetWidget();
+
+
 
   useEffect(() => {
     // Function to check and render when Turnstile is ready
@@ -176,7 +163,7 @@ export default function Turnstile({
         }
       }
     };
-  }, [siteKey, theme, size, action]); // Re-render if props change
+  }, [renderWidget, checkTurnstileLoaded, onError]); // Re-render when dependencies change
 
   // Don't render anything server-side
   if (typeof window === 'undefined') {
