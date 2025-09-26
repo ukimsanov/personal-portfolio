@@ -25,6 +25,7 @@ interface FieldErrors {
   phone?: string;
   description?: string;
   turnstile?: string;
+  turnstileToken?: string;
 }
 
 interface ValidationResult {
@@ -366,30 +367,34 @@ const ContactForm = () => {
       [name]: value
     }));
 
-    // Clear error immediately if field becomes valid (real-time feedback)
-    if (touchedFields.has(fieldName)) {
+    // Only clear errors if field becomes valid (but don't show new errors while typing)
+    if (touchedFields.has(fieldName) && fieldErrors[fieldName]) {
       const hasTyped = typedFields.has(fieldName) || value.trim().length > 0;
       const error = validateField(fieldName, value, hasTyped);
-      const newErrors = {
-        ...fieldErrors,
-        [fieldName]: error
-      };
-      setFieldErrors(newErrors);
-
-      // Update form validity and check if we should show Turnstile
-      const newFormData = { ...formData, [name]: value };
-      const formValid = checkFormValidity(newFormData, newErrors);
-      setIsFormValid(formValid);
-
-      // Show Turnstile if all required fields are touched and valid
-      const requiredFieldsTouched = touchedFields.has('name') &&
-                                     touchedFields.has('email') &&
-                                     touchedFields.has('description');
-
-      if (requiredFieldsTouched && formValid && !hasRenderedTurnstile.current) {
-        setShowTurnstile(true);
-        hasRenderedTurnstile.current = true;
+      
+      // Only clear the error if field becomes valid, don't add new errors while typing
+      if (!error) {
+        const newErrors = {
+          ...fieldErrors,
+          [fieldName]: undefined
+        };
+        setFieldErrors(newErrors);
       }
+    }
+
+    // Update form validity and check if we should show Turnstile
+    const newFormData = { ...formData, [name]: value };
+    const formValid = checkFormValidity(newFormData, fieldErrors);
+    setIsFormValid(formValid);
+
+    // Show Turnstile if all required fields are touched and valid
+    const requiredFieldsTouched = touchedFields.has('name') &&
+                                   touchedFields.has('email') &&
+                                   touchedFields.has('description');
+
+    if (requiredFieldsTouched && formValid && !hasRenderedTurnstile.current) {
+      setShowTurnstile(true);
+      hasRenderedTurnstile.current = true;
     }
 
     // Clear general status when user starts typing
