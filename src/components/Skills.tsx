@@ -161,12 +161,14 @@ const Skills = () => {
                 className="hover:scale-105 transition-transform"
               >
                 {badgeUrl ? (
-                  // Use badge image for skills that have badges
-                  <img
-                    src={badgeUrl}
-                    alt={skill}
-                    className="h-7 hover:opacity-80 transition-opacity"
-                  />
+                  // Use badge image for skills that have badges - wrapped in div for neon effect
+                  <div className="relative rounded-md transition-all duration-300 shadow-[0_0_4px_rgba(0,255,255,0.4),0_0_8px_rgba(0,255,255,0.2),0_0_12px_rgba(0,255,255,0.1)] hover:shadow-[0_0_6px_rgba(0,255,255,0.6),0_0_12px_rgba(0,255,255,0.4),0_0_18px_rgba(0,255,255,0.2)] hover:scale-105">
+                    <img
+                      src={badgeUrl}
+                      alt={skill}
+                      className="h-7 rounded-md filter brightness-90 saturate-100 contrast-100 hover:brightness-125 hover:saturate-150 transition-all duration-300"
+                    />
+                  </div>
                 ) : (
                   // Fallback to original styling for skills without badges
                   <div className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm hover:bg-secondary/80 transition-colors">
