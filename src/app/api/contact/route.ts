@@ -14,6 +14,7 @@ interface D1Database {
 interface CloudflareEnv {
   DB: D1Database;
   DISCORD_WEBHOOK_URL?: string;
+  TURNSTILE_SECRET_KEY?: string;
   [key: string]: unknown;
 }
 
@@ -22,6 +23,7 @@ interface FieldErrors {
   email?: string;
   phone?: string;
   description?: string;
+  turnstile?: string;
 }
 
 interface ValidationResult {
@@ -116,6 +118,48 @@ const validateDescription = (description: string): { isValid: boolean; error?: s
   return { isValid: true };
 };
 
+// Validate Turnstile token with Cloudflare
+async function validateTurnstileToken(token: string, secretKey: string): Promise<{ isValid: boolean; error?: string }> {
+  if (!token) {
+    return { isValid: false, error: "Captcha token is required" };
+  }
+
+  if (!secretKey) {
+    console.error('Turnstile secret key not configured');
+    return { isValid: false, error: "Captcha validation unavailable" };
+  }
+
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        secret: secretKey,
+        response: token,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Turnstile API response not ok:', response.status, response.statusText);
+      return { isValid: false, error: "Captcha validation failed" };
+    }
+
+    const data = await response.json();
+    
+    if (data.success) {
+      return { isValid: true };
+    } else {
+      console.error('Turnstile validation failed:', data['error-codes']);
+      return { isValid: false, error: "Captcha verification failed" };
+    }
+  } catch (error) {
+    console.error('Turnstile validation error:', error);
+    return { isValid: false, error: "Captcha validation error" };
+  }
+}
+
 // Contact form validation with field-specific errors
 function validateContactForm(data: unknown): ValidationResult {
   const fieldErrors: FieldErrors = {};
@@ -156,6 +200,12 @@ function validateContactForm(data: unknown): ValidationResult {
     hasErrors = true;
   }
 
+  // Validate Turnstile token presence (server-side validation happens later)
+  if (!formData.turnstileToken || String(formData.turnstileToken).trim() === '') {
+    fieldErrors.turnstile = 'Please complete the captcha verification';
+    hasErrors = true;
+  }
+
   return {
     isValid: !hasErrors,
     fieldErrors,
@@ -169,12 +219,13 @@ function sanitizeInput(data: Record<string, unknown>) {
     name: String(data.name || '').trim().substring(0, 50),
     email: String(data.email || '').trim().toLowerCase().substring(0, 255),
     phone: data.phone ? String(data.phone).trim().substring(0, 20) : '',
-    description: String(data.description || '').trim().substring(0, 1000)
+    description: String(data.description || '').trim().substring(0, 1000),
+    turnstileToken: String(data.turnstileToken || '').trim()
   };
 }
 
 // Send data to Discord webhook
-async function sendToDiscord(data: { name: string; email: string; phone: string; description: string }, env?: CloudflareEnv) {
+async function sendToDiscord(data: { name: string; email: string; phone: string; description: string; turnstileToken: string }, env?: CloudflareEnv) {
   // Try to get webhook URL from environment variables or Cloudflare env
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL || env?.DISCORD_WEBHOOK_URL;
   
@@ -259,6 +310,34 @@ export async function POST(request: NextRequest) {
     
     // Sanitize input
     const sanitizedData = sanitizeInput(body);
+    
+    // Validate Turnstile token
+    try {
+      console.log('🔒 Validating Turnstile token...');
+      const cloudflareContext = getCloudflareContext();
+      const env = cloudflareContext.env as CloudflareEnv;
+      const secretKey = process.env.TURNSTILE_SECRET_KEY || env?.TURNSTILE_SECRET_KEY;
+      
+      const turnstileResult = await validateTurnstileToken(sanitizedData.turnstileToken, secretKey || '');
+      
+      if (!turnstileResult.isValid) {
+        console.log('❌ Turnstile validation failed');
+        return NextResponse.json({
+          success: false,
+          message: 'Captcha verification failed',
+          fieldErrors: { turnstile: turnstileResult.error || 'Captcha verification failed' }
+        }, { status: 400 });
+      }
+      
+      console.log('✅ Turnstile validation successful!');
+    } catch (turnstileError) {
+      console.error('❌ Turnstile validation error:', turnstileError);
+      return NextResponse.json({
+        success: false,
+        message: 'Captcha verification error',
+        fieldErrors: { turnstile: 'Captcha verification failed. Please try again.' }
+      }, { status: 400 });
+    }
     
     // Track success of operations
     let dbSuccess = false;

@@ -11,3 +11,8 @@
   [assets]
   directory = ".open-next/assets"
   binding = "ASSETS"
+
+  # Server-side secrets - set these using wrangler secret put command:
+  # wrangler secret put TURNSTILE_SECRET_KEY
+  # wrangler secret put DISCORD_WEBHOOK_URL
+  # wrangler secret put DISCORD_WEBHOOK_URL
