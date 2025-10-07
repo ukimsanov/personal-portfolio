@@ -183,27 +183,27 @@ export function Projects() {
           showCloseButton={true}
           showEscText={false}
           disablePadding={true}
-          className="max-w-4xl max-h-[80vh]"
+          className="w-full sm:max-w-2xl lg:max-w-3xl"
         >
-          <div className="flex flex-col h-full max-h-[80vh]">
+          <div className="flex flex-col h-full max-h-[92vh] sm:max-h-[85vh]">
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 p-6 pb-4 border-b border-border">
-              <h2 className="text-2xl font-bold mb-2">{projects[selectedProject].title}</h2>
-              <div className="text-sm text-muted-foreground mb-4">
+            <div className="flex-shrink-0 p-4 pb-3 sm:p-6 sm:pb-4 border-b border-border">
+              <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
+              <div className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
                 {projects[selectedProject].techStack.join(" • ")}
               </div>
-              
+
               {/* Links */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                 {projects[selectedProject].link.href && (
                   <a
                     href={projects[selectedProject].link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors min-h-[44px] sm:min-h-0"
                   >
-                    <Github className="w-4 h-4" />
-                    <span>GitHub</span>
+                    <Github className="w-5 h-5 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">GitHub</span>
                   </a>
                 )}
                 {projects[selectedProject].websiteUrl && (
@@ -211,30 +211,30 @@ export function Projects() {
                     href={projects[selectedProject].websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors min-h-[44px] sm:min-h-0"
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Live Demo</span>
+                    <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">Live Demo</span>
                   </a>
                 )}
               </div>
             </div>
 
             {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-6">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 overscroll-contain">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Project Description */}
-                <div className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
+                <div className="space-y-3 sm:space-y-4">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {projects[selectedProject].description[0]}
                   </p>
-                  
+
                   {/* Detailed bullet points */}
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {projects[selectedProject].description.slice(1).map((desc, i) => (
                       <div key={i} className="flex items-start">
-                        <span className="text-muted-foreground mr-3 flex-shrink-0">•</span>
-                        <p className="text-muted-foreground leading-relaxed">{desc}</p>
+                        <span className="text-muted-foreground mr-2 sm:mr-3 flex-shrink-0">•</span>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
                     ))}
                   </div>
@@ -246,12 +246,12 @@ export function Projects() {
                     <img
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
-                      className="w-full max-h-96 object-cover rounded-lg border border-border"
+                      className="w-full max-h-64 sm:max-h-96 object-cover rounded-lg border border-border"
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
-                    <span className="text-muted-foreground">Project Preview</span>
+                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
+                    <span className="text-sm sm:text-base text-muted-foreground">Project Preview</span>
                   </div>
                 )}
               </div>

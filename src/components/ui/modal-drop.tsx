@@ -113,6 +113,33 @@ const scaleVariants: Variants = {
   },
 }
 
+// Bottom sheet animation for mobile
+const bottomSheetVariants: Variants = {
+  hidden: {
+    y: "100%",
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+  visible: {
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 35,
+      mass: 0.8,
+    },
+  },
+  exit: {
+    y: "100%",
+    transition: {
+      duration: 0.25,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+}
+
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -130,9 +157,20 @@ const Modal: React.FC<ModalProps> = ({
   disablePadding = false,
 }) => {
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  // Detect mobile for bottom sheet
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640) // sm breakpoint
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // ESC key handler
@@ -175,24 +213,29 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   const getModalClasses = () => {
+    // Mobile: bottom sheet (full width, rounded top corners only)
+    // Desktop: centered modal (auto width, all rounded corners)
     const base =
-      "w-auto bg-background border border-border text-card-foreground max-w-[90%] sm:max-w-xl max-h-[85vh] rounded-2xl shadow-lg m-4 relative flex flex-col"
+      "w-full sm:w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[92vh] sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl shadow-lg sm:m-4 relative flex flex-col"
     return type === "overlay" ? base : `${base} border border-border`
   }
 
   if (!mounted) return null
 
   // Choose the appropriate animation variants
-  const variants = animationType === "scale" ? scaleVariants : dropVariants
+  // Mobile: bottom sheet, Desktop: scale or drop
+  const variants = isMobile
+    ? bottomSheetVariants
+    : (animationType === "scale" ? scaleVariants : dropVariants)
 
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto">
-          {/* Stable blur layer - no animation */}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          {/* Stable blur layer - disabled on mobile for performance */}
           {type === "blur" && (
             <div
-              className="absolute inset-0 backdrop-blur-sm"
+              className="absolute inset-0 sm:backdrop-blur-sm z-[101]"
               style={{
                 WebkitBackdropFilter: "blur(8px)",
                 transform: "translateZ(0)",
@@ -206,7 +249,7 @@ const Modal: React.FC<ModalProps> = ({
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={`absolute inset-0 ${type === "blur" ? "bg-black/40" : type === "overlay" ? "bg-black/50" : ""}`}
+            className={`absolute inset-0 z-[102] ${type === "blur" ? "bg-black/70 sm:bg-black/40" : type === "overlay" ? "bg-black/70 sm:bg-black/50" : ""}`}
             onClick={handleOverlayClick}
             style={{
               transform: "translateZ(0)",
@@ -216,10 +259,9 @@ const Modal: React.FC<ModalProps> = ({
 
           {/* Modal container */}
           <div
-            className="relative flex items-center justify-center w-full h-full"
-            onClick={handleOverlayClick}
+            className="relative z-[103] flex items-end sm:items-center justify-center w-full h-full pointer-events-none"
             style={{
-              alignItems: position === 0 ? "center" : "flex-start",
+              alignItems: position === 0 ? undefined : "flex-start",
               paddingTop: position === 0 ? 0 : `calc(50vh - ${position}px)`,
             }}
           >
@@ -230,6 +272,7 @@ const Modal: React.FC<ModalProps> = ({
               exit="exit"
               className={cn(getModalClasses(), className)}
               onClick={(e) => e.stopPropagation()}
+              style={{ pointerEvents: "auto" }}
             >
             {title ? (
               <div
@@ -260,36 +303,36 @@ const Modal: React.FC<ModalProps> = ({
                       </span>
                     )}
                     <button
-                      className="p-1 rounded-md hover:bg-muted transition-colors"
+                      className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                       onClick={onClose}
                       aria-label="Close modal"
                     >
-                      <X size={20} weight="bold" />
+                      <X size={24} weight="bold" className="sm:w-5 sm:h-5" />
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               showCloseButton && (
-                <div className="absolute top-6 right-6 flex items-center gap-2">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2">
                   {showEscText && (
                     <span className="hidden lg:inline px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded">
                       ESC
                     </span>
                   )}
                   <button
-                    className="p-1 rounded-md hover:bg-muted transition-colors"
+                    className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                     onClick={onClose}
                     aria-label="Close modal"
                   >
-                    <X size={20} weight="bold" />
+                    <X size={24} weight="bold" className="sm:w-5 sm:h-5" />
                   </button>
                 </div>
               )
             )}
 
             <div
-              className={cn(!disablePadding && (!title ? "p-6 pt-12" : "p-6"))}
+              className={cn(!disablePadding && (!title ? "p-4 pt-14 sm:p-6 sm:pt-12" : "p-4 sm:p-6"))}
             >
               {children}
             </div>
