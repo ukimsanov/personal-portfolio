@@ -2,7 +2,7 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
-import { Mail, Phone, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, Linkedin, Github, FileText } from "lucide-react";
 
 const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -141,19 +141,6 @@ const Hero = () => {
           whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
         >
           <FileText className="w-4 h-4" />
-        </motion.a>
-        
-        <motion.a
-          href={`tel:${resumeData.contact.tel}`}
-          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
-          variants={iconVariants}
-          initial="initial"
-          animate="animate"
-          custom={4}
-          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
-          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
-        >
-          <Phone className="w-4 h-4" />
         </motion.a>
       </motion.div>
     </section>

@@ -85,14 +85,14 @@ average data fetch and render time.
 Integrated CoinMarketCap API for real-time market changes, updating prices within 170-200 ms on average.
 Implemented responsive UI with Tailwind CSS, reducing layout reflows by approximately 30%.
 Achieved over 90% unit test coverage, ensuring reliable end-to-end functionality across the stack.
-MNIST Neural Network Classifier (Python, PyTorch, NumPy)
-Engineered a neural network model achieving 91% accuracy on MNIST dataset, implementing custom data preprocessing
-pipeline for processing 70,000 images using PyTorch and NumPy.
-Optimized model performance through hyperparameter tuning and data normalization techniques, achieving 85% accuracy
-within first training epoch
-Developed complete ML pipeline with visualization tools using Python, PyTorch, NumPy, Matplotlib and Jupyter,
-following industry best practices for machine learning workflows
-
+Neural Digit Canvas (Python, PyTorch, Next.js, AWS Lambda, Docker)
+Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy 
+on MNIST using CNN architecture. Deployed serverless backend on AWS Lambda with FastAPI, handling real-time 
+inference at ~8ms per prediction.
+Engineered complete ML pipeline from model training to cloud deployment: containerized PyTorch models with Docker, 
+implemented ECR/Lambda deployment, and created Next.js 15 frontend with canvas drawing interface.
+Designed dual-model system (Linear: 92.4%, CNN: 98.2%) with comprehensive evaluation metrics, training 
+visualization tools, and automated CI/CD pipelines using GitHub Actions.
 AWARDS & COMPETITIONS
 National Cyber League (NCL) - Top 3% (Spring 2025), Top 4% (Fall 2024)
 ICPC Regional Programming Contest 2024 - Team ranked 8th out of 92 teams
