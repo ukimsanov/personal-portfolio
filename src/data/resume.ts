@@ -152,9 +152,9 @@ export const resumeData: {
       title: "Horizon Banking App",
       techStack: ["Next.js", "TypeScript", "Appwrite", "TailwindCSS", "Plaid", "Dwolla"],
       description: [
-        "Built core banking UI & real-time transfers for 1,000+ users; onboarding tests showed a 40% jump in engagement.",
-        "Designed Appwrite cloud functions for payments, hitting <50 ms median latency across 10k simulated transactions.",
-        "Implemented responsive dashboard using TailwindCSS and Chart.js, deployed on Vercel cutting page-load 50% and sustaining 99.9% uptime.",
+        "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
+        "Engineered server-side payment processing with Next.js Server Actions and Appwrite, implementing secure session management and transaction tracking across linked accounts.",
+        "Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Cloudflare Pages with edge runtime optimization and Sentry monitoring for 99.9% uptime.",
       ],
       link: {
         label: "github.com",

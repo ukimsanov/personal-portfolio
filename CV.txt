@@ -70,11 +70,10 @@ Led a project to stabilize the campus printer fleet by refining network configur
 maintenance schedule, resulting in a 20% reduction in recurring outages.
 
 PROJECTS
-Horizon Banking App (Next.js | TypeScript | Appwrite | TailwindCSS | Plaid | Dwolla)
-Built core banking UI & real-time transfers for 1,000+ users; onboarding tests showed a 40 % jump in engagement.
-Designed Appwrite cloud functions for payments, hitting <50 ms median latency across 10k simulated transactions.
-Implemented responsive dashboard using TailwindCSS and Chat.js, deployed on Vercel cutting page-load 50 % and sustaining
-99.9 % uptime.
+Horizon Banking App (Next.js, TypeScript, Appwrite, TailwindCSS, Plaid, Dwolla)
+Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.
+Engineered server-side payment processing with Next.js Server Actions and Appwrite, implementing secure session management and transaction tracking across linked accounts.
+Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Cloudflare Pages with edge runtime optimization and Sentry monitoring for 99.9% uptime.
 YouTube Lecture Notes AI Agent (Python, CrewAI, LangChain, OpenAI API, N8N)
 Created automated workflow system extracting structured notes from video content using multi-agent collaboration
 Processed 100+ educational videos with 90% accuracy in key concept identification and summarization
