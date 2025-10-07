@@ -87,6 +87,7 @@ const Hero = () => {
       >
         <motion.a
           href={`mailto:${resumeData.contact.email}`}
+          title="Email"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -102,6 +103,7 @@ const Hero = () => {
           href={resumeData.contact.socials[1].url}
           target="_blank"
           rel="noopener noreferrer"
+          title="GitHub"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -117,6 +119,7 @@ const Hero = () => {
           href={resumeData.contact.socials[0].url}
           target="_blank"
           rel="noopener noreferrer"
+          title="LinkedIn"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -132,6 +135,7 @@ const Hero = () => {
           href="/cv.pdf"
           target="_blank"
           rel="noopener noreferrer"
+          title="Resume/CV"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"

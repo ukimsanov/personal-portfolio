@@ -233,7 +233,7 @@ export function Projects() {
                   <div className="space-y-3">
                     {projects[selectedProject].description.slice(1).map((desc, i) => (
                       <div key={i} className="flex items-start">
-                        <span className="text-blue-500 dark:text-blue-400 mr-3 mt-1.5 flex-shrink-0">•</span>
+                        <span className="text-muted-foreground mr-3 flex-shrink-0">•</span>
                         <p className="text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
                     ))}

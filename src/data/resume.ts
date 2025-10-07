@@ -193,7 +193,8 @@ export const resumeData: {
       title: "Neural Digit Canvas",
       techStack: ["Python", "PyTorch", "Next.js", "AWS Lambda", "Docker", "FastAPI", "ECR", "GitHub Actions"],
       description: [
-        "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture. Deployed serverless backend on AWS Lambda with FastAPI, handling real-time inference at ~8ms per prediction.",
+        "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture.",
+        "Deployed serverless backend on AWS Lambda with FastAPI, handling real-time inference at ~8ms per prediction.",
         "Engineered complete ML pipeline from model training to cloud deployment: containerized PyTorch models with Docker, implemented ECR/Lambda deployment, and created Next.js 15 frontend with canvas drawing interface.",
         "Designed dual-model system (Linear: 92.4%, CNN: 98.2%) with comprehensive evaluation metrics, training visualization tools, and automated CI/CD pipelines using GitHub Actions.",
       ],
