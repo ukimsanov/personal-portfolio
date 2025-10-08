@@ -78,12 +78,11 @@ YouTube Lecture Notes AI Agent (Python, CrewAI, LangChain, OpenAI API, N8N)
 Created automated workflow system extracting structured notes from video content using multi-agent collaboration
 Processed 100+ educational videos with 90% accuracy in key concept identification and summarization
 Integrated N8N automation for seamless content pipeline from video input to formatted documentation output
-Crypto List (Python, FastAPI, React, CoinMarketCap API)
-Developed a simple full-stack cryptocurrency tracker using FastAPI (Python) and React (JavaScript), achieving <1 second
-average data fetch and render time.
-Integrated CoinMarketCap API for real-time market changes, updating prices within 170-200 ms on average.
-Implemented responsive UI with Tailwind CSS, reducing layout reflows by approximately 30%.
-Achieved over 90% unit test coverage, ensuring reliable end-to-end functionality across the stack.
+CryptoLive (React, FastAPI, WebSockets, Tailwind CSS, Ant Design, Kraken API)
+Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API
+Engineered real-time price updates via Kraken WebSocket v2, achieving <170ms latency for live market data streaming
+Developed interactive financial charts with 7 timeframes (1m-1D) using lightweight-charts library, featuring zoom, pan, and OHLC candlestick visualization with responsive data caching
+Designed modern glassmorphic UI with Tailwind CSS and Ant Design, implementing skeleton loading states, error boundaries, and mobile-responsive layouts with smooth CSS animations
 Neural Digit Canvas (Python, PyTorch, Next.js, AWS Lambda, Docker)
 Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy 
 on MNIST using CNN architecture. Deployed serverless backend on AWS Lambda with FastAPI, handling real-time 

@@ -176,13 +176,13 @@ export const resumeData: {
       },
     },
     {
-      title: "Crypto List",
-      techStack: ["Python", "FastAPI", "React", "CoinMarketCap API", "TailwindCSS"],
+      title: "CryptoLive",
+      techStack: ["React", "FastAPI", "WebSockets", "Tailwind CSS", "Ant Design", "Kraken API", "lightweight-charts"],
       description: [
-        "Developed a simple full-stack cryptocurrency tracker using FastAPI (Python) and React (JavaScript), achieving <1 second average data fetch and render time.",
-        "Integrated CoinMarketCap API for real-time market changes, updating prices within 170-200 ms on average.",
-        "Implemented responsive UI with Tailwind CSS, reducing layout reflows by approximately 30%.",
-        "Achieved over 90% unit test coverage, ensuring reliable end-to-end functionality across the stack.",
+        "Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API.",
+        "Engineered real-time price updates via Kraken WebSocket v2, achieving <170ms latency for live market data streaming.",
+        "Developed interactive financial charts with 7 timeframes (1m-1D) using lightweight-charts library, featuring zoom, pan, and OHLC candlestick visualization with responsive data caching.",
+        "Designed modern glassmorphic UI with Tailwind CSS and Ant Design, implementing skeleton loading states, error boundaries, and mobile-responsive layouts with smooth CSS animations.",
       ],
       link: {
         label: "github.com",
