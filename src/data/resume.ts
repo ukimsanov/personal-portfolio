@@ -154,7 +154,7 @@ export const resumeData: {
       description: [
         "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
         "Engineered server-side payment processing with Next.js Server Actions and Appwrite, implementing secure session management and transaction tracking across linked accounts.",
-        "Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Cloudflare Pages with edge runtime optimization and Sentry monitoring for 99.9% uptime.",
+        "Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Vercel with edge runtime optimization and Sentry monitoring for 99.9% uptime.",
       ],
       link: {
         label: "github.com",

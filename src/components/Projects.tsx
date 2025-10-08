@@ -104,20 +104,22 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full hover:shadow-lg transition-shadow duration-300">
+            <Card className="w-full group hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/20 transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 dark:hover:border-blue-400/40">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
-                <div className="flex-1 p-4 sm:p-6">
+                <div 
+                  className="flex-1 p-4 sm:p-6 cursor-pointer"
+                  onClick={() => handleProjectClick(index)}
+                >
                   <div className="mb-4">
                     <h3 
-                      className="text-lg sm:text-xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer inline-block"
-                      onClick={() => handleProjectClick(index)}
+                      className="text-lg sm:text-xl font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors inline-block"
                     >
                       {project.title}
                     </h3>
                   </div>
                   
-                  <div className="text-xs sm:text-sm text-muted-foreground mb-3 leading-relaxed">
+                  <div className="text-xs sm:text-sm mb-3 leading-relaxed">
                     {project.techStack.join(" • ")}
                   </div>
                   
@@ -125,7 +127,7 @@ export function Projects() {
                     {project.description[0]}
                   </p>
                   
-                  <div className="flex items-center gap-3 sm:gap-4 pt-2">
+                  <div className="flex items-center gap-3 sm:gap-4 pt-2" onClick={(e) => e.stopPropagation()}>
                     {project.link.href && (
                       <a
                         href={project.link.href}
@@ -189,7 +191,7 @@ export function Projects() {
             {/* Header - Fixed */}
             <div className="flex-shrink-0 p-4 pb-3 sm:p-6 sm:pb-4 border-b border-border">
               <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
-              <div className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
+              <div className="text-xs sm:text-sm mb-3 sm:mb-4">
                 {projects[selectedProject].techStack.join(" • ")}
               </div>
 
