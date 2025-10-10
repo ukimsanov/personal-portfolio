@@ -213,10 +213,12 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   const getModalClasses = () => {
-    // Mobile: bottom sheet (full width, rounded top corners only)
+    // Mobile: bottom sheet (full width, rounded corners all around, no bottom margin, flush to bottom)
     // Desktop: centered modal (auto width, all rounded corners)
-    const base =
-      "w-full sm:w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[75vh] sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl shadow-lg sm:m-4 relative flex flex-col"
+    if (isMobile) {
+      return "w-full bg-background border-t border-l border-r border-border text-card-foreground max-h-[75vh] rounded-3xl shadow-lg relative flex flex-col"
+    }
+    const base = "w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[85vh] rounded-2xl shadow-lg m-4 relative flex flex-col"
     return type === "overlay" ? base : `${base} border border-border`
   }
 
@@ -259,10 +261,13 @@ const Modal: React.FC<ModalProps> = ({
 
           {/* Modal container */}
           <div
-            className="relative z-[103] flex items-end sm:items-center justify-center w-full h-full pointer-events-none"
+            className={cn(
+              "relative z-[103] flex w-full h-full pointer-events-none",
+              isMobile ? "items-end justify-center" : "items-center justify-center"
+            )}
             style={{
-              alignItems: position === 0 ? undefined : "flex-start",
-              paddingTop: position === 0 ? 0 : `calc(50vh - ${position}px)`,
+              alignItems: !isMobile && position !== 0 ? "flex-start" : undefined,
+              paddingTop: !isMobile && position !== 0 ? `calc(50vh - ${position}px)` : 0,
             }}
           >
             <motion.div
