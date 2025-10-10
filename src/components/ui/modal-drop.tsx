@@ -216,7 +216,7 @@ const Modal: React.FC<ModalProps> = ({
     // Mobile: bottom sheet (full width, rounded top corners only)
     // Desktop: centered modal (auto width, all rounded corners)
     const base =
-      "w-full sm:w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[92vh] sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl shadow-lg sm:m-4 relative flex flex-col"
+      "w-full sm:w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[75vh] sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl shadow-lg sm:m-4 relative flex flex-col"
     return type === "overlay" ? base : `${base} border border-border`
   }
 
@@ -303,8 +303,13 @@ const Modal: React.FC<ModalProps> = ({
                       </span>
                     )}
                     <button
-                      className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
-                      onClick={onClose}
+                      className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center relative z-10 touch-manipulation"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onClose();
+                      }}
+                      type="button"
                       aria-label="Close modal"
                     >
                       <X size={24} weight="bold" className="sm:w-5 sm:h-5" />
@@ -314,15 +319,20 @@ const Modal: React.FC<ModalProps> = ({
               </div>
             ) : (
               showCloseButton && (
-                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 z-10">
                   {showEscText && (
                     <span className="hidden lg:inline px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded">
                       ESC
                     </span>
                   )}
                   <button
-                    className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
-                    onClick={onClose}
+                    className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center relative z-10 touch-manipulation"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onClose();
+                    }}
+                    type="button"
                     aria-label="Close modal"
                   >
                     <X size={24} weight="bold" className="sm:w-5 sm:h-5" />

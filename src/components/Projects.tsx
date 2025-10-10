@@ -187,7 +187,7 @@ export function Projects() {
           disablePadding={true}
           className="w-full sm:max-w-2xl lg:max-w-3xl"
         >
-          <div className="flex flex-col h-full max-h-[92vh] sm:max-h-[85vh]">
+          <div className="flex flex-col h-full max-h-[75vh] sm:max-h-[85vh]">
             {/* Header - Fixed */}
             <div className="flex-shrink-0 p-4 pb-3 sm:p-6 sm:pb-4 border-b border-border">
               <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
