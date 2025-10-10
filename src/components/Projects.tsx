@@ -104,7 +104,7 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full group hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/20 transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 dark:hover:border-blue-400/40">
+            <Card className="w-full group md:hover:shadow-2xl md:hover:shadow-blue-500/10 dark:md:hover:shadow-blue-400/20 transition-all duration-500 md:hover:-translate-y-1 md:hover:border-blue-500/30 dark:md:hover:border-blue-400/40 active:scale-[0.98] md:active:scale-100">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
                 <div 
@@ -113,7 +113,7 @@ export function Projects() {
                 >
                   <div className="mb-4">
                     <h3 
-                      className="text-lg sm:text-xl font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors inline-block"
+                      className="text-lg sm:text-xl font-bold md:group-hover:text-blue-600 dark:md:group-hover:text-blue-400 transition-colors inline-block"
                     >
                       {project.title}
                     </h3>
@@ -133,7 +133,7 @@ export function Projects() {
                         href={project.link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
                       >
                         <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>GitHub</span>
@@ -145,7 +145,7 @@ export function Projects() {
                         href={project.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
                       >
                         <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>Website</span>
@@ -202,7 +202,7 @@ export function Projects() {
                     href={projects[selectedProject].link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors min-h-[44px] sm:min-h-0"
+                    className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
                   >
                     <Github className="w-5 h-5 sm:w-4 sm:h-4" />
                     <span className="text-sm sm:text-base">GitHub</span>
@@ -213,7 +213,7 @@ export function Projects() {
                     href={projects[selectedProject].websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors min-h-[44px] sm:min-h-0"
+                    className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
                   >
                     <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
                     <span className="text-sm sm:text-base">Live Demo</span>
