@@ -63,11 +63,11 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   const isTextarea = type === "textarea";
   
-  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-offset-0 text-base ${
+  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-offset-0 text-base leading-normal ${
     hasError 
       ? 'border-red-500 focus:ring-red-500 bg-red-50 dark:bg-red-900/10' 
       : 'border-border bg-background focus:ring-blue-500 focus:border-transparent'
-  } ${isTextarea ? 'resize-vertical' : ''}`;
+  } ${isTextarea ? 'resize-vertical leading-relaxed' : ''}`;
 
   return (
     <div className="space-y-1.5 sm:space-y-2">
