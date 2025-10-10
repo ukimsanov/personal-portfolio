@@ -545,7 +545,7 @@ const ContactForm = () => {
         ease: [0.25, 0.1, 0.25, 1] as const
       }}
       viewport={{ once: true, amount: 0.2 }}
-      className="py-14 w-full flex flex-col items-center"
+      className="py-10 sm:py-14 w-full flex flex-col items-center"
     >
       <motion.h2 
         initial={{ 
@@ -562,7 +562,7 @@ const ContactForm = () => {
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="text-2xl font-bold mb-8 text-center"
+        className="text-2xl font-bold mb-6 sm:mb-8 text-center"
       >
         Get In Touch
       </motion.h2>
@@ -582,7 +582,7 @@ const ContactForm = () => {
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="mb-12 leading-relaxed max-w-xl text-center text-muted-foreground"
+        className="mb-8 sm:mb-12 leading-relaxed max-w-xl text-center text-muted-foreground"
       >
         I&apos;m always interested in new opportunities and exciting projects. 
         Whether you have a question, want to collaborate, or just want to say hello, 
