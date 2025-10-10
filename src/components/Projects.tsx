@@ -187,9 +187,9 @@ export function Projects() {
           disablePadding={true}
           className="w-full sm:max-w-2xl lg:max-w-3xl"
         >
-          <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh]">
+          <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh] overflow-hidden">
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 p-4 pb-3 sm:p-6 sm:pb-4 border-b border-border">
+            <div className="flex-shrink-0 p-5 pb-3 sm:p-6 sm:pb-4 border-b border-border">
               <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
               <div className="text-xs sm:text-sm mb-3 sm:mb-4">
                 {projects[selectedProject].techStack.join(" • ")}
@@ -223,7 +223,7 @@ export function Projects() {
             </div>
 
             {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 overscroll-contain">
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 pb-6 sm:pb-8 overscroll-contain min-h-0">
               <div className="space-y-4 sm:space-y-6">
                 {/* Project Description */}
                 <div className="space-y-3 sm:space-y-4">
