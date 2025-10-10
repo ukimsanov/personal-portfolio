@@ -187,7 +187,7 @@ export function Projects() {
           disablePadding={true}
           className="w-full sm:max-w-2xl lg:max-w-3xl"
         >
-          <div className="flex flex-col h-full max-h-[75vh] sm:max-h-[85vh]">
+          <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh]">
             {/* Header - Fixed */}
             <div className="flex-shrink-0 p-4 pb-3 sm:p-6 sm:pb-4 border-b border-border">
               <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
@@ -244,7 +244,7 @@ export function Projects() {
 
                 {/* Project Image */}
                 {projects[selectedProject].imageUrl ? (
-                  <div>
+                  <div className="pb-2">
                     <img
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
@@ -252,7 +252,7 @@ export function Projects() {
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
+                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border mb-2">
                     <span className="text-sm sm:text-base text-muted-foreground">Project Preview</span>
                   </div>
                 )}

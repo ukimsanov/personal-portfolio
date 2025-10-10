@@ -213,10 +213,10 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   const getModalClasses = () => {
-    // Mobile: bottom sheet (full width, rounded corners all around, no bottom margin, flush to bottom)
+    // Mobile: centered modal (slightly smaller, all borders)
     // Desktop: centered modal (auto width, all rounded corners)
     if (isMobile) {
-      return "w-full bg-background border-t border-l border-r border-border text-card-foreground max-h-[75vh] rounded-3xl shadow-lg relative flex flex-col"
+      return "w-[92%] bg-background border border-border text-card-foreground max-h-[70vh] rounded-2xl shadow-lg relative flex flex-col"
     }
     const base = "w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[85vh] rounded-2xl shadow-lg m-4 relative flex flex-col"
     return type === "overlay" ? base : `${base} border border-border`
@@ -225,10 +225,8 @@ const Modal: React.FC<ModalProps> = ({
   if (!mounted) return null
 
   // Choose the appropriate animation variants
-  // Mobile: bottom sheet, Desktop: scale or drop
-  const variants = isMobile
-    ? bottomSheetVariants
-    : (animationType === "scale" ? scaleVariants : dropVariants)
+  // Use scale or drop animation for all devices
+  const variants = animationType === "scale" ? scaleVariants : dropVariants
 
   const modalContent = (
     <AnimatePresence>
@@ -262,12 +260,11 @@ const Modal: React.FC<ModalProps> = ({
           {/* Modal container */}
           <div
             className={cn(
-              "relative z-[103] flex w-full h-full pointer-events-none",
-              isMobile ? "items-end justify-center" : "items-center justify-center"
+              "relative z-[103] flex w-full h-full pointer-events-none items-center justify-center"
             )}
             style={{
-              alignItems: !isMobile && position !== 0 ? "flex-start" : undefined,
-              paddingTop: !isMobile && position !== 0 ? `calc(50vh - ${position}px)` : 0,
+              alignItems: position !== 0 ? "flex-start" : undefined,
+              paddingTop: position !== 0 ? `calc(50vh - ${position}px)` : 0,
             }}
           >
             <motion.div
@@ -275,7 +272,7 @@ const Modal: React.FC<ModalProps> = ({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className={cn(getModalClasses(), className)}
+              className={cn(getModalClasses(), "overflow-hidden", className)}
               onClick={(e) => e.stopPropagation()}
               style={{ pointerEvents: "auto" }}
             >
