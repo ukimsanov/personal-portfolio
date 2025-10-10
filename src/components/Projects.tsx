@@ -244,7 +244,7 @@ export function Projects() {
 
                 {/* Project Image */}
                 {projects[selectedProject].imageUrl ? (
-                  <div className="pb-2">
+                  <div>
                     <img
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
@@ -252,7 +252,7 @@ export function Projects() {
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border mb-2">
+                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
                     <span className="text-sm sm:text-base text-muted-foreground">Project Preview</span>
                   </div>
                 )}
