@@ -185,7 +185,7 @@ export function Projects() {
           showCloseButton={true}
           showEscText={false}
           disablePadding={true}
-          className="w-full sm:max-w-2xl lg:max-w-3xl"
+          className="sm:max-w-2xl lg:max-w-3xl"
         >
           <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh] overflow-hidden">
             {/* Header - Fixed */}
