@@ -50,7 +50,7 @@ export function Projects() {
         ease: [0.25, 0.1, 0.25, 1] as const,
         delay: shouldReduceMotion ? 0.2 : 0.4 
       }}
-      className="py-14 w-full"
+      className="py-14 pb-24 w-full"
     >
       <motion.h2 
         initial={{ 

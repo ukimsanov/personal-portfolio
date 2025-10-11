@@ -1,7 +1,8 @@
 
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { resumeData } from "@/data/resume";
+import { useRef, useEffect, useState } from "react";
 
 // Skill logos mapping with accurate brand-colored icons
 const skillLogos: Record<string, { icon: string; color?: string; invertInDark?: boolean }> = {
@@ -113,6 +114,45 @@ const skillCategories = [
 
 const Skills = () => {
   const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [beamHeight, setBeamHeight] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<number>(-1);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const rect = contentRef.current.getBoundingClientRect();
+      setBeamHeight(rect.height);
+    }
+  }, [contentRef]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 60%", "end 40%"],
+  });
+
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, beamHeight]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+
+  // Track which category the beam has reached
+  useEffect(() => {
+    const unsubscribe = heightTransform.on("change", (latest) => {
+      if (contentRef.current) {
+        const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
+        categoryElements.forEach((element, index) => {
+          const rect = element.getBoundingClientRect();
+          const contentRect = contentRef.current!.getBoundingClientRect();
+          const relativeTop = rect.top - contentRect.top;
+
+          if (latest >= relativeTop) {
+            setActiveCategory(index);
+          }
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [heightTransform]);
 
   // Mobile-optimized animation variants
   const sectionVariants = {
@@ -160,30 +200,82 @@ const Skills = () => {
   return (
     <motion.section
       id="skills"
+      ref={containerRef}
       initial="hidden"
       whileInView="visible"
       variants={sectionVariants}
       viewport={{ once: true, amount: 0.2 }}
-      className="py-10 sm:py-14 w-full overflow-hidden"
+      className="py-10 sm:py-14 pb-20 sm:pb-24 w-full overflow-hidden"
     >
       <div className="w-full max-w-7xl mx-auto px-4">
         <motion.h2 
           variants={headerVariants}
-          className="text-2xl font-bold mb-8 sm:mb-12 text-center"
+          className="text-2xl font-bold mb-12 sm:mb-16"
         >
           Skills
         </motion.h2>
         
         {/* Branch-style layout */}
-        <div className="relative">
-          {/* Central trunk/node */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-border/20 via-border/40 to-border/20 -translate-x-1/2" />
-          
+        <div ref={contentRef} className="relative">
+          {/* Central trunk/node with animated tracing beam */}
+          <div
+            className="hidden md:block absolute left-1/2 top-0 w-[2px] -translate-x-1/2 overflow-visible bg-gradient-to-b from-transparent from-[0%] via-border/40 via-[50%] to-transparent to-[100%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+            style={{ height: beamHeight + "px" }}
+          >
+            {/* Animated gradient beam with glow */}
+            <motion.div
+              style={{
+                height: heightTransform,
+                opacity: opacityTransform,
+              }}
+              className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-500 rounded-full shadow-2xl shadow-blue-500/10 dark:shadow-blue-400/20"
+            >
+              {/* Glow effect layers - multiple layers for intense glow */}
+              <div className="absolute inset-0 w-[2px] bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-500 blur-[2px]" />
+              <div className="absolute inset-0 w-[6px] -left-[2px] bg-gradient-to-b from-blue-500/80 via-cyan-500/80 to-blue-600/80 blur-[4px]" />
+              <div className="absolute inset-0 w-[12px] -left-[5px] bg-gradient-to-b from-blue-500/60 via-cyan-500/60 to-blue-600/60 blur-[8px]" />
+              <div className="absolute inset-0 w-[20px] -left-[9px] bg-gradient-to-b from-blue-500/40 via-cyan-500/40 to-blue-600/40 blur-[16px]" />
+              {/* Bottom glow - the "uplift" effect - much more intense */}
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80px] h-[80px] bg-cyan-400/60 blur-[30px] rounded-full" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[120px] h-[120px] bg-blue-500/40 blur-[40px] rounded-full" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[160px] bg-blue-600/20 blur-[50px] rounded-full" />
+            </motion.div>
+          </div>
+
           {/* Categories as branches */}
           <div className="space-y-8 sm:space-y-12">
             {skillCategories.map((category, categoryIndex) => {
               const isLeft = categoryIndex % 2 === 0;
-              
+
+              // Calculate the color based on position in the gradient (top = cyan, bottom = blue)
+              const totalCategories = skillCategories.length;
+              const position = categoryIndex / (totalCategories - 1); // 0 to 1
+
+              // Interpolate between blue-400 (top) and blue-600 (bottom), with cyan-400 in middle
+              const getGradientColor = (pos: number) => {
+                if (pos < 0.5) {
+                  // Blue to Cyan (top half)
+                  const t = pos * 2; // 0 to 1
+                  return {
+                    r: Math.round(96 + (34 - 96) * t),    // 96 (blue-400) to 34 (cyan-400)
+                    g: Math.round(165 + (211 - 165) * t), // 165 to 211
+                    b: Math.round(250 + (238 - 250) * t), // 250 to 238
+                  };
+                } else {
+                  // Cyan to Blue (bottom half)
+                  const t = (pos - 0.5) * 2; // 0 to 1
+                  return {
+                    r: Math.round(34 + (59 - 34) * t),    // 34 (cyan-400) to 59 (blue-500)
+                    g: Math.round(211 + (130 - 211) * t), // 211 to 130
+                    b: Math.round(238 + (246 - 238) * t), // 238 to 246
+                  };
+                }
+              };
+
+              const color = getGradientColor(position);
+              const colorString = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`;
+              const glowString = `0 10px 15px -3px rgba(${color.r}, ${color.g}, ${color.b}, 0.4), 0 0 30px rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
+
               return (
                 <motion.div
                   key={categoryIndex}
@@ -197,19 +289,38 @@ const Skills = () => {
                   }}
                   viewport={{ once: true, amount: 0.3 }}
                   className="relative"
+                  data-category-index={categoryIndex}
                 >
                     {/* Desktop: Alternating left/right layout with connecting line */}
                   <div className={`hidden md:flex items-start gap-6 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
-                    {/* Category node with connecting branch */}
-                    <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'}`}>
-                      <div className={`inline-block w-full max-w-lg bg-card border border-border rounded-2xl p-5 transition-opacity duration-300 ${isLeft ? 'mr-8' : 'ml-8'}`}>
-                        {/* Category Header */}
-                        <div className={`mb-4 ${isLeft ? 'text-right' : 'text-left'}`}>
-                          <h3 className="text-lg font-bold text-foreground">
+                    {/* Category header on the beam - lights up with gradient color when beam reaches it */}
+                    <div className="absolute left-1/2 -translate-x-1/2 z-50">
+                      <div className="flex items-center justify-center">
+                        <motion.div
+                          animate={{
+                            borderColor: activeCategory >= categoryIndex
+                              ? colorString
+                              : "rgba(96, 165, 250, 0.3)",
+                            boxShadow: activeCategory >= categoryIndex
+                              ? glowString
+                              : "0 10px 15px -3px rgba(59, 130, 246, 0.1)"
+                          }}
+                          transition={{
+                            duration: 0.4,
+                            ease: "easeOut"
+                          }}
+                          className="bg-background border-2 rounded-full px-4 py-2"
+                        >
+                          <h3 className="text-sm font-bold text-foreground whitespace-nowrap">
                             {category.title}
                           </h3>
-                        </div>
-                        
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Category node with connecting branch */}
+                    <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'} mt-16`}>
+                      <div className={`inline-block w-full max-w-lg bg-card border border-border rounded-2xl p-5 transition-opacity duration-300 ${isLeft ? 'mr-8' : 'ml-8'}`}>
                         {/* Skills flowing from category */}
                         <div className="flex flex-wrap gap-2 justify-start">
                           {category.skills.map((skill, skillIndex) => {

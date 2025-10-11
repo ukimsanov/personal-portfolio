@@ -549,7 +549,7 @@ const ContactForm = () => {
         ease: [0.25, 0.1, 0.25, 1] as const
       }}
       viewport={{ once: true, amount: 0.2 }}
-      className="py-8 sm:py-12 w-full flex flex-col items-center"
+      className="py-14 sm:py-12 w-full flex flex-col items-center"
     >
       <motion.h2 
         initial={{ 
