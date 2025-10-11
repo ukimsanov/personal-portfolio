@@ -41,9 +41,25 @@ export const AnimatedThemeToggler = ({
   const toggleTheme = useCallback(async () => {
     if (!buttonRef.current) return
 
+    const newTheme = !isDark
+
+    // Check if View Transitions API is supported and if we're not on mobile
+    const supportsViewTransitions = 'startViewTransition' in document
+    const isMobile = window.innerWidth < 768
+
+    if (!supportsViewTransitions || isMobile) {
+      // Simple fallback without animation for mobile or unsupported browsers
+      flushSync(() => {
+        setIsDark(newTheme)
+        document.documentElement.classList.toggle("dark")
+        localStorage.setItem("theme", newTheme ? "dark" : "light")
+      })
+      return
+    }
+
+    // Desktop animation with View Transitions API
     await document.startViewTransition(() => {
       flushSync(() => {
-        const newTheme = !isDark
         setIsDark(newTheme)
         document.documentElement.classList.toggle("dark")
         localStorage.setItem("theme", newTheme ? "dark" : "light")
