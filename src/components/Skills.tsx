@@ -84,6 +84,38 @@ const skillBadges: Record<string, string> = {
   "Agile": "https://img.shields.io/badge/Agile-239120?style=flat&logo=agile&logoColor=white",
 };
 
+// Skill categories with organized grouping
+const skillCategories = [
+  {
+    title: "AI / ML & Agents",
+    skills: ["Prompt Engineering", "LangChain", "LangGraph", "CrewAI", "Multi-Agent Systems", "LangSmith", "OpenAI API", "RAG", "NLP", "Machine Learning", "PyTorch", "TensorFlow", "Computer Vision"]
+  },
+  {
+    title: "Programming Languages",
+    skills: ["Python", "JavaScript", "TypeScript", "Java", "C/C++", "Swift", "SQL", "Bash", "HTML/CSS"]
+  },
+  {
+    title: "Frontend & Frameworks",
+    skills: ["React", "Next.js", "SvelteKit", "TailwindCSS", "Shadcn UI", "Aceternity UI", "Material UI"]
+  },
+  {
+    title: "Backend & APIs",
+    skills: ["Node.js", "FastAPI", "Express.js", "GraphQL", "RESTful APIs", "WebSocket", "SSE", "Swagger"]
+  },
+  {
+    title: "Cloud & DevOps",
+    skills: ["AWS", "Google Cloud Platform", "Vercel", "Cloudflare Workers", "Docker", "Kubernetes", "CI/CD"]
+  },
+  {
+    title: "Databases",
+    skills: ["PostgreSQL", "MySQL", "MongoDB", "Supabase", "Cloudflare D1", "SQLite"]
+  },
+  {
+    title: "Tools & Platforms",
+    skills: ["Git", "Capacitor", "N8N", "ClickUp", "Zendesk", "Jira", "Figma", "Jupyter", "Agile"]
+  }
+];
+
 const Skills = () => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -119,65 +151,159 @@ const Skills = () => {
     }
   };
 
+  const categoryVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 10 : 20 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0 
+    }
+  };
+
   return (
     <motion.section
       id="skills"
       initial="hidden"
       whileInView="visible"
       variants={sectionVariants}
-      viewport={{ once: true, amount: 0.3 }}
-      className="py-16 w-screen relative left-1/2 right-1/2 -mx-[50vw]"
+      viewport={{ once: true, amount: 0.2 }}
+      className="py-10 sm:py-14 w-full overflow-hidden"
     >
-      <div className="w-full px-2 sm:px-4">
+      <div className="w-full max-w-7xl mx-auto px-4">
         <motion.h2 
           variants={headerVariants}
-          className="text-2xl font-bold mb-12 text-center"
+          className="text-2xl font-bold mb-8 sm:mb-12 text-center"
         >
           Skills
         </motion.h2>
-        <div className="flex flex-wrap gap-3 justify-center">
-          {resumeData.skills.map((skill, index) => {
-            const badgeUrl = skillBadges[skill];
-            
-            return (
-              <motion.div
-                key={index}
-                initial={{ 
-                  opacity: 0, 
-                  scale: shouldReduceMotion ? 0.9 : 0.5,
-                  y: shouldReduceMotion ? 5 : 20 
-                }}
-                whileInView={{ 
-                  opacity: 1, 
-                  scale: 1,
-                  y: 0 
-                }}
-                transition={{ 
-                  duration: shouldReduceMotion ? 0.2 : 0.4,
-                  delay: shouldReduceMotion ? Math.min(index * 0.01, 0.2) : Math.min(index * 0.03, 0.5),
-                  ease: [0.25, 0.1, 0.25, 1] as const
-                }}
-                viewport={{ once: true, amount: 0.1 }}
-                className="hover:scale-105 transition-transform"
-              >
-                {badgeUrl ? (
-                  // Use badge image for skills that have badges - wrapped in div for neon effect
-                  <div className="relative rounded-md transition-all duration-300 shadow-[0_0_4px_rgba(0,255,255,0.4),0_0_8px_rgba(0,255,255,0.2),0_0_12px_rgba(0,255,255,0.1)] hover:shadow-[0_0_6px_rgba(0,255,255,0.6),0_0_12px_rgba(0,255,255,0.4),0_0_18px_rgba(0,255,255,0.2)] hover:scale-105">
-                    <img
-                      src={badgeUrl}
-                      alt={skill}
-                      className="h-7 rounded-md filter brightness-90 saturate-100 contrast-100 hover:brightness-125 hover:saturate-150 transition-all duration-300"
-                    />
+        
+        {/* Branch-style layout */}
+        <div className="relative">
+          {/* Central trunk/node */}
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/20 via-blue-500/40 to-blue-500/20 -translate-x-1/2" />
+          
+          {/* Categories as branches */}
+          <div className="space-y-8 sm:space-y-12">
+            {skillCategories.map((category, categoryIndex) => {
+              const isLeft = categoryIndex % 2 === 0;
+              
+              return (
+                <motion.div
+                  key={categoryIndex}
+                  variants={categoryVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  transition={{
+                    duration: shouldReduceMotion ? 0.2 : 0.5,
+                    delay: shouldReduceMotion ? categoryIndex * 0.05 : categoryIndex * 0.1,
+                    ease: [0.25, 0.1, 0.25, 1] as const
+                  }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  className="relative"
+                >
+                    {/* Desktop: Alternating left/right layout with connecting line */}
+                  <div className={`hidden md:flex items-start gap-6 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+                    {/* Category node with connecting branch */}
+                    <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'}`}>
+                      <div className={`inline-block w-full max-w-lg bg-card border-2 border-blue-500/30 rounded-2xl p-5 hover:border-blue-500/60 dark:hover:border-blue-400/60 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-400/20 ${isLeft ? 'mr-8' : 'ml-8'}`}>
+                        {/* Category Header */}
+                        <div className={`mb-4 ${isLeft ? 'text-right' : 'text-left'}`}>
+                          <h3 className="text-lg font-bold text-foreground">
+                            {category.title}
+                          </h3>
+                        </div>
+                        
+                        {/* Skills flowing from category */}
+                        <div className="flex flex-wrap gap-2 justify-start">
+                          {category.skills.map((skill, skillIndex) => {
+                            const badgeUrl = skillBadges[skill];
+                            
+                            return (
+                              <motion.div
+                                key={skillIndex}
+                                initial={{ 
+                                  opacity: 0, 
+                                  scale: 0.8,
+                                  x: isLeft ? 20 : -20
+                                }}
+                                whileInView={{ 
+                                  opacity: 1, 
+                                  scale: 1,
+                                  x: 0
+                                }}
+                                transition={{ 
+                                  duration: shouldReduceMotion ? 0.15 : 0.3,
+                                  delay: shouldReduceMotion ? skillIndex * 0.01 : skillIndex * 0.03,
+                                  ease: [0.25, 0.1, 0.25, 1] as const
+                                }}
+                                viewport={{ once: true }}
+                                className="hover:scale-105 transition-transform"
+                              >
+                                {badgeUrl ? (
+                                  <img
+                                    src={badgeUrl}
+                                    alt={skill}
+                                    className="h-7 rounded-md"
+                                  />
+                                ) : (
+                                  <div className="bg-secondary/50 text-secondary-foreground rounded-md px-2.5 py-1 text-sm font-medium hover:bg-secondary/70 transition-colors">
+                                    {skill}
+                                  </div>
+                                )}
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  // Fallback to original styling for skills without badges
-                  <div className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm hover:bg-secondary/80 transition-colors">
-                    {skill}
+                  
+                  {/* Mobile: Stacked cards */}
+                  <div className="md:hidden bg-card border border-border rounded-xl p-4 hover:border-blue-500/30 dark:hover:border-blue-400/40 transition-all duration-300">
+                    <div className="mb-3">
+                      <h3 className="text-base font-semibold text-foreground">
+                        {category.title}
+                      </h3>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {category.skills.map((skill, skillIndex) => {
+                        const badgeUrl = skillBadges[skill];
+                        
+                        return (
+                          <motion.div
+                            key={skillIndex}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ 
+                              duration: 0.2,
+                              delay: skillIndex * 0.02
+                            }}
+                            viewport={{ once: true }}
+                            className="active:scale-95 transition-transform"
+                          >
+                            {badgeUrl ? (
+                              <img
+                                src={badgeUrl}
+                                alt={skill}
+                                className="h-6 rounded-md"
+                              />
+                            ) : (
+                              <div className="bg-secondary/50 text-secondary-foreground rounded-md px-2.5 py-1 text-xs font-medium">
+                                {skill}
+                              </div>
+                            )}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
                   </div>
-                )}
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.section>
