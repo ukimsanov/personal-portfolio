@@ -70,7 +70,7 @@ export function Projects() {
       >
         Projects
       </motion.h2>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {projects.map((project, index) => (
           <motion.div
             key={index}

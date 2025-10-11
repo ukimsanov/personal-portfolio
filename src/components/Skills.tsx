@@ -207,10 +207,10 @@ const Skills = () => {
       viewport={{ once: true, amount: 0.2 }}
       className="py-10 sm:py-14 pb-20 sm:pb-24 w-full overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto px-4">
-        <motion.h2 
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
+        <motion.h2
           variants={headerVariants}
-          className="text-2xl font-bold mb-12 sm:mb-16"
+          className="text-2xl font-bold mb-12 sm:mb-16 text-center"
         >
           Skills
         </motion.h2>
@@ -228,17 +228,17 @@ const Skills = () => {
                 height: heightTransform,
                 opacity: opacityTransform,
               }}
-              className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-500 rounded-full shadow-2xl shadow-blue-500/10 dark:shadow-blue-400/20"
+              className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full"
             >
               {/* Glow effect layers - multiple layers for intense glow */}
-              <div className="absolute inset-0 w-[2px] bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-500 blur-[2px]" />
-              <div className="absolute inset-0 w-[6px] -left-[2px] bg-gradient-to-b from-blue-500/80 via-cyan-500/80 to-blue-600/80 blur-[4px]" />
-              <div className="absolute inset-0 w-[12px] -left-[5px] bg-gradient-to-b from-blue-500/60 via-cyan-500/60 to-blue-600/60 blur-[8px]" />
-              <div className="absolute inset-0 w-[20px] -left-[9px] bg-gradient-to-b from-blue-500/40 via-cyan-500/40 to-blue-600/40 blur-[16px]" />
+              <div className="absolute inset-0 w-[2px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 blur-[2px]" />
+              <div className="absolute inset-0 w-[6px] -left-[2px] bg-gradient-to-b from-blue-500/80 via-blue-600/80 to-blue-700/80 blur-[4px]" />
+              <div className="absolute inset-0 w-[12px] -left-[5px] bg-gradient-to-b from-blue-500/60 via-blue-600/60 to-blue-700/60 blur-[8px]" />
+              <div className="absolute inset-0 w-[20px] -left-[9px] bg-gradient-to-b from-blue-500/40 via-blue-600/40 to-blue-700/40 blur-[16px]" />
               {/* Bottom glow - the "uplift" effect - much more intense */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80px] h-[80px] bg-cyan-400/60 blur-[30px] rounded-full" />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[120px] h-[120px] bg-blue-500/40 blur-[40px] rounded-full" />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[160px] bg-blue-600/20 blur-[50px] rounded-full" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80px] h-[80px] bg-blue-500/60 blur-[30px] rounded-full" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[120px] h-[120px] bg-blue-600/40 blur-[40px] rounded-full" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[160px] bg-blue-700/20 blur-[50px] rounded-full" />
             </motion.div>
           </div>
 
@@ -247,27 +247,27 @@ const Skills = () => {
             {skillCategories.map((category, categoryIndex) => {
               const isLeft = categoryIndex % 2 === 0;
 
-              // Calculate the color based on position in the gradient (top = cyan, bottom = blue)
+              // Calculate the color based on position in the gradient (top = blue-400, middle = blue-500, bottom = blue-600)
               const totalCategories = skillCategories.length;
               const position = categoryIndex / (totalCategories - 1); // 0 to 1
 
-              // Interpolate between blue-400 (top) and blue-600 (bottom), with cyan-400 in middle
+              // Interpolate between blue-400 (top) and blue-600 (bottom), with blue-500 in middle
               const getGradientColor = (pos: number) => {
                 if (pos < 0.5) {
-                  // Blue to Cyan (top half)
+                  // Blue-400 to Blue-500 (top half)
                   const t = pos * 2; // 0 to 1
                   return {
-                    r: Math.round(96 + (34 - 96) * t),    // 96 (blue-400) to 34 (cyan-400)
-                    g: Math.round(165 + (211 - 165) * t), // 165 to 211
-                    b: Math.round(250 + (238 - 250) * t), // 250 to 238
+                    r: Math.round(96 + (59 - 96) * t),    // 96 (blue-400) to 59 (blue-500)
+                    g: Math.round(165 + (130 - 165) * t), // 165 to 130
+                    b: Math.round(250 + (246 - 250) * t), // 250 to 246
                   };
                 } else {
-                  // Cyan to Blue (bottom half)
+                  // Blue-500 to Blue-600 (bottom half)
                   const t = (pos - 0.5) * 2; // 0 to 1
                   return {
-                    r: Math.round(34 + (59 - 34) * t),    // 34 (cyan-400) to 59 (blue-500)
-                    g: Math.round(211 + (130 - 211) * t), // 211 to 130
-                    b: Math.round(238 + (246 - 238) * t), // 238 to 246
+                    r: Math.round(59 + (37 - 59) * t),    // 59 (blue-500) to 37 (blue-600)
+                    g: Math.round(130 + (99 - 130) * t),  // 130 to 99
+                    b: Math.round(246 + (235 - 246) * t), // 246 to 235
                   };
                 }
               };
@@ -371,7 +371,7 @@ const Skills = () => {
                   </div>
                   
                   {/* Mobile: Stacked cards */}
-                  <div className="md:hidden bg-card border border-border rounded-xl p-4 transition-opacity duration-300">
+                  <div className="md:hidden bg-card border border-border rounded-xl p-5 sm:p-6 transition-opacity duration-300">
                     <div className="mb-3">
                       <h3 className="text-base font-semibold text-foreground">
                         {category.title}

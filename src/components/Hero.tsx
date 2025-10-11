@@ -61,16 +61,16 @@ const Hero = () => {
   return (
     <section className="mt-16 w-full">
       <div className="text-left mb-8">
-        <motion.h1 
-          className="text-5xl font-bold mb-8"
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold mb-8"
           variants={titleVariants}
           initial="initial"
           animate="animate"
         >
           {resumeData.name}
         </motion.h1>
-        <motion.div 
-          className="text-xl text-foreground/70 max-w-3xl"
+        <motion.div
+          className="text-base sm:text-lg md:text-xl text-foreground/70 max-w-3xl"
           variants={descriptionVariants}
           initial="initial"
           animate="animate"

@@ -549,28 +549,28 @@ const ContactForm = () => {
         ease: [0.25, 0.1, 0.25, 1] as const
       }}
       viewport={{ once: true, amount: 0.2 }}
-      className="py-14 sm:py-12 w-full flex flex-col items-center"
+      className="py-16 sm:py-20 w-full flex flex-col items-center"
     >
-      <motion.h2 
-        initial={{ 
-          opacity: 0, 
-          y: shouldReduceMotion ? 10 : 30 
+      <motion.h2
+        initial={{
+          opacity: 0,
+          y: shouldReduceMotion ? 10 : 30
         }}
-        whileInView={{ 
-          opacity: 1, 
-          y: 0 
+        whileInView={{
+          opacity: 1,
+          y: 0
         }}
-        transition={{ 
+        transition={{
           duration: shouldReduceMotion ? 0.2 : 0.5,
           delay: shouldReduceMotion ? 0.05 : 0.1,
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="text-2xl font-bold mb-4 sm:mb-6 text-center"
+        className="text-2xl font-bold mb-8 text-center"
       >
         Get In Touch
       </motion.h2>
-      
+
       <motion.p
         initial={{
           opacity: 0,
@@ -586,7 +586,7 @@ const ContactForm = () => {
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="mb-6 sm:mb-8 leading-relaxed max-w-xl text-center text-muted-foreground relative"
+        className="mb-10 sm:mb-12 leading-relaxed max-w-xl text-center text-muted-foreground relative"
         style={{ position: 'relative', isolation: 'isolate' }}
       >
         I&apos;m always interested in <Highlighter action="underline" color="#06b6d4" strokeWidth={1.5} animationDuration={1200} delay={1000} isView={true}>new opportunities</Highlighter> and <Highlighter action="underline" color="#818cf8" strokeWidth={1.5} animationDuration={1000} delay={1600} isView={true}>exciting projects</Highlighter>.
