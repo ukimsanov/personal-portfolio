@@ -104,7 +104,7 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full group md:hover:shadow-2xl md:hover:shadow-blue-500/10 dark:md:hover:shadow-blue-400/20 transition-all duration-500 md:hover:-translate-y-1 md:hover:border-blue-500/30 dark:md:hover:border-blue-400/40 active:scale-[0.98] md:active:scale-100">
+            <Card className="w-full group md:hover:shadow-[0_20px_50px_rgba(59,130,246,0.3)] dark:md:hover:shadow-[0_20px_50px_rgba(96,165,250,0.25)] transition-all duration-500 md:hover:-translate-y-2 md:hover:border-blue-500/50 dark:md:hover:border-blue-400/50 active:scale-[0.98] md:active:scale-100">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
                 <div 
@@ -119,8 +119,15 @@ export function Projects() {
                     </h3>
                   </div>
                   
-                  <div className="text-xs sm:text-sm mb-3 leading-relaxed">
-                    {project.techStack.join(" • ")}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
+                    {project.techStack.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="text-xs px-2 py-1 bg-muted/50 border border-border rounded-md"
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
                   
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
@@ -155,13 +162,15 @@ export function Projects() {
                 </div>
 
                 {/* Project Preview */}
-                <div className="lg:w-72 p-4 sm:p-6 lg:pr-6 lg:pl-0 lg:py-6 flex items-center">
+                <div className="lg:w-72 p-4 sm:p-6 lg:pr-6 lg:pl-0 lg:py-6 flex items-center overflow-hidden">
                   {project.imageUrl ? (
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-32 sm:h-40 lg:h-48 object-cover rounded-lg border border-border"
-                    />
+                    <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border">
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
                   ) : (
                     <div className="w-full h-32 sm:h-40 lg:h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
                       <span className="text-muted-foreground text-xs sm:text-sm">Preview</span>
@@ -190,9 +199,16 @@ export function Projects() {
           <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh] overflow-hidden">
             {/* Header - Fixed */}
             <div className="flex-shrink-0 p-5 pb-3 sm:p-6 sm:pb-4 border-b border-border">
-              <h2 className="text-xl sm:text-2xl font-bold mb-2 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
-              <div className="text-xs sm:text-sm mb-3 sm:mb-4">
-                {projects[selectedProject].techStack.join(" • ")}
+              <h2 className="text-xl sm:text-2xl font-bold mb-3 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                {projects[selectedProject].techStack.map((tech, techIndex) => (
+                  <span
+                    key={techIndex}
+                    className="text-xs px-2 py-1 bg-muted/50 border border-border rounded-md"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
 
               {/* Links */}
