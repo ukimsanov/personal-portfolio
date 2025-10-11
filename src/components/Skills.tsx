@@ -207,7 +207,7 @@ const Skills = () => {
                   <div className={`hidden md:flex items-start gap-6 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
                     {/* Category node with connecting branch */}
                     <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'}`}>
-                      <div className={`inline-block w-full max-w-lg bg-card border-2 border-blue-500/30 rounded-2xl p-5 hover:border-blue-500/60 dark:hover:border-blue-400/60 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-400/20 ${isLeft ? 'mr-8' : 'ml-8'}`}>
+                      <div className={`inline-block w-full max-w-lg bg-card border-2 border-blue-500/30 rounded-2xl p-5 transition-opacity duration-300 ${isLeft ? 'mr-8' : 'ml-8'}`}>
                         {/* Category Header */}
                         <div className={`mb-4 ${isLeft ? 'text-right' : 'text-left'}`}>
                           <h3 className="text-lg font-bold text-foreground">
@@ -261,7 +261,7 @@ const Skills = () => {
                   </div>
                   
                   {/* Mobile: Stacked cards */}
-                  <div className="md:hidden bg-card border border-border rounded-xl p-4 hover:border-blue-500/30 dark:hover:border-blue-400/40 transition-all duration-300">
+                  <div className="md:hidden bg-card border border-border rounded-xl p-4 transition-opacity duration-300">
                     <div className="mb-3">
                       <h3 className="text-base font-semibold text-foreground">
                         {category.title}
