@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
 import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -68,14 +69,19 @@ const Hero = () => {
         >
           {resumeData.name}
         </motion.h1>
-        <motion.p 
+        <motion.div 
           className="text-xl text-foreground/70 max-w-3xl"
           variants={descriptionVariants}
           initial="initial"
           animate="animate"
         >
-          {resumeData.title}
-        </motion.p>
+          <TypingAnimation
+            duration={70}
+            startOnView={false}
+          >
+            {resumeData.title}
+          </TypingAnimation>
+        </motion.div>
       </div>
       
       {/* Contact Icons in Circles */}

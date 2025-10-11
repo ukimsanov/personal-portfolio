@@ -5,6 +5,10 @@ import { useState, useRef } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Turnstile from "@/components/Turnstile";
+import { Highlighter } from "@/components/ui/highlighter";
+
+// State to track if animation is complete
+let animationComplete = false;
 
 interface ContactFormData {
   name: string;
@@ -567,25 +571,26 @@ const ContactForm = () => {
         Get In Touch
       </motion.h2>
       
-      <motion.p 
-        initial={{ 
-          opacity: 0, 
-          y: shouldReduceMotion ? 10 : 20 
+      <motion.p
+        initial={{
+          opacity: 0,
+          y: shouldReduceMotion ? 10 : 20
         }}
-        whileInView={{ 
-          opacity: 1, 
-          y: 0 
+        whileInView={{
+          opacity: 1,
+          y: 0
         }}
-        transition={{ 
+        transition={{
           duration: shouldReduceMotion ? 0.2 : 0.5,
           delay: shouldReduceMotion ? 0.1 : 0.2,
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="mb-6 sm:mb-8 leading-relaxed max-w-xl text-center text-muted-foreground"
+        className="mb-6 sm:mb-8 leading-relaxed max-w-xl text-center text-muted-foreground relative"
+        style={{ position: 'relative', isolation: 'isolate' }}
       >
-        I&apos;m always interested in new opportunities and exciting projects. 
-        Whether you have a question, want to collaborate, or just want to say hello, 
+        I&apos;m always interested in <Highlighter action="underline" color="#06b6d4" strokeWidth={1.5} animationDuration={1200} delay={1000} isView={true}>new opportunities</Highlighter> and <Highlighter action="underline" color="#818cf8" strokeWidth={1.5} animationDuration={1000} delay={1600} isView={true}>exciting projects</Highlighter>.
+        Whether you have a question, want to collaborate, or just want to <Highlighter action="underline" color="#fb7185" strokeWidth={1.5} animationDuration={1200} delay={2200} isView={true}>say hello</Highlighter>,
         feel free to reach out!
       </motion.p>
       
