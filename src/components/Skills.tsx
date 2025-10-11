@@ -219,27 +219,18 @@ const Skills = () => {
         <div ref={contentRef} className="relative">
           {/* Central trunk/node with animated tracing beam */}
           <div
-            className="hidden md:block absolute left-1/2 top-0 w-[2px] -translate-x-1/2 overflow-visible bg-gradient-to-b from-transparent from-[0%] via-border/40 via-[50%] to-transparent to-[100%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
-            style={{ height: beamHeight + "px" }}
+            className="hidden md:block absolute left-1/2 top-0 w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent from-[0%] via-border/40 via-[50%] to-transparent to-[100%]"
+            style={{ height: beamHeight + "px", overflow: "visible" }}
           >
-            {/* Animated gradient beam with glow */}
+            {/* Animated gradient beam with subtle glow - using spread radius */}
             <motion.div
               style={{
                 height: heightTransform,
                 opacity: opacityTransform,
+                boxShadow: "0 0 8px 2px rgba(96, 165, 250, 0.5), 0 0 16px 4px rgba(59, 130, 246, 0.3)"
               }}
               className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full"
-            >
-              {/* Glow effect layers - multiple layers for intense glow */}
-              <div className="absolute inset-0 w-[2px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 blur-[2px]" />
-              <div className="absolute inset-0 w-[6px] -left-[2px] bg-gradient-to-b from-blue-500/80 via-blue-600/80 to-blue-700/80 blur-[4px]" />
-              <div className="absolute inset-0 w-[12px] -left-[5px] bg-gradient-to-b from-blue-500/60 via-blue-600/60 to-blue-700/60 blur-[8px]" />
-              <div className="absolute inset-0 w-[20px] -left-[9px] bg-gradient-to-b from-blue-500/40 via-blue-600/40 to-blue-700/40 blur-[16px]" />
-              {/* Bottom glow - the "uplift" effect - much more intense */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80px] h-[80px] bg-blue-500/60 blur-[30px] rounded-full" />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[120px] h-[120px] bg-blue-600/40 blur-[40px] rounded-full" />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[160px] h-[160px] bg-blue-700/20 blur-[50px] rounded-full" />
-            </motion.div>
+            />
           </div>
 
           {/* Categories as branches */}
