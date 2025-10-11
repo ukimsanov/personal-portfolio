@@ -63,10 +63,10 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   const isTextarea = type === "textarea";
   
-  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-offset-0 text-base leading-normal ${
+  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-colors duration-200 focus:outline-none text-base leading-normal ${
     hasError 
-      ? 'border-red-500 focus:ring-red-500 bg-red-50 dark:bg-red-900/10' 
-      : 'border-border bg-background focus:ring-blue-500 focus:border-transparent'
+      ? 'border-red-500 focus:border-red-600 bg-red-50 dark:bg-red-900/10' 
+      : 'border-border bg-background focus:border-blue-500'
   } ${isTextarea ? 'resize-vertical leading-relaxed' : ''}`;
 
   return (
@@ -545,7 +545,7 @@ const ContactForm = () => {
         ease: [0.25, 0.1, 0.25, 1] as const
       }}
       viewport={{ once: true, amount: 0.2 }}
-      className="py-10 sm:py-14 w-full flex flex-col items-center"
+      className="py-8 sm:py-12 w-full flex flex-col items-center"
     >
       <motion.h2 
         initial={{ 
@@ -562,7 +562,7 @@ const ContactForm = () => {
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="text-2xl font-bold mb-6 sm:mb-8 text-center"
+        className="text-2xl font-bold mb-4 sm:mb-6 text-center"
       >
         Get In Touch
       </motion.h2>
@@ -582,7 +582,7 @@ const ContactForm = () => {
           ease: [0.25, 0.1, 0.25, 1] as const
         }}
         viewport={{ once: true }}
-        className="mb-8 sm:mb-12 leading-relaxed max-w-xl text-center text-muted-foreground"
+        className="mb-6 sm:mb-8 leading-relaxed max-w-xl text-center text-muted-foreground"
       >
         I&apos;m always interested in new opportunities and exciting projects. 
         Whether you have a question, want to collaborate, or just want to say hello, 
@@ -607,10 +607,10 @@ const ContactForm = () => {
         className="w-full max-w-2xl mx-auto"
       >
         <Card className="w-full">
-        <div className="p-4 sm:p-6 lg:p-8">
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <div className="p-4 sm:p-5 lg:p-6">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             {/* Name and Email Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
               <InputField
                 label="Name"
                 name="name"
