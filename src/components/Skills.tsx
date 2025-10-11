@@ -1,7 +1,6 @@
 
 "use client";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { resumeData } from "@/data/resume";
 import { useRef, useEffect, useState } from "react";
 
 // Skill logos mapping with accurate brand-colored icons

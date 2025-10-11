@@ -113,33 +113,6 @@ const scaleVariants: Variants = {
   },
 }
 
-// Bottom sheet animation for mobile
-const bottomSheetVariants: Variants = {
-  hidden: {
-    y: "100%",
-    transition: {
-      duration: 0.3,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-  visible: {
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 35,
-      mass: 0.8,
-    },
-  },
-  exit: {
-    y: "100%",
-    transition: {
-      duration: 0.25,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-}
-
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,

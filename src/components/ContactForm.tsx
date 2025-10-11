@@ -7,9 +7,6 @@ import { Card } from "@/components/ui/card";
 import Turnstile from "@/components/Turnstile";
 import { Highlighter } from "@/components/ui/highlighter";
 
-// State to track if animation is complete
-let animationComplete = false;
-
 interface ContactFormData {
   name: string;
   email: string;
