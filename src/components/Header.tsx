@@ -106,7 +106,8 @@ const Header = () => {
             WebkitBackdropFilter: isScrolled ? "blur(12px)" : "blur(0px)"
           }}
         >
-          <nav className="flex items-center gap-6">
+          {/* Navigation - Responsive for all screen sizes */}
+          <nav className="flex items-center gap-5 sm:gap-6">
             <a
               href="#projects"
               onClick={(e) => handleNavClick(e, 'projects')}
@@ -129,6 +130,7 @@ const Header = () => {
               Contact
             </a>
           </nav>
+
           <ThemeToggler />
         </motion.div>
       </motion.div>
