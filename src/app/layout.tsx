@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ular Kimsanov | Portfolio",
+  title: "Ular Kimsanov",
   description: "Software Engineer | Full Stack Developer",
 };
 
