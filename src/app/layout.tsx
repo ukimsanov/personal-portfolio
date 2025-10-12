@@ -21,6 +21,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const storedTheme = localStorage.getItem('theme');
+                // Default to dark mode for first-time visitors
+                const theme = storedTheme !== null ? storedTheme : 'dark';
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                const appliedTheme = theme === 'system' ? systemTheme : theme;
+                if (appliedTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+                // Set default theme in localStorage if not already set
+                if (storedTheme === null) {
+                  localStorage.setItem('theme', 'dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"

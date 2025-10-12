@@ -76,8 +76,9 @@ const Hero = () => {
           animate="animate"
         >
           <TypingAnimation
-            duration={50}
+            duration={55}
             startOnView={false}
+            delay={1400}
           >
             {resumeData.title}
           </TypingAnimation>
