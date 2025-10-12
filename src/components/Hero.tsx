@@ -14,7 +14,8 @@ const Hero = () => {
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: shouldReduceMotion ? 0.1 : 0.9,
+        duration: shouldReduceMotion ? 0.1 : 1.2,
+        delay: shouldReduceMotion ? 0 : 0.2,
         ease: "easeOut" as const
       }
     }
