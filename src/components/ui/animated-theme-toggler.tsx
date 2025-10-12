@@ -43,12 +43,11 @@ export const AnimatedThemeToggler = ({
 
     const newTheme = !isDark
 
-    // Check if View Transitions API is supported and if we're not on mobile
+    // Check if View Transitions API is supported
     const supportsViewTransitions = 'startViewTransition' in document
-    const isMobile = window.innerWidth < 768
 
-    if (!supportsViewTransitions || isMobile) {
-      // Simple fallback without animation for mobile or unsupported browsers
+    if (!supportsViewTransitions) {
+      // Simple fallback without animation for unsupported browsers
       flushSync(() => {
         setIsDark(newTheme)
         document.documentElement.classList.toggle("dark")
@@ -57,7 +56,7 @@ export const AnimatedThemeToggler = ({
       return
     }
 
-    // Desktop animation with View Transitions API
+    // Animation with View Transitions API (works on both desktop and mobile)
     await document.startViewTransition(() => {
       flushSync(() => {
         setIsDark(newTheme)
@@ -75,6 +74,10 @@ export const AnimatedThemeToggler = ({
       Math.max(top, window.innerHeight - top)
     )
 
+    // Make animation slower on mobile for better visibility
+    const isMobile = window.innerWidth < 768
+    const animationDuration = isMobile ? duration * 3.5 : duration
+
     document.documentElement.animate(
       {
         clipPath: [
@@ -83,7 +86,7 @@ export const AnimatedThemeToggler = ({
         ],
       },
       {
-        duration,
+        duration: animationDuration,
         easing: "ease-in-out",
         pseudoElement: "::view-transition-new(root)",
       }
