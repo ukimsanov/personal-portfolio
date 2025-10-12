@@ -75,7 +75,7 @@ const Header = () => {
 
   return (
     <motion.header
-      className="sticky top-0 z-50 w-full py-4"
+      className="sticky top-0 z-[100] w-full py-4"
       variants={headerVariants}
       initial="initial"
       animate="animate"
@@ -84,13 +84,12 @@ const Header = () => {
         className={`mx-auto transition-all duration-500 ease-in-out ${isScrolled ? 'max-w-[42rem]' : 'max-w-full'}`}
       >
         <motion.div
-          className="flex items-center justify-between w-full"
+          className="flex items-center justify-between w-full rounded-2xl"
           animate={{
             paddingLeft: isScrolled ? "1.5rem" : "0rem",
             paddingRight: isScrolled ? "1.5rem" : "0rem",
-            paddingTop: isScrolled ? "0.75rem" : "0.5rem",
-            paddingBottom: isScrolled ? "0.75rem" : "0.5rem",
-            borderRadius: isScrolled ? "1rem" : "0rem",
+            paddingTop: isScrolled ? "0.3rem" : "0.5rem",
+            paddingBottom: isScrolled ? "0.3rem" : "0.5rem",
             backgroundColor: isScrolled ? "hsl(var(--background) / 0.8)" : "hsl(var(--background) / 0)",
             borderWidth: isScrolled ? "1px" : "0px",
             borderColor: isScrolled ? "hsl(var(--border) / 0.4)" : "hsl(var(--border) / 0)",
