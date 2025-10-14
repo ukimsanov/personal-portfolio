@@ -721,7 +721,7 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={status.type === 'loading' || !isFormValid || (showTurnstile && !formData.turnstileToken)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-blue-400 text-base min-h-[48px]"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 disabled:bg-gradient-to-r disabled:from-slate-200 disabled:to-slate-300 dark:disabled:from-gray-800 dark:disabled:to-gray-900 disabled:text-slate-500 dark:disabled:text-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-blue-400 text-base min-h-[48px]"
             >
               {status.type === 'loading' ? (
                 <>

@@ -127,7 +127,7 @@ const Skills = () => {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 60%", "end 40%"],
+    offset: ["start 40%", "end 60%"],
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, beamHeight]);
@@ -145,16 +145,19 @@ const Skills = () => {
           const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
           let newActiveCategory = -1;
 
-          categoryElements.forEach((element, index) => {
-            const rect = element.getBoundingClientRect();
-            const contentRect = contentRef.current!.getBoundingClientRect();
-            const relativeTop = rect.top - contentRect.top;
+          // Only start checking if beam has actually started moving (at least 5% progress)
+          if (latest > beamHeight * 0.02) {
+            categoryElements.forEach((element, index) => {
+              const rect = element.getBoundingClientRect();
+              const contentRect = contentRef.current!.getBoundingClientRect();
+              const relativeTop = rect.top - contentRect.top;
 
-            // Add a small offset to trigger slightly earlier for smoother appearance
-            if (latest >= relativeTop - 20) {
-              newActiveCategory = index;
-            }
-          });
+              // Check if beam has reached this category header
+              if (latest >= relativeTop) {
+                newActiveCategory = index;
+              }
+            });
+          }
 
           // Only update if changed to reduce re-renders
           setActiveCategory(prev => prev !== newActiveCategory ? newActiveCategory : prev);
@@ -166,7 +169,7 @@ const Skills = () => {
       unsubscribe();
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [heightTransform]);
+  }, [heightTransform, beamHeight]);
 
   // Mobile-optimized animation variants
   const sectionVariants = {
