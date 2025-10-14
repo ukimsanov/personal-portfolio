@@ -104,11 +104,11 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full group md:hover:shadow-[0_20px_50px_rgba(59,130,246,0.3)] dark:md:hover:shadow-[0_20px_50px_rgba(96,165,250,0.25)] transition-all duration-500 md:hover:-translate-y-2 md:hover:border-blue-500/50 dark:md:hover:border-blue-400/50 active:scale-[0.98] md:active:scale-100">
+            <Card className="w-full group md:hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] dark:md:hover:shadow-[0_8px_30px_rgba(96,165,250,0.15)] transition-all duration-300 md:hover:-translate-y-2 md:hover:border-blue-500/50 dark:md:hover:border-blue-400/50 active:scale-[0.98] md:active:scale-100">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
-                <div 
-                  className="flex-1 p-4 sm:p-6 cursor-pointer"
+                <div
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer"
                   onClick={() => handleProjectClick(index)}
                 >
                   <div className="mb-4">
@@ -162,7 +162,7 @@ export function Projects() {
                 </div>
 
                 {/* Project Preview */}
-                <div className="lg:w-72 p-4 sm:p-6 lg:pr-6 lg:pl-0 lg:py-6 flex items-center overflow-hidden">
+                <div className="lg:w-72 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
                   {project.imageUrl ? (
                     <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border">
                       <img

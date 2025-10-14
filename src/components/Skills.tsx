@@ -133,24 +133,39 @@ const Skills = () => {
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, beamHeight]);
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
-  // Track which category the beam has reached
+  // Track which category the beam has reached with smooth transitions
   useEffect(() => {
+    let rafId: number;
     const unsubscribe = heightTransform.on("change", (latest) => {
-      if (contentRef.current) {
-        const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
-        categoryElements.forEach((element, index) => {
-          const rect = element.getBoundingClientRect();
-          const contentRect = contentRef.current!.getBoundingClientRect();
-          const relativeTop = rect.top - contentRect.top;
+      // Use requestAnimationFrame to smooth out updates
+      if (rafId) cancelAnimationFrame(rafId);
 
-          if (latest >= relativeTop) {
-            setActiveCategory(index);
-          }
-        });
-      }
+      rafId = requestAnimationFrame(() => {
+        if (contentRef.current) {
+          const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
+          let newActiveCategory = -1;
+
+          categoryElements.forEach((element, index) => {
+            const rect = element.getBoundingClientRect();
+            const contentRect = contentRef.current!.getBoundingClientRect();
+            const relativeTop = rect.top - contentRect.top;
+
+            // Add a small offset to trigger slightly earlier for smoother appearance
+            if (latest >= relativeTop - 20) {
+              newActiveCategory = index;
+            }
+          });
+
+          // Only update if changed to reduce re-renders
+          setActiveCategory(prev => prev !== newActiveCategory ? newActiveCategory : prev);
+        }
+      });
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [heightTransform]);
 
   // Mobile-optimized animation variants
@@ -164,22 +179,6 @@ const Skills = () => {
       y: 0,
       transition: {
         duration: shouldReduceMotion ? 0.3 : 0.6,
-        ease: [0.25, 0.1, 0.25, 1] as const
-      }
-    }
-  };
-
-  const headerVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: shouldReduceMotion ? 5 : 30 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: shouldReduceMotion ? 0.2 : 0.5,
-        delay: shouldReduceMotion ? 0.1 : 0.2,
         ease: [0.25, 0.1, 0.25, 1] as const
       }
     }
@@ -203,12 +202,18 @@ const Skills = () => {
       initial="hidden"
       whileInView="visible"
       variants={sectionVariants}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.1 }}
       className="py-10 sm:py-14 pb-20 sm:pb-24 w-full overflow-hidden"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <motion.h2
-          variants={headerVariants}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 10 : 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0.2 : 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+          viewport={{ once: true, amount: 0.8 }}
           className="text-2xl font-bold mb-12 sm:mb-16 text-center"
         >
           Skills
@@ -273,11 +278,11 @@ const Skills = () => {
                   initial="hidden"
                   whileInView="visible"
                   transition={{
-                    duration: shouldReduceMotion ? 0.2 : 0.5,
-                    delay: shouldReduceMotion ? categoryIndex * 0.05 : categoryIndex * 0.1,
+                    duration: shouldReduceMotion ? 0.3 : 0.7,
+                    delay: shouldReduceMotion ? categoryIndex * 0.08 : categoryIndex * 0.15,
                     ease: [0.25, 0.1, 0.25, 1] as const
                   }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   className="relative"
                   data-category-index={categoryIndex}
                 >
@@ -287,6 +292,7 @@ const Skills = () => {
                     <div className="absolute left-1/2 -translate-x-1/2 z-50">
                       <div className="flex items-center justify-center">
                         <motion.div
+                          initial={false}
                           animate={{
                             borderColor: activeCategory >= categoryIndex
                               ? colorString
@@ -296,8 +302,8 @@ const Skills = () => {
                               : "0 10px 15px -3px rgba(59, 130, 246, 0.1)"
                           }}
                           transition={{
-                            duration: 0.4,
-                            ease: "easeOut"
+                            duration: 0.8,
+                            ease: [0.25, 0.1, 0.25, 1]
                           }}
                           className="bg-background border-2 rounded-full px-4 py-2"
                         >
@@ -333,11 +339,11 @@ const Skills = () => {
                                   x: 0
                                 }}
                                 transition={{
-                                  duration: shouldReduceMotion ? 0.15 : 0.3,
-                                  delay: shouldReduceMotion ? skillIndex * 0.01 : skillIndex * 0.03,
+                                  duration: shouldReduceMotion ? 0.2 : 0.4,
+                                  delay: shouldReduceMotion ? skillIndex * 0.02 : skillIndex * 0.04,
                                   ease: [0.25, 0.1, 0.25, 1] as const
                                 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: true, amount: 0.3 }}
                                 className="group hover:scale-105 transition-transform"
                               >
                                 <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-1.5 hover:border-foreground/20 hover:bg-muted/50 transition-all">
