@@ -1,11 +1,10 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useState, useRef } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Turnstile from "@/components/Turnstile";
-import { Highlighter } from "@/components/ui/highlighter";
+import { motion } from "framer-motion";
 
 interface ContactFormData {
   name: string;
@@ -64,14 +63,14 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   const isTextarea = type === "textarea";
   
-  const inputClasses = `w-full px-3 py-3 sm:px-4 sm:py-3 rounded-lg border transition-colors duration-200 focus:outline-none text-base leading-normal ${
-    hasError 
-      ? 'border-red-500 focus:border-red-600 bg-red-50 dark:bg-red-900/10' 
+  const inputClasses = `w-full px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg border transition-colors duration-200 focus:outline-none text-base leading-normal ${
+    hasError
+      ? 'border-red-500 focus:border-red-600 bg-red-50 dark:bg-red-900/10'
       : 'border-border bg-background focus:border-blue-500'
   } ${isTextarea ? 'resize-vertical leading-relaxed' : ''}`;
 
   return (
-    <div className="space-y-1.5 sm:space-y-2">
+    <div className="space-y-1 sm:space-y-1.5">
       <label 
         htmlFor={name} 
         className="text-sm font-medium text-foreground block"
@@ -528,89 +527,10 @@ const ContactForm = () => {
     }
   };
 
-  const shouldReduceMotion = useReducedMotion();
-
   return (
-    <motion.section
-      id="contact-form"
-      initial={{ 
-        opacity: 0, 
-        y: shouldReduceMotion ? 20 : 50 
-      }}
-      whileInView={{ 
-        opacity: 1, 
-        y: 0 
-      }}
-      transition={{ 
-        duration: shouldReduceMotion ? 0.3 : 0.6,
-        ease: [0.25, 0.1, 0.25, 1] as const
-      }}
-      viewport={{ once: true, amount: 0.2 }}
-      className="py-16 sm:py-20 w-full flex flex-col items-center"
-    >
-      <motion.h2
-        initial={{
-          opacity: 0,
-          y: shouldReduceMotion ? 10 : 30
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0
-        }}
-        transition={{
-          duration: shouldReduceMotion ? 0.2 : 0.5,
-          delay: shouldReduceMotion ? 0.05 : 0.1,
-          ease: [0.25, 0.1, 0.25, 1] as const
-        }}
-        viewport={{ once: true }}
-        className="text-2xl font-bold mb-8 text-center"
-      >
-        Get In Touch
-      </motion.h2>
-
-      <motion.p
-        initial={{
-          opacity: 0,
-          y: shouldReduceMotion ? 10 : 20
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0
-        }}
-        transition={{
-          duration: shouldReduceMotion ? 0.2 : 0.5,
-          delay: shouldReduceMotion ? 0.1 : 0.2,
-          ease: [0.25, 0.1, 0.25, 1] as const
-        }}
-        viewport={{ once: true }}
-        className="mb-10 sm:mb-12 leading-relaxed max-w-xl text-center text-muted-foreground relative"
-        style={{ position: 'relative', isolation: 'isolate' }}
-      >
-        I&apos;m always interested in <Highlighter action="underline" color="#06b6d4" strokeWidth={1.5} animationDuration={1200} delay={1000} isView={true}>new opportunities</Highlighter> and <Highlighter action="underline" color="#818cf8" strokeWidth={1.5} animationDuration={1000} delay={1600} isView={true}>exciting projects</Highlighter>.
-        Whether you have a question, want to collaborate, or just want to <Highlighter action="underline" color="#fb7185" strokeWidth={1.5} animationDuration={1200} delay={2200} isView={true}>say hello</Highlighter>,
-        feel free to reach out!
-      </motion.p>
-      
-      <motion.div
-        initial={{ 
-          opacity: 0, 
-          y: shouldReduceMotion ? 10 : 30 
-        }}
-        whileInView={{ 
-          opacity: 1, 
-          y: 0 
-        }}
-        transition={{ 
-          duration: shouldReduceMotion ? 0.2 : 0.5,
-          delay: shouldReduceMotion ? 0.15 : 0.3,
-          ease: [0.25, 0.1, 0.25, 1] as const
-        }}
-        viewport={{ once: true }}
-        className="w-full max-w-2xl mx-auto"
-      >
-        <Card className="w-full">
-        <div className="p-4 sm:p-5 lg:p-6">
-          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+    <Card className="w-full">
+        <div className="px-4 py-2.5 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3">
+          <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-2.5">
             {/* Name and Email Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
               <InputField
@@ -658,7 +578,7 @@ const ContactForm = () => {
               name="description"
               type="textarea"
               placeholder="Tell me about your project or just say hello..."
-              rows={5}
+              rows={4}
               required
               value={formData.description}
               onChange={handleInputChange}
@@ -669,7 +589,7 @@ const ContactForm = () => {
 
             {/* Turnstile Captcha - Only show when form is valid */}
             {siteKey && showTurnstile && (
-              <div className="space-y-1.5 sm:space-y-2">
+              <div className="space-y-1 sm:space-y-1.5">
                 <label className="text-sm font-medium text-foreground block">
                   Captcha Verification <span className="text-red-500">*</span>
                 </label>
@@ -738,8 +658,6 @@ const ContactForm = () => {
           </form>
         </div>
       </Card>
-      </motion.div>
-    </motion.section>
   );
 };
 

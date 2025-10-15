@@ -123,8 +123,8 @@ const Header = () => {
               Skills
             </a>
             <a
-              href="#contact-form"
-              onClick={(e) => handleNavClick(e, 'contact-form')}
+              href="#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
               className="text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
             >
               Contact

@@ -204,5 +204,5 @@ export const resumeData: {
       },
     },
   ],
-  footer: "© 2025 Ular Kimsanov",
+  footer: "© 2025 Ular Kimsanov. All rights reserved.",
 };
