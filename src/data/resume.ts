@@ -152,16 +152,15 @@ export const resumeData: {
       title: "Horizon Banking App",
       techStack: ["Next.js", "TypeScript", "Appwrite", "TailwindCSS", "Plaid", "Dwolla"],
       description: [
-        "Built core banking UI & real-time transfers for 1,000+ users; onboarding tests showed a 40% jump in engagement.",
-        "Designed Appwrite cloud functions for payments, hitting <50 ms median latency across 10k simulated transactions.",
-        "Implemented responsive dashboard using TailwindCSS and Chart.js, deployed on Vercel cutting page-load 50% and sustaining 99.9% uptime.",
+        "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
+        "Engineered server-side payment processing with Next.js Server Actions and Appwrite, implementing secure session management and transaction tracking across linked accounts.",
+        "Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Vercel with edge runtime optimization and Sentry monitoring for 99.9% uptime.",
       ],
       link: {
         label: "github.com",
         href: "https://github.com/ukimsanov/horizon-banking-app",
       },
       websiteUrl: "https://horizon-banking-app.vercel.app",
-      imageUrl: "/images/projects/horizon-banking-app.png",
     },
     {
       title: "YouTube Lecture Notes AI Agent",
@@ -177,13 +176,13 @@ export const resumeData: {
       },
     },
     {
-      title: "Crypto List",
-      techStack: ["Python", "FastAPI", "React", "CoinMarketCap API", "TailwindCSS"],
+      title: "CryptoLive",
+      techStack: ["React", "FastAPI", "WebSockets", "Tailwind CSS", "Ant Design", "Kraken API", "lightweight-charts"],
       description: [
-        "Developed a simple full-stack cryptocurrency tracker using FastAPI (Python) and React (JavaScript), achieving <1 second average data fetch and render time.",
-        "Integrated CoinMarketCap API for real-time market changes, updating prices within 170-200 ms on average.",
-        "Implemented responsive UI with Tailwind CSS, reducing layout reflows by approximately 30%.",
-        "Achieved over 90% unit test coverage, ensuring reliable end-to-end functionality across the stack.",
+        "Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API.",
+        "Engineered real-time price updates via Kraken WebSocket v2, achieving <170ms latency for live market data streaming.",
+        "Developed interactive financial charts with 7 timeframes (1m-1D) using lightweight-charts library, featuring zoom, pan, and OHLC candlestick visualization with responsive data caching.",
+        "Designed modern glassmorphic UI with Tailwind CSS and Ant Design, implementing skeleton loading states, error boundaries, and mobile-responsive layouts with smooth CSS animations.",
       ],
       link: {
         label: "github.com",
@@ -191,12 +190,13 @@ export const resumeData: {
       },
     },
     {
-      title: "MNIST Neural Network Classifier",
-      techStack: ["Python", "PyTorch", "NumPy", "Matplotlib", "Jupyter"],
+      title: "Neural Digit Canvas",
+      techStack: ["Python", "PyTorch", "Next.js", "AWS Lambda", "Docker", "FastAPI", "ECR", "GitHub Actions"],
       description: [
-        "Engineered a neural network model achieving 91% accuracy on MNIST dataset, implementing custom data preprocessing pipeline for processing 70,000 images.",
-        "Optimized model performance through hyperparameter tuning and data normalization techniques, achieving 85% accuracy within first training epoch.",
-        "Developed complete ML pipeline with visualization tools using Python, PyTorch, NumPy, Matplotlib and Jupyter, following industry best practices.",
+        "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture.",
+        "Deployed serverless backend on AWS Lambda with FastAPI, handling real-time inference at ~8ms per prediction.",
+        "Engineered complete ML pipeline from model training to cloud deployment: containerized PyTorch models with Docker, implemented ECR/Lambda deployment, and created Next.js 15 frontend with canvas drawing interface.",
+        "Designed dual-model system (Linear: 92.4%, CNN: 98.2%) with comprehensive evaluation metrics, training visualization tools, and automated CI/CD pipelines using GitHub Actions.",
       ],
       link: {
         label: "github.com",
@@ -204,5 +204,5 @@ export const resumeData: {
       },
     },
   ],
-  footer: "© 2025 Ular Kimsanov",
+  footer: "© 2025 Ular Kimsanov. All rights reserved.",
 };

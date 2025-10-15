@@ -50,7 +50,7 @@ export function Projects() {
         ease: [0.25, 0.1, 0.25, 1] as const,
         delay: shouldReduceMotion ? 0.2 : 0.4 
       }}
-      className="py-14 w-full"
+      className="py-14 pb-24 w-full"
     >
       <motion.h2 
         initial={{ 
@@ -70,7 +70,7 @@ export function Projects() {
       >
         Projects
       </motion.h2>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {projects.map((project, index) => (
           <motion.div
             key={index}
@@ -104,34 +104,43 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full hover:shadow-lg transition-shadow duration-300">
+            <Card className="w-full group md:hover:shadow-lg transition-all duration-200 ease-out md:hover:-translate-y-1 md:hover:border-blue-500/30 dark:md:hover:border-blue-400/30 active:scale-[0.98] md:active:scale-100">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
-                <div className="flex-1 p-4 sm:p-6">
+                <div
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer"
+                  onClick={() => handleProjectClick(index)}
+                >
                   <div className="mb-4">
                     <h3 
-                      className="text-lg sm:text-xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer inline-block"
-                      onClick={() => handleProjectClick(index)}
+                      className="text-lg sm:text-xl font-bold md:group-hover:text-blue-600 dark:md:group-hover:text-blue-400 transition-colors inline-block"
                     >
                       {project.title}
                     </h3>
                   </div>
                   
-                  <div className="text-xs sm:text-sm text-muted-foreground mb-3 leading-relaxed">
-                    {project.techStack.join(" • ")}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
+                    {project.techStack.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="text-xs px-2 py-1 bg-muted/50 border border-border rounded-md"
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
                   
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
                     {project.description[0]}
                   </p>
                   
-                  <div className="flex items-center gap-3 sm:gap-4 pt-2">
+                  <div className="flex items-center gap-3 sm:gap-4 pt-2" onClick={(e) => e.stopPropagation()}>
                     {project.link.href && (
                       <a
                         href={project.link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
                       >
                         <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>GitHub</span>
@@ -143,7 +152,7 @@ export function Projects() {
                         href={project.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
                       >
                         <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>Website</span>
@@ -153,13 +162,15 @@ export function Projects() {
                 </div>
 
                 {/* Project Preview */}
-                <div className="lg:w-72 p-4 sm:p-6 lg:pr-6 lg:pl-0 lg:py-6 flex items-center">
+                <div className="lg:w-72 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
                   {project.imageUrl ? (
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-32 sm:h-40 lg:h-48 object-cover rounded-lg border border-border"
-                    />
+                    <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border">
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-300 ease-out"
+                      />
+                    </div>
                   ) : (
                     <div className="w-full h-32 sm:h-40 lg:h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
                       <span className="text-muted-foreground text-xs sm:text-sm">Preview</span>
@@ -183,27 +194,34 @@ export function Projects() {
           showCloseButton={true}
           showEscText={false}
           disablePadding={true}
-          className="max-w-4xl max-h-[80vh]"
+          className="sm:max-w-2xl lg:max-w-3xl"
         >
-          <div className="flex flex-col h-full max-h-[80vh]">
+          <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh] overflow-hidden">
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 p-6 pb-4 border-b border-border">
-              <h2 className="text-2xl font-bold mb-2">{projects[selectedProject].title}</h2>
-              <div className="text-sm text-muted-foreground mb-4">
-                {projects[selectedProject].techStack.join(" • ")}
+            <div className="flex-shrink-0 p-5 pb-3 sm:p-6 sm:pb-4 border-b border-border">
+              <h2 className="text-xl sm:text-2xl font-bold mb-3 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                {projects[selectedProject].techStack.map((tech, techIndex) => (
+                  <span
+                    key={techIndex}
+                    className="text-xs px-2 py-1 bg-muted/50 border border-border rounded-md"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
-              
+
               {/* Links */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                 {projects[selectedProject].link.href && (
                   <a
                     href={projects[selectedProject].link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
                   >
-                    <Github className="w-4 h-4" />
-                    <span>GitHub</span>
+                    <Github className="w-5 h-5 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">GitHub</span>
                   </a>
                 )}
                 {projects[selectedProject].websiteUrl && (
@@ -211,30 +229,30 @@ export function Projects() {
                     href={projects[selectedProject].websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Live Demo</span>
+                    <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">Live Demo</span>
                   </a>
                 )}
               </div>
             </div>
 
             {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-6">
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 pb-6 sm:pb-8 overscroll-contain min-h-0">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Project Description */}
-                <div className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
+                <div className="space-y-3 sm:space-y-4">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {projects[selectedProject].description[0]}
                   </p>
-                  
+
                   {/* Detailed bullet points */}
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {projects[selectedProject].description.slice(1).map((desc, i) => (
                       <div key={i} className="flex items-start">
-                        <span className="text-blue-500 dark:text-blue-400 mr-3 mt-1.5 flex-shrink-0">•</span>
-                        <p className="text-muted-foreground leading-relaxed">{desc}</p>
+                        <span className="text-muted-foreground mr-2 sm:mr-3 flex-shrink-0">•</span>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
                     ))}
                   </div>
@@ -246,12 +264,12 @@ export function Projects() {
                     <img
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
-                      className="w-full max-h-96 object-cover rounded-lg border border-border"
+                      className="w-full max-h-64 sm:max-h-96 object-cover rounded-lg border border-border"
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
-                    <span className="text-muted-foreground">Project Preview</span>
+                  <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
+                    <span className="text-sm sm:text-base text-muted-foreground">Project Preview</span>
                   </div>
                 )}
               </div>

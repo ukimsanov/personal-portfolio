@@ -2,7 +2,8 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
-import { Mail, Phone, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -13,7 +14,8 @@ const Hero = () => {
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: shouldReduceMotion ? 0.1 : 0.9,
+        duration: shouldReduceMotion ? 0.1 : 1.2,
+        delay: shouldReduceMotion ? 0 : 0.2,
         ease: "easeOut" as const
       }
     }
@@ -60,22 +62,28 @@ const Hero = () => {
   return (
     <section className="mt-16 w-full">
       <div className="text-left mb-8">
-        <motion.h1 
-          className="text-5xl font-bold mb-8"
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold mb-8"
           variants={titleVariants}
           initial="initial"
           animate="animate"
         >
           {resumeData.name}
         </motion.h1>
-        <motion.p 
-          className="text-xl text-foreground/70 max-w-3xl"
+        <motion.div
+          className="text-base sm:text-lg md:text-xl text-foreground/70 max-w-3xl"
           variants={descriptionVariants}
           initial="initial"
           animate="animate"
         >
-          {resumeData.title}
-        </motion.p>
+          <TypingAnimation
+            duration={55}
+            startOnView={false}
+            delay={1200}
+          >
+            {resumeData.title}
+          </TypingAnimation>
+        </motion.div>
       </div>
       
       {/* Contact Icons in Circles */}
@@ -87,6 +95,7 @@ const Hero = () => {
       >
         <motion.a
           href={`mailto:${resumeData.contact.email}`}
+          title="Email"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -102,6 +111,7 @@ const Hero = () => {
           href={resumeData.contact.socials[1].url}
           target="_blank"
           rel="noopener noreferrer"
+          title="GitHub"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -117,6 +127,7 @@ const Hero = () => {
           href={resumeData.contact.socials[0].url}
           target="_blank"
           rel="noopener noreferrer"
+          title="LinkedIn"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -132,6 +143,7 @@ const Hero = () => {
           href="/cv.pdf"
           target="_blank"
           rel="noopener noreferrer"
+          title="Resume/CV"
           className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
           variants={iconVariants}
           initial="initial"
@@ -141,19 +153,6 @@ const Hero = () => {
           whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
         >
           <FileText className="w-4 h-4" />
-        </motion.a>
-        
-        <motion.a
-          href={`tel:${resumeData.contact.tel}`}
-          className="p-4 rounded-full border border-border/70 hover:border-border hover:shadow-md"
-          variants={iconVariants}
-          initial="initial"
-          animate="animate"
-          custom={4}
-          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
-          whileTap={{ scale: shouldReduceMotion ? 1 : 0.95 }}
-        >
-          <Phone className="w-4 h-4" />
         </motion.a>
       </motion.div>
     </section>

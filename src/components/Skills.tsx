@@ -1,91 +1,175 @@
 
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
-import { resumeData } from "@/data/resume";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 
-// Skill badges mapping with accurate brand colors and logos
-const skillBadges: Record<string, string> = {
-  // AI/ML & Frameworks - Using official brand colors and accurate representations
-  "Machine Learning": "https://img.shields.io/badge/Machine_Learning-FF6F00?style=flat&logo=tensorflow&logoColor=white",
-  "PyTorch": "https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white",
-  "TensorFlow": "https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white",
-  "Computer Vision": "https://img.shields.io/badge/Computer_Vision-5C3EE8?style=flat&logo=opencv&logoColor=white",
-  "OpenAI API": "https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white",
-  // LangChain official brand color: #823A45 (Lotus)
-  "LangChain": "https://img.shields.io/badge/LangChain-823A45?style=flat&logo=chainlink&logoColor=white",
-  "LangGraph": "https://img.shields.io/badge/LangGraph-823A45?style=flat&logo=graphql&logoColor=white",
-  // CrewAI - Using professional blue color with team/collaboration theme
-  "CrewAI": "https://img.shields.io/badge/CrewAI-2563EB?style=flat&logo=teamwork&logoColor=white",
-  "Multi-Agent Systems": "https://img.shields.io/badge/Multi--Agent_Systems-8B5CF6?style=flat&logo=sitemap&logoColor=white",
-  "LangSmith": "https://img.shields.io/badge/LangSmith-823A45?style=flat&logo=googleanalytics&logoColor=white",
-  "RAG": "https://img.shields.io/badge/RAG-FF6B35?style=flat&logo=elasticsearch&logoColor=white",
-  "NLP": "https://img.shields.io/badge/NLP-4B8BBE?style=flat&logo=python&logoColor=white",
-  "Prompt Engineering": "https://img.shields.io/badge/Prompt_Engineering-10A37F?style=flat&logo=openai&logoColor=white",
+// Skill logos mapping with accurate brand-colored icons
+const skillLogos: Record<string, { icon: string; color?: string; invertInDark?: boolean }> = {
+  // AI/ML & Frameworks
+  "Machine Learning": { icon: "tensorflow", color: "#FF6F00" },
+  "PyTorch": { icon: "pytorch", color: "#EE4C2C" },
+  "TensorFlow": { icon: "tensorflow", color: "#FF6F00" },
+  "Computer Vision": { icon: "opencv", color: "#5C3EE8" },
+  "OpenAI API": { icon: "openai", color: "#412991" },
+  "LangChain": { icon: "langchain", color: "#1C3C3C" },
+  "LangGraph": { icon: "graphql", color: "#E10098" },
+  "CrewAI": { icon: "openai", color: "#FF6B35" }, // Using OpenAI icon as placeholder
+  "Multi-Agent Systems": { icon: "codeberg", color: "#2185D0" },
+  "LangSmith": { icon: "googleanalytics", color: "#E37400" },
+  "RAG": { icon: "elasticsearch", color: "#005571" },
+  "NLP": { icon: "python", color: "#3776AB" },
+  "Prompt Engineering": { icon: "openai", color: "#10A37F" },
 
   // Programming Languages
-  "Python": "https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white",
-  "JavaScript": "https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black",
-  "TypeScript": "https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white", 
-  "Java": "https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white",
-  "C/C++": "https://img.shields.io/badge/C%2B%2B-00599C?style=flat&logo=c%2B%2B&logoColor=white",
-  "HTML/CSS": "https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white",
-  "Swift": "https://img.shields.io/badge/Swift-F05138?style=flat&logo=swift&logoColor=white",
-  "SQL": "https://img.shields.io/badge/SQL-4479A1?style=flat&logo=mysql&logoColor=white",
-  "Bash": "https://img.shields.io/badge/Shell_Script-121011?style=flat&logo=gnu-bash&logoColor=white",
+  "Python": { icon: "python", color: "#3776AB" },
+  "JavaScript": { icon: "javascript", color: "#F7DF1E" },
+  "TypeScript": { icon: "typescript", color: "#3178C6" },
+  "Java": { icon: "openjdk", color: "#437291" },
+  "C/C++": { icon: "cplusplus", color: "#00599C" },
+  "HTML/CSS": { icon: "html5", color: "#E34F26" },
+  "Swift": { icon: "swift", color: "#F05138" },
+  "SQL": { icon: "mysql", color: "#4479A1" },
+  "Bash": { icon: "gnubash", color: "#4EAA25" },
 
-  // Frontend Frameworks & Libraries - Using official brand colors
-  "React": "https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black",
-  "Next.js": "https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white",
-  "SvelteKit": "https://img.shields.io/badge/SvelteKit-FF3E00?style=flat&logo=svelte&logoColor=white",
-  "TailwindCSS": "https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwind-css&logoColor=white",
-  // Shadcn UI - Using black theme consistent with their branding
-  "Shadcn UI": "https://img.shields.io/badge/shadcn%2Fui-000000?style=flat&logo=shadcnui&logoColor=white",
-  // Aceternity UI - Using professional blue theme  
-  "Aceternity UI": "https://img.shields.io/badge/Aceternity_UI-000000?style=flat&logo=react&logoColor=white",
-  "Material UI": "https://img.shields.io/badge/Material--UI-007FFF?style=flat&logo=mui&logoColor=white",
+  // Frontend Frameworks & Libraries
+  "React": { icon: "react", color: "#61DAFB" },
+  "Next.js": { icon: "nextdotjs", color: "#000000", invertInDark: true },
+  "SvelteKit": { icon: "svelte", color: "#FF3E00" },
+  "TailwindCSS": { icon: "tailwindcss", color: "#06B6D4" },
+  "Shadcn UI": { icon: "shadcnui", color: "#000000", invertInDark: true },
+  "Aceternity UI": { icon: "react", color: "#61DAFB" },
+  "Material UI": { icon: "mui", color: "#007FFF" },
 
-  // Backend & APIs - Using official brand colors
-  "Node.js": "https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white",
-  "Express.js": "https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white",
-  "FastAPI": "https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white",
-  "GraphQL": "https://img.shields.io/badge/GraphQL-E10098?style=flat&logo=graphql&logoColor=white",
-  "RESTful APIs": "https://img.shields.io/badge/REST-02569B?style=flat&logo=fastapi&logoColor=white",
-  "WebSocket": "https://img.shields.io/badge/WebSocket-010101?style=flat&logo=socketdotio&logoColor=white",
-  "SSE": "https://img.shields.io/badge/Server_Sent_Events-FF6B6B?style=flat&logo=html5&logoColor=white",
-  "Swagger": "https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black",
+  // Backend & APIs
+  "Node.js": { icon: "nodedotjs", color: "#339933" },
+  "Express.js": { icon: "express", color: "#000000", invertInDark: true },
+  "FastAPI": { icon: "fastapi", color: "#009688" },
+  "GraphQL": { icon: "graphql", color: "#E10098" },
+  "RESTful APIs": { icon: "fastapi", color: "#009688" },
+  "WebSocket": { icon: "socketdotio", color: "#010101", invertInDark: true },
+  "SSE": { icon: "html5", color: "#E34F26" },
+  "Swagger": { icon: "swagger", color: "#85EA2D" },
 
-  // Cloud & DevOps - Using official brand colors
-  "AWS": "https://img.shields.io/badge/Amazon_AWS-FF9900?style=flat&logo=amazon-aws&logoColor=white",
-  "Google Cloud Platform": "https://img.shields.io/badge/Google_Cloud-4285F4?style=flat&logo=google-cloud&logoColor=white",
-  "Vercel": "https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white",
-  "Cloudflare Workers": "https://img.shields.io/badge/Cloudflare_Workers-F38020?style=flat&logo=cloudflare&logoColor=white",
-  "Docker": "https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white",
-  "Kubernetes": "https://img.shields.io/badge/Kubernetes-326CE5?style=flat&logo=kubernetes&logoColor=white",
-  "CI/CD": "https://img.shields.io/badge/CI%2FCD-2088FF?style=flat&logo=github-actions&logoColor=white",
+  // Cloud & DevOps
+  "AWS": { icon: "aws", color: "#FF9900" },
+  "Google Cloud Platform": { icon: "googlecloud", color: "#4285F4" },
+  "Vercel": { icon: "vercel", color: "#000000", invertInDark: true },
+  "Cloudflare Workers": { icon: "cloudflare", color: "#F38020" },
+  "Docker": { icon: "docker", color: "#2496ED" },
+  "Kubernetes": { icon: "kubernetes", color: "#326CE5" },
+  "CI/CD": { icon: "githubactions", color: "#2088FF" },
 
-  // Databases - Using official brand colors  
-  "PostgreSQL": "https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white",
-  "MySQL": "https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white",
-  "SQLite": "https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white",
-  "MongoDB": "https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white",
-  // Supabase official brand color: #3ECF8E (Shamrock)
-  "Supabase": "https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white",
-  "Cloudflare D1": "https://img.shields.io/badge/Cloudflare_D1-F38020?style=flat&logo=cloudflare&logoColor=white",
+  // Databases
+  "PostgreSQL": { icon: "postgresql", color: "#4169E1" },
+  "MySQL": { icon: "mysql", color: "#4479A1" },
+  "SQLite": { icon: "sqlite", color: "#003B57" },
+  "MongoDB": { icon: "mongodb", color: "#47A248" },
+  "Supabase": { icon: "supabase", color: "#3ECF8E" },
+  "Cloudflare D1": { icon: "cloudflare", color: "#F38020" },
 
-  // Tools & Platforms - Using official brand colors
-  "Git": "https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white",
-  "Figma": "https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white",
-  "Jupyter": "https://img.shields.io/badge/Jupyter-F37626?style=flat&logo=jupyter&logoColor=white",
-  "Jira": "https://img.shields.io/badge/Jira-0052CC?style=flat&logo=jira&logoColor=white",
-  "ClickUp": "https://img.shields.io/badge/ClickUp-7B68EE?style=flat&logo=clickup&logoColor=white",
-  "Zendesk": "https://img.shields.io/badge/Zendesk-03363D?style=flat&logo=zendesk&logoColor=white",
-  "N8N": "https://img.shields.io/badge/n8n-EA4B71?style=flat&logo=n8n&logoColor=white",
-  "Capacitor": "https://img.shields.io/badge/Capacitor-119EFF?style=flat&logo=capacitor&logoColor=white",
-  "Agile": "https://img.shields.io/badge/Agile-239120?style=flat&logo=agile&logoColor=white",
+  // Tools & Platforms
+  "Git": { icon: "git", color: "#F05032" },
+  "Figma": { icon: "figma", color: "#F24E1E" },
+  "Jupyter": { icon: "jupyter", color: "#F37626" },
+  "Jira": { icon: "jira", color: "#0052CC" },
+  "ClickUp": { icon: "clickup", color: "#7B68EE" },
+  "Zendesk": { icon: "zendesk", color: "#03363D" },
+  "N8N": { icon: "n8n", color: "#EA4B71" },
+  "Capacitor": { icon: "capacitor", color: "#119EFF" },
+  "Agile": { icon: "scrumalliance", color: "#009FDA" }, // Using Scrum Alliance icon as Agile representation
 };
+
+// Skill categories with organized grouping
+const skillCategories = [
+  {
+    title: "AI / ML & Agents",
+    skills: ["Prompt Engineering", "LangChain", "LangGraph", "CrewAI", "Multi-Agent Systems", "LangSmith", "OpenAI API", "RAG", "NLP", "Machine Learning", "PyTorch", "TensorFlow", "Computer Vision"]
+  },
+  {
+    title: "Programming Languages",
+    skills: ["Python", "JavaScript", "TypeScript", "Java", "C/C++", "Swift", "SQL", "Bash", "HTML/CSS"]
+  },
+  {
+    title: "Frontend & Frameworks",
+    skills: ["React", "Next.js", "SvelteKit", "TailwindCSS", "Shadcn UI", "Aceternity UI", "Material UI"]
+  },
+  {
+    title: "Backend & APIs",
+    skills: ["Node.js", "FastAPI", "Express.js", "GraphQL", "RESTful APIs", "WebSocket", "SSE", "Swagger"]
+  },
+  {
+    title: "Cloud & DevOps",
+    skills: ["AWS", "Google Cloud Platform", "Vercel", "Cloudflare Workers", "Docker", "Kubernetes", "CI/CD"]
+  },
+  {
+    title: "Databases",
+    skills: ["PostgreSQL", "MySQL", "MongoDB", "Supabase", "Cloudflare D1", "SQLite"]
+  },
+  {
+    title: "Tools & Platforms",
+    skills: ["Git", "Capacitor", "N8N", "ClickUp", "Zendesk", "Jira", "Figma", "Jupyter", "Agile"]
+  }
+];
 
 const Skills = () => {
   const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [beamHeight, setBeamHeight] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<number>(-1);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const rect = contentRef.current.getBoundingClientRect();
+      setBeamHeight(rect.height);
+    }
+  }, [contentRef]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 40%", "end 60%"],
+  });
+
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, beamHeight]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+
+  // Track which category the beam has reached with smooth transitions
+  useEffect(() => {
+    let rafId: number;
+    const unsubscribe = heightTransform.on("change", (latest) => {
+      // Use requestAnimationFrame to smooth out updates
+      if (rafId) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        if (contentRef.current) {
+          const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
+          let newActiveCategory = -1;
+
+          // Only start checking if beam has actually started moving (at least 5% progress)
+          if (latest > beamHeight * 0.02) {
+            categoryElements.forEach((element, index) => {
+              const rect = element.getBoundingClientRect();
+              const contentRect = contentRef.current!.getBoundingClientRect();
+              const relativeTop = rect.top - contentRect.top;
+
+              // Check if beam has reached this category header
+              if (latest >= relativeTop) {
+                newActiveCategory = index;
+              }
+            });
+          }
+
+          // Only update if changed to reduce re-renders
+          setActiveCategory(prev => prev !== newActiveCategory ? newActiveCategory : prev);
+        }
+      });
+    });
+
+    return () => {
+      unsubscribe();
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [heightTransform, beamHeight]);
 
   // Mobile-optimized animation variants
   const sectionVariants = {
@@ -103,79 +187,236 @@ const Skills = () => {
     }
   };
 
-  const headerVariants = {
+  const categoryVariants = {
     hidden: { 
       opacity: 0, 
-      y: shouldReduceMotion ? 5 : 30 
+      y: shouldReduceMotion ? 10 : 20 
     },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: {
-        duration: shouldReduceMotion ? 0.2 : 0.5,
-        delay: shouldReduceMotion ? 0.1 : 0.2,
-        ease: [0.25, 0.1, 0.25, 1] as const
-      }
+      y: 0 
     }
   };
 
   return (
     <motion.section
       id="skills"
+      ref={containerRef}
       initial="hidden"
       whileInView="visible"
       variants={sectionVariants}
-      viewport={{ once: true, amount: 0.3 }}
-      className="py-16 w-screen relative left-1/2 right-1/2 -mx-[50vw]"
+      viewport={{ once: true, amount: 0.1 }}
+      className="py-10 sm:py-14 pb-20 sm:pb-24 w-full overflow-hidden"
     >
-      <div className="w-full px-2 sm:px-4">
-        <motion.h2 
-          variants={headerVariants}
-          className="text-2xl font-bold mb-12 text-center"
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
+        <motion.h2
+          initial={{ opacity: 0, y: shouldReduceMotion ? 10 : 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0.2 : 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+          viewport={{ once: true, amount: 0.8 }}
+          className="text-2xl font-bold mb-12 sm:mb-16 text-center"
         >
           Skills
         </motion.h2>
-        <div className="flex flex-wrap gap-3 justify-center">
-          {resumeData.skills.map((skill, index) => {
-            const badgeUrl = skillBadges[skill];
-            
-            return (
-              <motion.div
-                key={index}
-                initial={{ 
-                  opacity: 0, 
-                  scale: shouldReduceMotion ? 0.9 : 0.5,
-                  y: shouldReduceMotion ? 5 : 20 
-                }}
-                whileInView={{ 
-                  opacity: 1, 
-                  scale: 1,
-                  y: 0 
-                }}
-                transition={{ 
-                  duration: shouldReduceMotion ? 0.2 : 0.4,
-                  delay: shouldReduceMotion ? Math.min(index * 0.01, 0.2) : Math.min(index * 0.03, 0.5),
-                  ease: [0.25, 0.1, 0.25, 1] as const
-                }}
-                viewport={{ once: true, amount: 0.1 }}
-                className="hover:scale-105 transition-transform"
-              >
-                {badgeUrl ? (
-                  // Use badge image for skills that have badges
-                  <img
-                    src={badgeUrl}
-                    alt={skill}
-                    className="h-7 hover:opacity-80 transition-opacity"
-                  />
-                ) : (
-                  // Fallback to original styling for skills without badges
-                  <div className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm hover:bg-secondary/80 transition-colors">
-                    {skill}
+        
+        {/* Branch-style layout */}
+        <div ref={contentRef} className="relative">
+          {/* Central trunk/node with animated tracing beam */}
+          <div
+            className="hidden md:block absolute left-1/2 top-0 w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent from-[0%] via-border/40 via-[50%] to-transparent to-[100%]"
+            style={{ height: beamHeight + "px", overflow: "visible" }}
+          >
+            {/* Animated gradient beam with subtle glow - using spread radius */}
+            <motion.div
+              style={{
+                height: heightTransform,
+                opacity: opacityTransform,
+                boxShadow: "0 0 8px 2px rgba(96, 165, 250, 0.5), 0 0 16px 4px rgba(59, 130, 246, 0.3)"
+              }}
+              className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full"
+            />
+          </div>
+
+          {/* Categories as branches */}
+          <div className="space-y-8 sm:space-y-12">
+            {skillCategories.map((category, categoryIndex) => {
+              const isLeft = categoryIndex % 2 === 0;
+
+              // Calculate the color based on position in the gradient (top = blue-400, middle = blue-500, bottom = blue-600)
+              const totalCategories = skillCategories.length;
+              const position = categoryIndex / (totalCategories - 1); // 0 to 1
+
+              // Interpolate between blue-400 (top) and blue-600 (bottom), with blue-500 in middle
+              const getGradientColor = (pos: number) => {
+                if (pos < 0.5) {
+                  // Blue-400 to Blue-500 (top half)
+                  const t = pos * 2; // 0 to 1
+                  return {
+                    r: Math.round(96 + (59 - 96) * t),    // 96 (blue-400) to 59 (blue-500)
+                    g: Math.round(165 + (130 - 165) * t), // 165 to 130
+                    b: Math.round(250 + (246 - 250) * t), // 250 to 246
+                  };
+                } else {
+                  // Blue-500 to Blue-600 (bottom half)
+                  const t = (pos - 0.5) * 2; // 0 to 1
+                  return {
+                    r: Math.round(59 + (37 - 59) * t),    // 59 (blue-500) to 37 (blue-600)
+                    g: Math.round(130 + (99 - 130) * t),  // 130 to 99
+                    b: Math.round(246 + (235 - 246) * t), // 246 to 235
+                  };
+                }
+              };
+
+              const color = getGradientColor(position);
+              const colorString = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`;
+              const glowString = `0 10px 15px -3px rgba(${color.r}, ${color.g}, ${color.b}, 0.4), 0 0 30px rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
+
+              return (
+                <motion.div
+                  key={categoryIndex}
+                  variants={categoryVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  transition={{
+                    duration: shouldReduceMotion ? 0.3 : 0.7,
+                    delay: shouldReduceMotion ? categoryIndex * 0.08 : categoryIndex * 0.15,
+                    ease: [0.25, 0.1, 0.25, 1] as const
+                  }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  className="relative"
+                  data-category-index={categoryIndex}
+                >
+                    {/* Desktop: Alternating left/right layout with connecting line */}
+                  <div className={`hidden md:flex items-start gap-6 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+                    {/* Category header on the beam - lights up with gradient color when beam reaches it */}
+                    <div className="absolute left-1/2 -translate-x-1/2 z-50">
+                      <div className="flex items-center justify-center">
+                        <motion.div
+                          initial={false}
+                          animate={{
+                            borderColor: activeCategory >= categoryIndex
+                              ? colorString
+                              : "rgba(96, 165, 250, 0.3)",
+                            boxShadow: activeCategory >= categoryIndex
+                              ? glowString
+                              : "0 10px 15px -3px rgba(59, 130, 246, 0.1)"
+                          }}
+                          transition={{
+                            duration: 0.8,
+                            ease: [0.25, 0.1, 0.25, 1]
+                          }}
+                          className="bg-background border-2 rounded-full px-4 py-2"
+                        >
+                          <h3 className="text-sm font-bold text-foreground whitespace-nowrap">
+                            {category.title}
+                          </h3>
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Category node with connecting branch */}
+                    <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'} mt-16`}>
+                      <div className={`inline-block w-full max-w-lg bg-card border border-border rounded-2xl p-5 transition-opacity duration-300 ${isLeft ? 'mr-8' : 'ml-8'}`}>
+                        {/* Skills flowing from category */}
+                        <div className="flex flex-wrap gap-2 justify-start">
+                          {category.skills.map((skill, skillIndex) => {
+                            const skillData = skillLogos[skill];
+                            const iconSlug = skillData?.icon;
+                            const iconColor = skillData?.color;
+                            const invertInDark = skillData?.invertInDark;
+
+                            return (
+                              <motion.div
+                                key={skillIndex}
+                                initial={{
+                                  opacity: 0,
+                                  scale: 0.8,
+                                  x: isLeft ? 20 : -20
+                                }}
+                                whileInView={{
+                                  opacity: 1,
+                                  scale: 1,
+                                  x: 0
+                                }}
+                                transition={{
+                                  duration: shouldReduceMotion ? 0.2 : 0.4,
+                                  delay: shouldReduceMotion ? skillIndex * 0.02 : skillIndex * 0.04,
+                                  ease: [0.25, 0.1, 0.25, 1] as const
+                                }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                className="group hover:scale-105 transition-transform"
+                              >
+                                <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-1.5 hover:border-foreground/20 hover:bg-muted/50 transition-all">
+                                  {iconSlug && (
+                                    <img
+                                      src={`https://cdn.simpleicons.org/${iconSlug}${iconColor ? `/${iconColor.replace('#', '')}` : ''}`}
+                                      alt={skill}
+                                      className={`w-4 h-4 opacity-80 group-hover:opacity-100 transition-opacity ${invertInDark ? 'dark:invert' : ''}`}
+                                    />
+                                  )}
+                                  <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground transition-colors">
+                                    {skill}
+                                  </span>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-              </motion.div>
-            );
-          })}
+                  
+                  {/* Mobile: Stacked cards */}
+                  <div className="md:hidden bg-card border border-border rounded-xl p-5 sm:p-6 transition-opacity duration-300">
+                    <div className="mb-3">
+                      <h3 className="text-base font-semibold text-foreground">
+                        {category.title}
+                      </h3>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {category.skills.map((skill, skillIndex) => {
+                        const skillData = skillLogos[skill];
+                        const iconSlug = skillData?.icon;
+                        const iconColor = skillData?.color;
+                        const invertInDark = skillData?.invertInDark;
+
+                        return (
+                          <motion.div
+                            key={skillIndex}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{
+                              duration: 0.2,
+                              delay: skillIndex * 0.02
+                            }}
+                            viewport={{ once: true }}
+                            className="group active:scale-95 transition-transform"
+                          >
+                            <div className="flex items-center gap-1.5 bg-card border border-border rounded-lg px-2.5 py-1.5 active:border-foreground/20 active:bg-muted/50 transition-all">
+                              {iconSlug && (
+                                <img
+                                  src={`https://cdn.simpleicons.org/${iconSlug}${iconColor ? `/${iconColor.replace('#', '')}` : ''}`}
+                                  alt={skill}
+                                  className={`w-3.5 h-3.5 opacity-80 group-active:opacity-100 transition-opacity ${invertInDark ? 'dark:invert' : ''}`}
+                                />
+                              )}
+                              <span className="text-xs font-medium text-foreground/80 group-active:text-foreground transition-colors">
+                                {skill}
+                              </span>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.section>

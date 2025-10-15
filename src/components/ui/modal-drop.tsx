@@ -130,9 +130,20 @@ const Modal: React.FC<ModalProps> = ({
   disablePadding = false,
 }) => {
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  // Detect mobile for bottom sheet
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640) // sm breakpoint
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // ESC key handler
@@ -175,24 +186,29 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   const getModalClasses = () => {
-    const base =
-      "w-auto bg-background border border-border text-card-foreground max-w-[90%] sm:max-w-xl max-h-[85vh] rounded-2xl shadow-lg m-4 relative flex flex-col"
+    // Mobile: centered modal (slightly smaller, all borders)
+    // Desktop: centered modal (auto width, all rounded corners)
+    if (isMobile) {
+      return "w-[92%] bg-background border border-border text-card-foreground max-h-[70vh] rounded-2xl shadow-lg relative flex flex-col"
+    }
+    const base = "w-auto bg-background border border-border text-card-foreground max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[85vh] rounded-2xl shadow-lg m-4 relative flex flex-col"
     return type === "overlay" ? base : `${base} border border-border`
   }
 
   if (!mounted) return null
 
   // Choose the appropriate animation variants
+  // Use scale or drop animation for all devices
   const variants = animationType === "scale" ? scaleVariants : dropVariants
 
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto">
-          {/* Stable blur layer - no animation */}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          {/* Stable blur layer - disabled on mobile for performance */}
           {type === "blur" && (
             <div
-              className="absolute inset-0 backdrop-blur-sm"
+              className="absolute inset-0 sm:backdrop-blur-sm z-[101]"
               style={{
                 WebkitBackdropFilter: "blur(8px)",
                 transform: "translateZ(0)",
@@ -206,7 +222,7 @@ const Modal: React.FC<ModalProps> = ({
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={`absolute inset-0 ${type === "blur" ? "bg-black/40" : type === "overlay" ? "bg-black/50" : ""}`}
+            className={`absolute inset-0 z-[102] ${type === "blur" ? "bg-black/70 sm:bg-black/40" : type === "overlay" ? "bg-black/70 sm:bg-black/50" : ""}`}
             onClick={handleOverlayClick}
             style={{
               transform: "translateZ(0)",
@@ -216,11 +232,12 @@ const Modal: React.FC<ModalProps> = ({
 
           {/* Modal container */}
           <div
-            className="relative flex items-center justify-center w-full h-full"
-            onClick={handleOverlayClick}
+            className={cn(
+              "relative z-[103] flex w-full h-full pointer-events-none items-center justify-center"
+            )}
             style={{
-              alignItems: position === 0 ? "center" : "flex-start",
-              paddingTop: position === 0 ? 0 : `calc(50vh - ${position}px)`,
+              alignItems: position !== 0 ? "flex-start" : undefined,
+              paddingTop: position !== 0 ? `calc(50vh - ${position}px)` : 0,
             }}
           >
             <motion.div
@@ -228,8 +245,9 @@ const Modal: React.FC<ModalProps> = ({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className={cn(getModalClasses(), className)}
+              className={cn(getModalClasses(), "overflow-hidden", className)}
               onClick={(e) => e.stopPropagation()}
+              style={{ pointerEvents: "auto" }}
             >
             {title ? (
               <div
@@ -260,36 +278,46 @@ const Modal: React.FC<ModalProps> = ({
                       </span>
                     )}
                     <button
-                      className="p-1 rounded-md hover:bg-muted transition-colors"
-                      onClick={onClose}
+                      className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center relative z-10 touch-manipulation"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onClose();
+                      }}
+                      type="button"
                       aria-label="Close modal"
                     >
-                      <X size={20} weight="bold" />
+                      <X size={24} weight="bold" className="sm:w-5 sm:h-5" />
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               showCloseButton && (
-                <div className="absolute top-6 right-6 flex items-center gap-2">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 z-10">
                   {showEscText && (
                     <span className="hidden lg:inline px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded">
                       ESC
                     </span>
                   )}
                   <button
-                    className="p-1 rounded-md hover:bg-muted transition-colors"
-                    onClick={onClose}
+                    className="p-2 sm:p-1 rounded-md hover:bg-muted active:bg-muted transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center relative z-10 touch-manipulation"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onClose();
+                    }}
+                    type="button"
                     aria-label="Close modal"
                   >
-                    <X size={20} weight="bold" />
+                    <X size={24} weight="bold" className="sm:w-5 sm:h-5" />
                   </button>
                 </div>
               )
             )}
 
             <div
-              className={cn(!disablePadding && (!title ? "p-6 pt-12" : "p-6"))}
+              className={cn(!disablePadding && (!title ? "p-4 pt-14 sm:p-6 sm:pt-12" : "p-4 sm:p-6"))}
             >
               {children}
             </div>

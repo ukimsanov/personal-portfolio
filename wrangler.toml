@@ -18,3 +18,8 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAB3bEMvn_6FTfB4y"
   [assets]
   directory = ".open-next/assets"
   binding = "ASSETS"
+
+  # Server-side secrets - set these using wrangler secret put command:
+  # wrangler secret put TURNSTILE_SECRET_KEY
+  # wrangler secret put DISCORD_WEBHOOK_URL
+  # wrangler secret put DISCORD_WEBHOOK_URL

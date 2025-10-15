@@ -2,20 +2,21 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
-import ContactForm from "@/components/ContactForm";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import { DotBackground } from "@/components/ui/grid-background";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <DotBackground className="min-h-screen">
       <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
         <Header />
         <Hero />
         <Projects />
         <Skills />
-        <ContactForm />
+        <Contact />
         <Footer />
       </div>
-    </div>
+    </DotBackground>
   );
 }
