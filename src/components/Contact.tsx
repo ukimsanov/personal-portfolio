@@ -7,31 +7,90 @@ import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/ContactForm";
 import { Highlighter } from "@/components/ui/highlighter";
 import { getCalApi } from "@calcom/embed-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Contact = () => {
   const shouldReduceMotion = useReducedMotion();
+  const [calLoaded, setCalLoaded] = useState(false);
 
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ namespace: "15min" });
-      cal("ui", {
-        theme: "auto",
-        styles: { branding: { brandColor: "#3b82f6" } },
-        hideEventTypeDetails: false,
-      });
+      try {
+        console.log('[Cal.com Debug] Initializing Cal.com embed...');
+        
+        // Initialize both namespaces
+        const cal15 = await getCalApi({ namespace: "15min" });
+        const cal30 = await getCalApi({ namespace: "30min" });
+        
+        console.log('[Cal.com Debug] Cal API loaded successfully');
+        
+        // Configure UI for both
+        cal15("ui", {
+          theme: "auto",
+          styles: { branding: { brandColor: "#3b82f6" } },
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+        
+        cal30("ui", {
+          theme: "auto",
+          styles: { branding: { brandColor: "#3b82f6" } },
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+        
+        console.log('[Cal.com Debug] UI configured for both calendars');
+        setCalLoaded(true);
+      } catch (error) {
+        console.error('[Cal.com Debug] Error initializing Cal.com:', error);
+      }
     })();
   }, []);
 
   const handleCalClick = async (duration: '15min' | '30min') => {
-    const cal = await getCalApi({ namespace: duration });
-    cal("ui", {
-      theme: "auto",
-      styles: { branding: { brandColor: "#3b82f6" } },
-    });
-    cal("modal", {
-      calLink: `ukimsanov/${duration}`,
-    });
+    try {
+      console.log(`[Cal.com Debug] Opening ${duration} modal...`);
+      console.log('[Cal.com Debug] User agent:', navigator.userAgent);
+      console.log('[Cal.com Debug] Window dimensions:', {
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        devicePixelRatio: window.devicePixelRatio
+      });
+      
+      const cal = await getCalApi({ namespace: duration });
+      
+      console.log(`[Cal.com Debug] Opening modal for ${duration}...`);
+      
+      // Simply open the modal - UI config is already set in useEffect
+      cal("modal", {
+        calLink: `ukimsanov/${duration}`,
+        config: {
+          layout: "month_view",
+        }
+      });
+      
+      console.log('[Cal.com Debug] Modal opened successfully');
+      
+      // Check if modal element was created
+      setTimeout(() => {
+        const modalElements = document.querySelectorAll('cal-modal-box');
+        console.log('[Cal.com Debug] Modal elements found:', modalElements.length);
+        modalElements.forEach((el, idx) => {
+          console.log(`[Cal.com Debug] Modal ${idx}:`, {
+            state: el.getAttribute('state'),
+            uid: el.getAttribute('uid'),
+            display: window.getComputedStyle(el).display,
+            visibility: window.getComputedStyle(el).visibility,
+            zIndex: window.getComputedStyle(el).zIndex,
+            position: window.getComputedStyle(el).position,
+            opacity: window.getComputedStyle(el).opacity,
+          });
+        });
+      }, 500);
+      
+    } catch (error) {
+      console.error('[Cal.com Debug] Error opening modal:', error);
+    }
   };
 
   return (
@@ -152,6 +211,12 @@ const Contact = () => {
                     </div>
                   </button>
                 </div>
+                
+                {calLoaded && (
+                  <p className="text-xs text-muted-foreground text-center mt-2">
+                    ✓ Calendar loaded
+                  </p>
+                )}
               </div>
             </Card>
           </TabsContent>

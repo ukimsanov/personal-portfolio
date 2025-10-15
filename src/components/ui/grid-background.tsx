@@ -13,7 +13,7 @@ export function GridBackground({ children, className }: { children?: React.React
 
 export function DotBackground({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("relative w-full bg-background bg-[radial-gradient(#8883_1px,transparent_1px)] [background-size:16px_16px]", className)}>
+    <div className={cn("relative w-full bg-background bg-[radial-gradient(#8883_1px,transparent_1px)] [background-size:16px_16px]", className)} style={{ isolation: 'auto' }}>
       {children}
     </div>
   );
