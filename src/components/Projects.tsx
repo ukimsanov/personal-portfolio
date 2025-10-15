@@ -104,7 +104,7 @@ export function Projects() {
                 }
             )}
           >
-            <Card className="w-full group md:hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] dark:md:hover:shadow-[0_8px_30px_rgba(96,165,250,0.15)] transition-all duration-300 md:hover:-translate-y-2 md:hover:border-blue-500/50 dark:md:hover:border-blue-400/50 active:scale-[0.98] md:active:scale-100">
+            <Card className="w-full group md:hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] dark:md:hover:shadow-[0_8px_30px_rgba(96,165,250,0.15)] transition-all duration-200 ease-out md:hover:-translate-y-2 md:hover:border-blue-500/50 dark:md:hover:border-blue-400/50 active:scale-[0.98] md:active:scale-100">
               <div className="flex flex-col lg:flex-row">
                 {/* Project Info */}
                 <div
@@ -168,7 +168,7 @@ export function Projects() {
                       <img
                         src={project.imageUrl}
                         alt={project.title}
-                        className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-300 ease-out"
                       />
                     </div>
                   ) : (

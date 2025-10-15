@@ -187,16 +187,18 @@ const Skills = () => {
     }
   };
 
-  const categoryVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: shouldReduceMotion ? 10 : 20 
+  const getCategoryVariants = (isLeft: boolean) => ({
+    hidden: {
+      opacity: 0,
+      x: shouldReduceMotion ? 0 : (isLeft ? 40 : -40),
+      y: 0
     },
-    visible: { 
-      opacity: 1, 
-      y: 0 
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0
     }
-  };
+  });
 
   return (
     <motion.section
@@ -277,7 +279,7 @@ const Skills = () => {
               return (
                 <motion.div
                   key={categoryIndex}
-                  variants={categoryVariants}
+                  variants={getCategoryVariants(isLeft)}
                   initial="hidden"
                   whileInView="visible"
                   transition={{
