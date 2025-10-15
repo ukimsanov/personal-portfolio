@@ -62,6 +62,23 @@ const config: Config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "cell-ripple": "cell-ripple var(--duration, 400ms) ease-out var(--delay, 0ms)",
+      },
+      keyframes: {
+        "cell-ripple": {
+          "0%": {
+            opacity: "0.4",
+            transform: "scale(1)",
+          },
+          "50%": {
+            opacity: "0.8",
+            transform: "scale(1.05)",
+          },
+          "100%": {
+            opacity: "0.4",
+            transform: "scale(1)",
+          },
+        },
       },
     },
   },
