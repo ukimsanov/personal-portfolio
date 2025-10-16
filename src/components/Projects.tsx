@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 import { resumeData } from "@/data/resume";
 import { Card } from "@/components/ui/card";
 import { Github, ExternalLink } from "lucide-react";
@@ -164,11 +165,14 @@ export function Projects() {
                 {/* Project Preview */}
                 <div className="lg:w-72 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
                   {project.imageUrl ? (
-                    <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border">
-                      <img
+                    <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border bg-muted flex items-center justify-center group/preview relative">
+                      <Image
                         src={project.imageUrl}
                         alt={project.title}
-                        className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-300 ease-out"
+                        fill
+                        quality={90}
+                        sizes="(max-width: 1024px) 100vw, 288px"
+                        className="object-contain md:group-hover/preview:scale-105 transition-transform duration-300 ease-out cursor-pointer"
                       />
                     </div>
                   ) : (
@@ -260,11 +264,14 @@ export function Projects() {
 
                 {/* Project Image */}
                 {projects[selectedProject].imageUrl ? (
-                  <div>
-                    <img
+                  <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[300px] sm:min-h-[400px]">
+                    <Image
                       src={projects[selectedProject].imageUrl}
                       alt={projects[selectedProject].title}
-                      className="w-full max-h-64 sm:max-h-96 object-cover rounded-lg border border-border"
+                      width={800}
+                      height={600}
+                      quality={95}
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   </div>
                 ) : (

@@ -150,6 +150,7 @@ export const resumeData: {
     },
     {
       title: "Horizon Banking App",
+      imageUrl: "/projects/horzobank-preview.png",
       techStack: ["Next.js", "TypeScript", "Appwrite", "TailwindCSS", "Plaid", "Dwolla"],
       description: [
         "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
@@ -158,9 +159,9 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "https://github.com/ukimsanov/horizon-banking-app",
+        href: "https://github.com/ukimsanov/horzo-bank",
       },
-      websiteUrl: "https://horizon-banking-app.vercel.app",
+      websiteUrl: "https://horzobank.vercel.app",
     },
     {
       title: "YouTube Lecture Notes AI Agent",
@@ -177,6 +178,7 @@ export const resumeData: {
     },
     {
       title: "CryptoLive",
+      imageUrl: "/projects/cryptolive-preview.png",
       techStack: ["React", "FastAPI", "WebSockets", "Tailwind CSS", "Ant Design", "Kraken API", "lightweight-charts"],
       description: [
         "Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API.",
@@ -186,11 +188,13 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "https://github.com/ukimsanov/crypto-list",
+        href: "https://github.com/ukimsanov/crypto-live",
       },
+      websiteUrl: "https://crypto-live-omega.vercel.app",
     },
     {
       title: "Neural Digit Canvas",
+      imageUrl: "/projects/digitcanvas-preview.png",
       techStack: ["Python", "PyTorch", "Next.js", "AWS Lambda", "Docker", "FastAPI", "ECR", "GitHub Actions"],
       description: [
         "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture.",
@@ -200,8 +204,9 @@ export const resumeData: {
       ],
       link: {
         label: "github.com",
-        href: "https://github.com/ukimsanov/mnist-neural-network-classifier",
+        href: "https://github.com/ukimsanov/neural-digit-canvas",
       },
+      websiteUrl: "https://neural-digit-canvas.vercel.app",
     },
   ],
   footer: "© 2025 Ular Kimsanov. All rights reserved.",
