@@ -191,7 +191,7 @@ const Contact = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={() => handleCalClick('15min')}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full cursor-pointer"
                   >
                     <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
                     <div>
@@ -202,7 +202,7 @@ const Contact = () => {
 
                   <button
                     onClick={() => handleCalClick('30min')}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full cursor-pointer"
                   >
                     <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
                     <div>
