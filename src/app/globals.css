@@ -165,8 +165,32 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Disable native smooth scroll - Lenis will handle it */
+    scroll-behavior: auto;
     scroll-padding-top: 80px;
+    /* Enhanced smoothness for webkit browsers */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Lenis smooth scroll - ensure smooth rendering */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
   
   * {
@@ -212,6 +236,16 @@
   /* Smooth momentum scrolling on iOS */
   html, body {
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Performance hints for animated elements */
+  [data-animate] {
+    will-change: transform, opacity;
+  }
+
+  /* Remove will-change after animation completes to free resources */
+  [data-animate].animation-complete {
+    will-change: auto;
   }
 }
 

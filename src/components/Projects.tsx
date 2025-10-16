@@ -239,7 +239,7 @@ export function Projects() {
             </div>
 
             {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-5 sm:p-6 pb-6 sm:pb-8 overscroll-contain min-h-0">
+            <div data-lenis-prevent className="flex-1 overflow-y-auto p-5 sm:p-6 pb-6 sm:pb-8 overscroll-contain min-h-0">
               <div className="space-y-4 sm:space-y-6">
                 {/* Project Description */}
                 <div className="space-y-3 sm:space-y-4">
