@@ -208,7 +208,7 @@ const Modal: React.FC<ModalProps> = ({
           {/* Stable blur layer - disabled on mobile for performance */}
           {type === "blur" && (
             <div
-              className="absolute inset-0 sm:backdrop-blur-sm z-[101]"
+              className="absolute inset-0 sm:backdrop-blur-xs z-[101]"
               style={{
                 WebkitBackdropFilter: "blur(8px)",
                 transform: "translateZ(0)",

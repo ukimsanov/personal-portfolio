@@ -1,6 +1,6 @@
 
 "use client";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 // Skill logos mapping with accurate brand-colored icons
@@ -130,13 +130,21 @@ const Skills = () => {
     offset: ["start 40%", "end 60%"],
   });
 
-  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, beamHeight]);
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+  // Apply spring smoothing for Apple-like fluidity
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const heightTransform = useTransform(smoothProgress, [0, 1], [0, beamHeight]);
+  const opacityTransform = useTransform(smoothProgress, [0, 0.1], [0, 1]);
 
   // Track which category the beam has reached with smooth transitions
   useEffect(() => {
     let rafId: number;
-    const unsubscribe = heightTransform.on("change", (latest) => {
+    // Use smoothProgress for smoother category transitions
+    const unsubscribe = smoothProgress.on("change", (latest) => {
       // Use requestAnimationFrame to smooth out updates
       if (rafId) cancelAnimationFrame(rafId);
 
@@ -145,15 +153,18 @@ const Skills = () => {
           const categoryElements = contentRef.current.querySelectorAll('[data-category-index]');
           let newActiveCategory = -1;
 
-          // Only start checking if beam has actually started moving (at least 5% progress)
-          if (latest > beamHeight * 0.02) {
+          // Calculate current beam height from smooth progress
+          const currentHeight = latest * beamHeight;
+
+          // Only start checking if beam has actually started moving (at least 2% progress)
+          if (currentHeight > beamHeight * 0.02) {
             categoryElements.forEach((element, index) => {
               const rect = element.getBoundingClientRect();
               const contentRect = contentRef.current!.getBoundingClientRect();
               const relativeTop = rect.top - contentRect.top;
 
               // Check if beam has reached this category header
-              if (latest >= relativeTop) {
+              if (currentHeight >= relativeTop) {
                 newActiveCategory = index;
               }
             });
@@ -169,32 +180,33 @@ const Skills = () => {
       unsubscribe();
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [heightTransform, beamHeight]);
+  }, [smoothProgress, beamHeight]);
 
   // Mobile-optimized animation variants
   const sectionVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: shouldReduceMotion ? 10 : 50 
+    hidden: {
+      opacity: 0,
+      y: shouldReduceMotion ? 10 : 50
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
-        duration: shouldReduceMotion ? 0.3 : 0.6,
-        ease: [0.25, 0.1, 0.25, 1] as const
+        duration: shouldReduceMotion ? 0.3 : 0.8,
+        // Apple-inspired smooth ease-out curve
+        ease: [0.25, 0.46, 0.45, 0.94] as const
       }
     }
   };
 
   const categoryVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: shouldReduceMotion ? 10 : 20 
+    hidden: {
+      opacity: 0,
+      y: shouldReduceMotion ? 10 : 20
     },
-    visible: { 
-      opacity: 1, 
-      y: 0 
+    visible: {
+      opacity: 1,
+      y: 0
     }
   };
 
@@ -213,8 +225,9 @@ const Skills = () => {
           initial={{ opacity: 0, y: shouldReduceMotion ? 10 : 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
-            duration: shouldReduceMotion ? 0.2 : 0.5,
-            ease: [0.25, 0.1, 0.25, 1]
+            duration: shouldReduceMotion ? 0.2 : 0.6,
+            // Apple-inspired smooth ease-out curve
+            ease: [0.25, 0.46, 0.45, 0.94]
           }}
           viewport={{ once: true, amount: 0.8 }}
           className="text-2xl font-bold mb-12 sm:mb-16 text-center"
@@ -281,9 +294,10 @@ const Skills = () => {
                   initial="hidden"
                   whileInView="visible"
                   transition={{
-                    duration: shouldReduceMotion ? 0.3 : 0.7,
+                    duration: shouldReduceMotion ? 0.3 : 0.8,
                     delay: shouldReduceMotion ? categoryIndex * 0.08 : categoryIndex * 0.15,
-                    ease: [0.25, 0.1, 0.25, 1] as const
+                    // Apple-inspired smooth ease-out curve
+                    ease: [0.25, 0.46, 0.45, 0.94] as const
                   }}
                   viewport={{ once: true, amount: 0.2 }}
                   className="relative"
@@ -305,8 +319,9 @@ const Skills = () => {
                               : "0 10px 15px -3px rgba(59, 130, 246, 0.1)"
                           }}
                           transition={{
-                            duration: 0.8,
-                            ease: [0.25, 0.1, 0.25, 1]
+                            duration: 1.0,
+                            // Apple-inspired smooth ease-out curve for glow effect
+                            ease: [0.25, 0.46, 0.45, 0.94]
                           }}
                           className="bg-background border-2 rounded-full px-4 py-2"
                         >
@@ -342,9 +357,10 @@ const Skills = () => {
                                   x: 0
                                 }}
                                 transition={{
-                                  duration: shouldReduceMotion ? 0.2 : 0.4,
+                                  duration: shouldReduceMotion ? 0.2 : 0.5,
                                   delay: shouldReduceMotion ? skillIndex * 0.02 : skillIndex * 0.04,
-                                  ease: [0.25, 0.1, 0.25, 1] as const
+                                  // Apple-inspired smooth ease-out curve
+                                  ease: [0.25, 0.46, 0.45, 0.94] as const
                                 }}
                                 viewport={{ once: true, amount: 0.3 }}
                                 className="group hover:scale-105 transition-transform"

@@ -307,7 +307,7 @@ export async function POST(request: NextRequest) {
         fieldErrors: validation.fieldErrors
       }, { status: 400 });
     }
-    
+
     // Sanitize input
     const sanitizedData = sanitizeInput(body);
     
