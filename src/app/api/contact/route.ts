@@ -308,24 +308,6 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Validate Turnstile CAPTCHA token
-    const turnstileToken = body.turnstileToken;
-    const clientIP = request.headers.get('cf-connecting-ip') || 
-                     request.headers.get('x-forwarded-for') || 
-                     request.headers.get('x-real-ip');
-    
-    const turnstileValidation = await validateTurnstileToken(turnstileToken, clientIP || undefined);
-    if (!turnstileValidation.isValid) {
-      console.error('❌ Turnstile validation failed:', turnstileValidation.error);
-      return NextResponse.json({
-        success: false,
-        message: turnstileValidation.error || 'CAPTCHA verification failed',
-        fieldErrors: { turnstileToken: turnstileValidation.error }
-      }, { status: 400 });
-    }
-
-    console.log('✅ Turnstile validation passed');
-    
     // Sanitize input
     const sanitizedData = sanitizeInput(body);
     

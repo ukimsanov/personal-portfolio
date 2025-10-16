@@ -193,7 +193,7 @@ const Contact = () => {
                     onClick={() => handleCalClick('15min')}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full"
                   >
-                    <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
                     <div>
                       <div className="text-sm font-medium">15 Minutes</div>
                       <div className="text-xs text-muted-foreground">Quick chat</div>
@@ -204,7 +204,7 @@ const Contact = () => {
                     onClick={() => handleCalClick('30min')}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-left w-full"
                   >
-                    <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
                     <div>
                       <div className="text-sm font-medium">30 Minutes</div>
                       <div className="text-xs text-muted-foreground">In-depth discussion</div>

@@ -198,7 +198,7 @@ export function Projects() {
         >
           <div className="flex flex-col h-full max-h-[70vh] sm:max-h-[85vh] overflow-hidden">
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 p-5 pb-3 sm:p-6 sm:pb-4 border-b border-border">
+            <div className="shrink-0 p-5 pb-3 sm:p-6 sm:pb-4 border-b border-border">
               <h2 className="text-xl sm:text-2xl font-bold mb-3 pr-12 sm:pr-0">{projects[selectedProject].title}</h2>
               <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                 {projects[selectedProject].techStack.map((tech, techIndex) => (
@@ -251,7 +251,7 @@ export function Projects() {
                   <div className="space-y-2 sm:space-y-3">
                     {projects[selectedProject].description.slice(1).map((desc, i) => (
                       <div key={i} className="flex items-start">
-                        <span className="text-muted-foreground mr-2 sm:mr-3 flex-shrink-0">•</span>
+                        <span className="text-muted-foreground mr-2 sm:mr-3 shrink-0">•</span>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
                     ))}

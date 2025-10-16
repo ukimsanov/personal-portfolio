@@ -1,83 +1,182 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tw-animate-css";
+@import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+/* Configure dark mode variant - must match the class-based dark mode */
+@variant dark (&:is(.dark, .dark *));
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  /* Font configuration */
+  --font-sans: 'Inter', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
+  
+  /* Border radius */
+  --radius: 0.5rem;
+}
 
-@layer base {
-  :root {
-    --background: 0 0% 98%;
-    --foreground: 222.2 84% 4.9%;
+:root {
+  --background: 0 0% 98%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 98%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 84% 4.9%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
 
-    --card: 0 0% 98%;
-    --card-foreground: 222.2 84% 4.9%;
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+}
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+/* Create custom utility classes for our theme colors */
+@utility bg-background {
+  background-color: hsl(var(--background));
+}
 
-    --primary: 222.2 84% 4.9%;
-    --primary-foreground: 210 40% 98%;
+@utility bg-foreground {
+  background-color: hsl(var(--foreground));
+}
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 84% 4.9%;
+@utility bg-card {
+  background-color: hsl(var(--card));
+}
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+@utility bg-popover {
+  background-color: hsl(var(--popover));
+}
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 84% 4.9%;
+@utility bg-primary {
+  background-color: hsl(var(--primary));
+}
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+@utility bg-secondary {
+  background-color: hsl(var(--secondary));
+}
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+@utility bg-muted {
+  background-color: hsl(var(--muted));
+}
 
-    --radius: 0.5rem;
-  }
+@utility bg-accent {
+  background-color: hsl(var(--accent));
+}
 
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+@utility bg-destructive {
+  background-color: hsl(var(--destructive));
+}
 
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+@utility text-background {
+  color: hsl(var(--background));
+}
 
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
+@utility text-foreground {
+  color: hsl(var(--foreground));
+}
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+@utility text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+@utility text-popover-foreground {
+  color: hsl(var(--popover-foreground));
+}
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+@utility text-primary {
+  color: hsl(var(--primary));
+}
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+@utility text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+@utility text-secondary {
+  color: hsl(var(--secondary));
+}
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-  }
+@utility text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+
+@utility text-muted {
+  color: hsl(var(--muted));
+}
+
+@utility text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+@utility text-accent {
+  color: hsl(var(--accent));
+}
+
+@utility text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+
+@utility text-destructive {
+  color: hsl(var(--destructive));
+}
+
+@utility text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+
+@utility border-border {
+  border-color: hsl(var(--border));
+}
+
+@utility border-input {
+  border-color: hsl(var(--input));
+}
+
+@utility ring-ring {
+  --tw-ring-color: hsl(var(--ring));
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+  
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
     font-weight: 400;
     letter-spacing: -0.01em;
@@ -102,6 +201,17 @@
     /* *:not(html):not(body):not(input):not(textarea):not(select) {
       transform: translateZ(0);
     } */
+  }
+
+  /* Smooth scroll performance optimization */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Smooth momentum scrolling on iOS */
+  html, body {
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -135,15 +245,6 @@
 ::view-transition-old(root), ::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 /* Cal.com Modal Fix - Ensure modals always appear on top */

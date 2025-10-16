@@ -116,7 +116,7 @@ const InputField: React.FC<InputFieldProps> = ({
           animate={{ opacity: 1, y: 0 }}
           className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
         >
-          <AlertCircle className="w-3 h-3 flex-shrink-0" />
+          <AlertCircle className="w-3 h-3 shrink-0" />
           {errorMessage}
         </motion.p>
       )}
@@ -459,7 +459,7 @@ const ContactForm = () => {
     }
 
     // Validate CAPTCHA token
-    if (!turnstileToken) {
+    if (!formData.turnstileToken) {
       setStatus({
         type: 'error',
         message: 'Please complete the CAPTCHA verification.'
@@ -475,10 +475,7 @@ const ContactForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          turnstileToken
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -624,7 +621,7 @@ const ContactForm = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
                   >
-                    <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 shrink-0" />
                     {fieldErrors.turnstile}
                   </motion.p>
                 )}
