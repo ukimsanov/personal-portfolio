@@ -18,6 +18,8 @@ interface Project {
     href: string;
   };
   imageUrl?: string;
+  mobileImageUrls?: string[]; // For mobile screenshots (vertical) - shown in horizontal scrollable row
+  desktopImageUrls?: string[]; // For desktop/web app screenshots (horizontal) - shown in vertical stack
   websiteUrl?: string;
 }
 
@@ -262,17 +264,73 @@ export function Projects() {
                   </div>
                 </div>
 
-                {/* Project Image */}
-                {projects[selectedProject].imageUrl ? (
-                  <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[300px] sm:min-h-[400px]">
-                    <Image
-                      src={projects[selectedProject].imageUrl}
-                      alt={projects[selectedProject].title}
-                      width={800}
-                      height={600}
-                      quality={95}
-                      className="w-full h-auto object-contain rounded-lg"
-                    />
+                {/* Project Image(s) */}
+                {(projects[selectedProject].imageUrl || projects[selectedProject].mobileImageUrls || projects[selectedProject].desktopImageUrls) ? (
+                  <div className="w-full space-y-4 sm:space-y-5">
+                    {/* Show imageUrl first if it exists - always full width */}
+                    {projects[selectedProject].imageUrl && (
+                      <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[300px] sm:min-h-[400px]">
+                        <Image
+                          src={projects[selectedProject].imageUrl!}
+                          alt={projects[selectedProject].title}
+                          width={800}
+                          height={600}
+                          quality={95}
+                          className="w-full h-auto object-contain rounded-lg"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Show mobile screenshots (mobileImageUrls) if they exist - horizontal scrollable row */}
+                    {projects[selectedProject].mobileImageUrls && (
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 text-muted-foreground">Mobile Screenshots</h3>
+                        <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2">
+                          {projects[selectedProject].mobileImageUrls!.map((imageUrl, idx) => (
+                            <div 
+                              key={idx}
+                              className="flex-none w-[calc((100%-16px)/3)] sm:w-[calc((100%-24px)/3)] rounded-lg border border-border bg-muted overflow-hidden relative"
+                            >
+                              <Image
+                                src={imageUrl}
+                                alt={`${projects[selectedProject].title} - Mobile Screenshot ${idx + 1}`}
+                                width={430}
+                                height={932}
+                                quality={95}
+                                className="w-full h-auto object-contain rounded-lg"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        {projects[selectedProject].mobileImageUrls!.length > 3 && (
+                          <p className="text-xs text-muted-foreground mt-2 text-center sm:text-left">
+                            Swipe to see more screenshots
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Show desktop screenshots (desktopImageUrls) if they exist - vertical stack */}
+                    {projects[selectedProject].desktopImageUrls && (
+                      <div className="space-y-3 sm:space-y-4">
+                        <h3 className="text-sm font-medium text-muted-foreground">Desktop Screenshots</h3>
+                        {projects[selectedProject].desktopImageUrls!.map((imageUrl, idx) => (
+                          <div 
+                            key={idx}
+                            className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[200px] sm:min-h-[300px]"
+                          >
+                            <Image
+                              src={imageUrl}
+                              alt={`${projects[selectedProject].title} - Desktop Screenshot ${idx + 1}`}
+                              width={1920}
+                              height={1080}
+                              quality={95}
+                              className="w-full h-auto object-contain rounded-lg"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center border border-border">

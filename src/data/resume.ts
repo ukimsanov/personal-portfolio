@@ -8,6 +8,8 @@ interface Project {
     href: string;
   };
   imageUrl?: string;
+  mobileImageUrls?: string[]; // For mobile screenshots (vertical) - shown in horizontal scrollable row
+  desktopImageUrls?: string[]; // For desktop/web app screenshots (horizontal) - shown in vertical stack
   websiteUrl?: string;
 }
 
@@ -121,6 +123,12 @@ export const resumeData: {
   projects: [
     {
       title: "Multi-Agent Sports Analytics App",
+      imageUrl: "/projects/betsmart-preview.png",
+      mobileImageUrls: [
+        "/projects/betsmart-preview1.png", 
+        "/projects/betsmart-preview2.png",
+        "/projects/betsmart-preview3.png",
+      ],
       techStack: ["LangChain", "LangGraph", "CrewAI", "SvelteKit", "Python", "FastAPI", "TypeScript"],
       description: [
         "Led the architecture and development of a multi-agent AI system for sports analytics and prediction app.",
@@ -135,7 +143,8 @@ export const resumeData: {
       },
     },
     {
-      title: "NSF Cybersecurity Education Platform",
+      title: "NSF Cybersecurity Platform",
+      imageUrl: "/projects/cyberford-preview.png",
       techStack: ["Next.js", "TypeScript", "FastAPI", "Cloudflare Workers", "D1 Database", "TailwindCSS"],
       description: [
         "Engineered a full-stack cybersecurity education platform for high school students, funded by an NSF grant.",
