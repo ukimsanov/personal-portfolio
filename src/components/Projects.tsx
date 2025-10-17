@@ -165,20 +165,20 @@ export function Projects() {
                 </div>
 
                 {/* Project Preview */}
-                <div className="lg:w-72 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
+                <div className="lg:w-96 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
                   {project.imageUrl ? (
-                    <div className="w-full h-32 sm:h-40 lg:h-48 rounded-lg overflow-hidden border border-border bg-muted flex items-center justify-center group/preview relative">
+                    <div className="w-full h-40 sm:h-48 lg:h-56 rounded-lg overflow-hidden border border-border bg-muted flex items-center justify-center group/preview relative">
                       <Image
                         src={project.imageUrl}
                         alt={project.title}
                         fill
                         quality={90}
-                        sizes="(max-width: 1024px) 100vw, 288px"
-                        className="object-contain md:group-hover/preview:scale-105 transition-transform duration-300 ease-out cursor-pointer"
+                        sizes="(max-width: 1024px) 100vw, 384px"
+                        className="object-cover object-top md:group-hover/preview:scale-105 transition-transform duration-300 ease-out cursor-pointer"
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-32 sm:h-40 lg:h-48 bg-muted rounded-lg flex items-center justify-center border border-border">
+                    <div className="w-full h-40 sm:h-48 lg:h-56 bg-muted rounded-lg flex items-center justify-center border border-border">
                       <span className="text-muted-foreground text-xs sm:text-sm">Preview</span>
                     </div>
                   )}
@@ -238,7 +238,7 @@ export function Projects() {
                     className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
                   >
                     <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
-                    <span className="text-sm sm:text-base">Live Demo</span>
+                    <span className="text-sm sm:text-base">Website</span>
                   </a>
                 )}
               </div>
@@ -269,12 +269,12 @@ export function Projects() {
                   <div className="w-full space-y-4 sm:space-y-5">
                     {/* Show imageUrl first if it exists - always full width */}
                     {projects[selectedProject].imageUrl && (
-                      <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[300px] sm:min-h-[400px]">
+                      <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative">
                         <Image
                           src={projects[selectedProject].imageUrl!}
                           alt={projects[selectedProject].title}
-                          width={800}
-                          height={600}
+                          width={1920}
+                          height={1080}
                           quality={95}
                           className="w-full h-auto object-contain rounded-lg"
                         />
