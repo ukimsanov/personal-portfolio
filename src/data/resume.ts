@@ -123,11 +123,11 @@ export const resumeData: {
   projects: [
     {
       title: "Multi-Agent Sports Analytics App",
-      imageUrl: "/projects/betsmart-preview.png",
+      imageUrl: "/projects/multi-agent-sports/betsmart-preview.png",
       mobileImageUrls: [
-        "/projects/betsmart-preview1.png", 
-        "/projects/betsmart-preview2.png",
-        "/projects/betsmart-preview3.png",
+        "/projects/multi-agent-sports/betsmart-preview1.png", 
+        "/projects/multi-agent-sports/betsmart-preview2.png",
+        "/projects/multi-agent-sports/betsmart-preview3.png",
       ],
       techStack: ["LangChain", "LangGraph", "CrewAI", "SvelteKit", "Python", "FastAPI", "TypeScript"],
       description: [
@@ -144,7 +144,7 @@ export const resumeData: {
     },
     {
       title: "NSF Cybersecurity Platform",
-      imageUrl: "/projects/cyberford-preview.png",
+      imageUrl: "/projects/nsf-cybersecurity/cyberford-preview.png",
       techStack: ["Next.js", "TypeScript", "FastAPI", "Cloudflare Workers", "D1 Database", "TailwindCSS"],
       description: [
         "Engineered a full-stack cybersecurity education platform for high school students, funded by an NSF grant.",
@@ -159,7 +159,7 @@ export const resumeData: {
     },
     {
       title: "Horizon Banking App",
-      imageUrl: "/projects/horzobank-preview.png",
+      imageUrl: "/projects/horzobank/horzobank-preview.png",
       techStack: ["Next.js", "TypeScript", "Appwrite", "TailwindCSS", "Plaid", "Dwolla"],
       description: [
         "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
@@ -187,7 +187,7 @@ export const resumeData: {
     },
     {
       title: "CryptoLive",
-      imageUrl: "/projects/cryptolive-preview.png",
+      imageUrl: "/projects/cryptolive/cryptolive-preview.png",
       techStack: ["React", "FastAPI", "WebSockets", "Tailwind CSS", "Ant Design", "Kraken API", "lightweight-charts"],
       description: [
         "Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API.",
@@ -203,7 +203,7 @@ export const resumeData: {
     },
     {
       title: "Neural Digit Canvas",
-      imageUrl: "/projects/digitcanvas-preview.png",
+      imageUrl: "/projects/digitcanvas/digitcanvas-preview.png",
       techStack: ["Python", "PyTorch", "Next.js", "AWS Lambda", "Docker", "FastAPI", "ECR", "GitHub Actions"],
       description: [
         "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture.",
