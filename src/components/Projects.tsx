@@ -8,12 +8,18 @@ import { resumeData } from "@/data/resume";
 import { Card } from "@/components/ui/card";
 import { Github, ExternalLink } from "lucide-react";
 import Modal from "@/components/ui/modal-drop";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Project {
   title: string;
   techStack: string[];
   description: string[];
-  link: {
+  link?: {
     label: string;
     href: string;
   };
@@ -25,36 +31,49 @@ interface Project {
 
 export function Projects() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [imageLoadingStates, setImageLoadingStates] = useState<Record<number, boolean>>({});
+  const [modalImageLoaded, setModalImageLoaded] = useState(false);
+  const [modalMobileImagesLoaded, setModalMobileImagesLoaded] = useState<Record<number, boolean>>({});
+  const [modalDesktopImagesLoaded, setModalDesktopImagesLoaded] = useState<Record<number, boolean>>({});
   const projects = resumeData.projects as Project[];
 
   const handleProjectClick = (index: number) => {
     setSelectedProject(index);
+    // Reset modal image loading states
+    setModalImageLoaded(false);
+    setModalMobileImagesLoaded({});
+    setModalDesktopImagesLoaded({});
   };
 
   const closeModal = () => {
     setSelectedProject(null);
   };
 
+  const handleImageLoad = (index: number) => {
+    setImageLoadingStates((prev) => ({ ...prev, [index]: true }));
+  };
+
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <motion.section
-      id="projects"
-      initial={{ 
-        opacity: 0, 
-        y: shouldReduceMotion ? 20 : 50 
-      }}
-      animate={{ 
-        opacity: 1, 
-        y: 0 
-      }}
-      transition={{ 
-        duration: shouldReduceMotion ? 0.3 : 0.6,
-        ease: [0.25, 0.1, 0.25, 1] as const,
-        delay: shouldReduceMotion ? 0.2 : 0.4 
-      }}
-      className="py-14 pb-24 w-full"
-    >
+    <TooltipProvider>
+      <motion.section
+        id="projects"
+        initial={{ 
+          opacity: 0, 
+          y: shouldReduceMotion ? 20 : 50 
+        }}
+        animate={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          duration: shouldReduceMotion ? 0.3 : 0.6,
+          ease: [0.25, 0.1, 0.25, 1] as const,
+          delay: shouldReduceMotion ? 0.2 : 0.4 
+        }}
+        className="py-14 pb-24 w-full"
+      >
       <motion.h2 
         initial={{ 
           opacity: 0, 
@@ -108,12 +127,9 @@ export function Projects() {
             )}
           >
             <Card className="w-full group md:hover:shadow-lg transition-all duration-200 ease-out md:hover:-translate-y-1 md:hover:border-blue-500/30 dark:md:hover:border-blue-400/30 active:scale-[0.98] md:active:scale-100">
-              <div className="flex flex-col lg:flex-row">
+              <div className="flex flex-col lg:flex-row cursor-pointer" onClick={() => handleProjectClick(index)}>
                 {/* Project Info */}
-                <div
-                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer"
-                  onClick={() => handleProjectClick(index)}
-                >
+                <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4">
                   <div className="mb-4">
                     <h3 
                       className="text-lg sm:text-xl font-bold md:group-hover:text-blue-600 dark:md:group-hover:text-blue-400 transition-colors inline-block"
@@ -138,7 +154,7 @@ export function Projects() {
                   </p>
                   
                   <div className="flex items-center gap-3 sm:gap-4 pt-2" onClick={(e) => e.stopPropagation()}>
-                    {project.link.href && (
+                    {project.link?.href ? (
                       <a
                         href={project.link.href}
                         target="_blank"
@@ -148,6 +164,18 @@ export function Projects() {
                         <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>GitHub</span>
                       </a>
+                    ) : (
+                      <Tooltip delayDuration={0}>
+                        <TooltipTrigger asChild>
+                          <span className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground cursor-not-allowed text-xs sm:text-sm">
+                            <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            <span>GitHub</span>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Private Repository</p>
+                        </TooltipContent>
+                      </Tooltip>
                     )}
                     {/* Add website link if available */}
                     {project.websiteUrl && (
@@ -168,13 +196,23 @@ export function Projects() {
                 <div className="lg:w-96 px-4 sm:px-6 py-3 sm:py-4 lg:pr-6 lg:pl-0 lg:py-4 flex items-center overflow-hidden">
                   {project.imageUrl ? (
                     <div className="w-full h-40 sm:h-48 lg:h-56 rounded-lg overflow-hidden border border-border bg-muted flex items-center justify-center group/preview relative">
+                      {/* Skeleton loader */}
+                      <div
+                        className={`absolute inset-0 bg-accent/30 animate-pulse rounded-lg transition-opacity duration-300 ${
+                          imageLoadingStates[index] ? 'opacity-0' : 'opacity-100'
+                        }`}
+                      />
                       <Image
                         src={project.imageUrl}
                         alt={project.title}
                         fill
                         quality={90}
                         sizes="(max-width: 1024px) 100vw, 384px"
-                        className="object-cover object-top md:group-hover/preview:scale-105 transition-transform duration-300 ease-out cursor-pointer"
+                        className={`object-cover object-top md:group-hover/preview:scale-105 transition-all duration-500 ease-out ${
+                          imageLoadingStates[index] ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => handleImageLoad(index)}
+                        onLoadingComplete={() => handleImageLoad(index)}
                       />
                     </div>
                   ) : (
@@ -219,7 +257,7 @@ export function Projects() {
 
               {/* Links */}
               <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-                {projects[selectedProject].link.href && (
+                {projects[selectedProject].link?.href ? (
                   <a
                     href={projects[selectedProject].link.href}
                     target="_blank"
@@ -229,6 +267,18 @@ export function Projects() {
                     <Github className="w-5 h-5 sm:w-4 sm:h-4" />
                     <span className="text-sm sm:text-base">GitHub</span>
                   </a>
+                ) : (
+                  <Tooltip delayDuration={0}>
+                    <TooltipTrigger asChild>
+                      <span className="flex items-center gap-2 text-muted-foreground cursor-not-allowed min-h-[44px] sm:min-h-0">
+                        <Github className="w-5 h-5 sm:w-4 sm:h-4" />
+                        <span className="text-sm sm:text-base">GitHub</span>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Private Repository</p>
+                    </TooltipContent>
+                  </Tooltip>
                 )}
                 {projects[selectedProject].websiteUrl && (
                   <a
@@ -270,13 +320,23 @@ export function Projects() {
                     {/* Show imageUrl first if it exists - always full width */}
                     {projects[selectedProject].imageUrl && (
                       <div className="w-full rounded-lg border border-border bg-muted overflow-hidden relative">
+                        {/* Skeleton loader */}
+                        <div
+                          className={`absolute inset-0 bg-accent/30 animate-pulse rounded-lg transition-opacity duration-300 ${
+                            modalImageLoaded ? 'opacity-0' : 'opacity-100'
+                          }`}
+                        />
                         <Image
                           src={projects[selectedProject].imageUrl!}
                           alt={projects[selectedProject].title}
                           width={1920}
                           height={1080}
                           quality={95}
-                          className="w-full h-auto object-contain rounded-lg"
+                          className={`w-full h-auto object-contain rounded-lg transition-opacity duration-500 ${
+                            modalImageLoaded ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          onLoad={() => setModalImageLoaded(true)}
+                          onLoadingComplete={() => setModalImageLoaded(true)}
                         />
                       </div>
                     )}
@@ -291,13 +351,23 @@ export function Projects() {
                               key={idx}
                               className="flex-none w-[calc((100%-16px)/3)] sm:w-[calc((100%-24px)/3)] rounded-lg border border-border bg-muted overflow-hidden relative"
                             >
+                              {/* Skeleton loader */}
+                              <div
+                                className={`absolute inset-0 bg-accent/30 animate-pulse rounded-lg transition-opacity duration-300 ${
+                                  modalMobileImagesLoaded[idx] ? 'opacity-0' : 'opacity-100'
+                                }`}
+                              />
                               <Image
                                 src={imageUrl}
                                 alt={`${projects[selectedProject].title} - Mobile Screenshot ${idx + 1}`}
                                 width={430}
                                 height={932}
                                 quality={95}
-                                className="w-full h-auto object-contain rounded-lg"
+                                className={`w-full h-auto object-contain rounded-lg transition-opacity duration-500 ${
+                                  modalMobileImagesLoaded[idx] ? 'opacity-100' : 'opacity-0'
+                                }`}
+                                onLoad={() => setModalMobileImagesLoaded((prev) => ({ ...prev, [idx]: true }))}
+                                onLoadingComplete={() => setModalMobileImagesLoaded((prev) => ({ ...prev, [idx]: true }))}
                               />
                             </div>
                           ))}
@@ -319,13 +389,23 @@ export function Projects() {
                             key={idx}
                             className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[200px] sm:min-h-[300px]"
                           >
+                            {/* Skeleton loader */}
+                            <div
+                              className={`absolute inset-0 bg-accent/30 animate-pulse rounded-lg transition-opacity duration-300 ${
+                                modalDesktopImagesLoaded[idx] ? 'opacity-0' : 'opacity-100'
+                              }`}
+                            />
                             <Image
                               src={imageUrl}
                               alt={`${projects[selectedProject].title} - Desktop Screenshot ${idx + 1}`}
                               width={1920}
                               height={1080}
                               quality={95}
-                              className="w-full h-auto object-contain rounded-lg"
+                              className={`w-full h-auto object-contain rounded-lg transition-opacity duration-500 ${
+                                modalDesktopImagesLoaded[idx] ? 'opacity-100' : 'opacity-0'
+                              }`}
+                              onLoad={() => setModalDesktopImagesLoaded((prev) => ({ ...prev, [idx]: true }))}
+                              onLoadingComplete={() => setModalDesktopImagesLoaded((prev) => ({ ...prev, [idx]: true }))}
                             />
                           </div>
                         ))}
@@ -343,6 +423,7 @@ export function Projects() {
         </Modal>
       )}
     </motion.section>
+    </TooltipProvider>
   );
 }
 

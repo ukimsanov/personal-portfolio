@@ -3,7 +3,7 @@ interface Project {
   title: string;
   techStack: string[];
   description: string[];
-  link: {
+  link?: {
     label: string;
     href: string;
   };
@@ -137,10 +137,6 @@ export const resumeData: {
         "Integrated real-time sports data feeds from SportsDataIO and OptiOdds APIs via backend built with Python, FastAPI, and SSE for low-latency communication.",
         "Mentored 8+ junior interns in full-stack development, AI agent orchestration, and agile methodologies, accelerating team onboarding by 50%.",
       ],
-      link: {
-        label: "github.com",
-        href: "https://github.com/ukimsanov/multi-agent-sports-analytics-app",
-      },
     },
     {
       title: "NSF Cybersecurity Platform",
@@ -152,10 +148,6 @@ export const resumeData: {
         "Designed and developed over 22 interactive learning modules and JavaScript-based mini-games using TailwindCSS, Shadcn UI.",
         "Analyzed user data from a pilot program of 120+ students, noting a 78% lesson completion rate and achieving a user onboarding time of under 60 seconds.",
       ],
-      link: {
-        label: "github.com",
-        href: "https://github.com/ukimsanov/nsf-cybersecurity-education-platform",
-      },
     },
     {
       title: "Horizon Banking App",
