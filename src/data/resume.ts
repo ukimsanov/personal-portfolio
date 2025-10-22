@@ -193,6 +193,10 @@ export const resumeData: {
     {
       title: "CryptoLive",
       imageUrl: "/projects/cryptolive/cryptolive-preview.png",
+      desktopImageUrls: [
+        "/projects/cryptolive/cryptolive-screen1.png",
+        "/projects/cryptolive/cryptolive-screen2.png",
+      ],
       techStack: ["React", "FastAPI", "WebSockets", "Tailwind CSS", "Ant Design", "Kraken API", "lightweight-charts"],
       description: [
         "Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API.",
@@ -209,6 +213,12 @@ export const resumeData: {
     {
       title: "Neural Digit Canvas",
       imageUrl: "/projects/digitcanvas/digitcanvas-preview.png",
+      desktopImageUrls: [
+        "/projects/digitcanvas/digitcanvas-screen1.png",
+        "/projects/digitcanvas/digitcanvas-screen2.png",
+        "/projects/digitcanvas/digitcanvas-screen3.png",
+        "/projects/digitcanvas/digitcanvas-screen4.png",
+      ],
       techStack: ["Python", "PyTorch", "Next.js", "AWS Lambda", "Docker", "FastAPI", "ECR", "GitHub Actions"],
       description: [
         "Built production-ready full-stack ML application with interactive digit classification, achieving 98.2% accuracy on MNIST using CNN architecture.",
