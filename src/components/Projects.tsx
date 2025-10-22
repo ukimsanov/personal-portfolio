@@ -416,7 +416,7 @@ export function Projects() {
                         {projects[selectedProject].desktopImageUrls!.map((imageUrl, idx) => (
                           <div 
                             key={idx}
-                            className="w-full rounded-lg border border-border bg-muted overflow-hidden relative min-h-[200px] sm:min-h-[300px]"
+                            className="w-full rounded-lg border border-border bg-muted overflow-hidden relative"
                           >
                             {/* Skeleton loader */}
                             <div
