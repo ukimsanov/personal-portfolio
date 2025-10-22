@@ -11,6 +11,7 @@ interface Project {
   mobileImageUrls?: string[]; // For mobile screenshots (vertical) - shown in horizontal scrollable row
   desktopImageUrls?: string[]; // For desktop/web app screenshots (horizontal) - shown in vertical stack
   websiteUrl?: string;
+  websiteComingSoon?: boolean; // If true, website link is disabled with "Coming Soon" tooltip
 }
 
 export const resumeData: {
@@ -137,6 +138,8 @@ export const resumeData: {
         "Integrated real-time sports data feeds from SportsDataIO and OptiOdds APIs via backend built with Python, FastAPI, and SSE for low-latency communication.",
         "Mentored 8+ junior interns in full-stack development, AI agent orchestration, and agile methodologies, accelerating team onboarding by 50%.",
       ],
+      websiteUrl: "#",
+      websiteComingSoon: true,
     },
     {
       title: "NSF Cybersecurity Platform",
@@ -148,6 +151,8 @@ export const resumeData: {
         "Designed and developed over 22 interactive learning modules and JavaScript-based mini-games using TailwindCSS, Shadcn UI.",
         "Analyzed user data from a pilot program of 120+ students, noting a 78% lesson completion rate and achieving a user onboarding time of under 60 seconds.",
       ],
+      websiteUrl: "#",
+      websiteComingSoon: true,
     },
     {
       title: "Horizon Banking App",
@@ -189,6 +194,8 @@ export const resumeData: {
         label: "github.com",
         href: "https://github.com/ukimsanov/lectureflow",
       },
+      websiteUrl: "#",
+      websiteComingSoon: true,
     },
     {
       title: "CryptoLive",

@@ -27,6 +27,7 @@ interface Project {
   mobileImageUrls?: string[]; // For mobile screenshots (vertical) - shown in horizontal scrollable row
   desktopImageUrls?: string[]; // For desktop/web app screenshots (horizontal) - shown in vertical stack
   websiteUrl?: string;
+  websiteComingSoon?: boolean; // If true, website link is disabled with "Coming Soon" tooltip
 }
 
 export function Projects() {
@@ -179,15 +180,29 @@ export function Projects() {
                     )}
                     {/* Add website link if available */}
                     {project.websiteUrl && (
-                      <a
-                        href={project.websiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        <span>Website</span>
-                      </a>
+                      project.websiteComingSoon ? (
+                        <Tooltip delayDuration={0}>
+                          <TooltipTrigger asChild>
+                            <span className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground cursor-not-allowed text-xs sm:text-sm">
+                              <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              <span>Website</span>
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Coming Soon</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <a
+                          href={project.websiteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 sm:gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all text-xs sm:text-sm"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                          <span>Website</span>
+                        </a>
+                      )
                     )}
                   </div>
                 </div>
@@ -281,15 +296,29 @@ export function Projects() {
                   </Tooltip>
                 )}
                 {projects[selectedProject].websiteUrl && (
-                  <a
-                    href={projects[selectedProject].websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
-                  >
-                    <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
-                    <span className="text-sm sm:text-base">Website</span>
-                  </a>
+                  projects[selectedProject].websiteComingSoon ? (
+                    <Tooltip delayDuration={0}>
+                      <TooltipTrigger asChild>
+                        <span className="flex items-center gap-2 text-muted-foreground cursor-not-allowed min-h-[44px] sm:min-h-0">
+                          <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
+                          <span className="text-sm sm:text-base">Website</span>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Coming Soon</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <a
+                      href={projects[selectedProject].websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-blue-600 md:hover:text-blue-700 dark:text-blue-400 dark:md:hover:text-blue-300 active:opacity-70 transition-all min-h-[44px] sm:min-h-0"
+                    >
+                      <ExternalLink className="w-5 h-5 sm:w-4 sm:h-4" />
+                      <span className="text-sm sm:text-base">Website</span>
+                    </a>
+                  )
                 )}
               </div>
             </div>
