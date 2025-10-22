@@ -152,6 +152,13 @@ export const resumeData: {
     {
       title: "Horizon Banking App",
       imageUrl: "/projects/horzobank/horzobank-preview.png",
+      desktopImageUrls: [
+        "/projects/horzobank/horzobank-screen1.png",
+        "/projects/horzobank/horzobank-screen2.png",
+        "/projects/horzobank/horzobank-screen3.png",
+        "/projects/horzobank/horzobank-screen4.png",
+        "/projects/horzobank/horzobank-screen5.png",
+      ],
       techStack: ["Next.js", "TypeScript", "Appwrite", "TailwindCSS", "Plaid", "Dwolla"],
       description: [
         "Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.",
@@ -165,16 +172,22 @@ export const resumeData: {
       websiteUrl: "https://horzobank.vercel.app",
     },
     {
-      title: "YouTube Lecture Notes AI Agent",
-      techStack: ["Python", "CrewAI", "LangChain", "OpenAI API", "N8N"],
+      title: "LectureFlow - AI Lecture Notes",
+      imageUrl: "/projects/lectureflow/lectureflow-preview.png",
+      desktopImageUrls: [
+        "/projects/lectureflow/lectureflow-preview1.png",
+        "/projects/lectureflow/lectureflow-preview2.png",
+        "/projects/lectureflow/lectureflow-preview3.png",
+      ],
+      techStack: ["Python", "FastAPI", "LangGraph", "Next.js", "PostgreSQL", "Gemini 2.5 Flash", "GPT-4o-mini"],
       description: [
-        "Created automated workflow system extracting structured notes from video content using multi-agent collaboration.",
-        "Processed 100+ educational videos with 90% accuracy in key concept identification and summarization.",
-        "Integrated N8N automation for seamless content pipeline from video input to formatted documentation output.",
+        "Developed multi-agent orchestration system using LangGraph with Gemini 2.5 Flash and GPT-4o-mini, processing videos through parallel agent execution for lecture summarization and AI tool extraction.",
+        "Engineered real-time SSE streaming architecture with smart PostgreSQL caching, achieving 99% cost reduction on repeat videos and sub-1-second response times for cached results.",
+        "Built production-ready full-stack application with Next.js 15, implementing Server Components, TanStack Table for history management, PDF export, and cross-browser compatible UI (Safari 16.4+, Chrome 120+).",
       ],
       link: {
         label: "github.com",
-        href: "https://github.com/ukimsanov/youtube-lecture-notes-ai-agent",
+        href: "https://github.com/ukimsanov/lectureflow",
       },
     },
     {

@@ -74,10 +74,10 @@ Horizon Banking App (Next.js, TypeScript, Appwrite, TailwindCSS, Plaid, Dwolla)
 Built full-stack banking platform with real-time fund transfers using Dwolla API and Plaid for multi-bank integration.
 Engineered server-side payment processing with Next.js Server Actions and Appwrite, implementing secure session management and transaction tracking across linked accounts.
 Developed responsive dashboard with TailwindCSS and Chart.js visualizations; deployed on Cloudflare Pages with edge runtime optimization and Sentry monitoring for 99.9% uptime.
-YouTube Lecture Notes AI Agent (Python, CrewAI, LangChain, OpenAI API, N8N)
-Created automated workflow system extracting structured notes from video content using multi-agent collaboration
-Processed 100+ educational videos with 90% accuracy in key concept identification and summarization
-Integrated N8N automation for seamless content pipeline from video input to formatted documentation output
+LectureFlow - AI Lecture Notes (Python, FastAPI, LangGraph, Next.js, PostgreSQL)
+Developed multi-agent orchestration system using LangGraph with Gemini 2.5 Flash and GPT-4o-mini, processing videos through parallel agent execution for lecture summarization and AI tool extraction.
+Engineered real-time SSE streaming architecture with smart PostgreSQL caching, achieving 99% cost reduction on repeat videos and sub-1-second response times for cached results.
+Built production-ready full-stack application with Next.js 15, implementing Server Components, TanStack Table for history management, PDF export, and cross-browser compatible UI (Safari 16.4+, Chrome 120+).
 CryptoLive (React, FastAPI, WebSockets, Tailwind CSS, Ant Design, Kraken API)
 Built a real-time cryptocurrency tracking platform with TradingView-style candlestick charts, live WebSocket price streaming, and advanced search functionality using React, FastAPI, and Kraken WebSocket API
 Engineered real-time price updates via Kraken WebSocket v2, achieving <170ms latency for live market data streaming
