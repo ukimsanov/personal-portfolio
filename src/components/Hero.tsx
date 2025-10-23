@@ -2,11 +2,47 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
 import { resumeData } from "@/data/resume";
-import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, Linkedin, Github, FileText, Calendar } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { Button } from "@/components/ui/button";
+import { getCalApi } from "@calcom/embed-react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
+  const [calLoaded, setCalLoaded] = useState(false);
+
+  // Initialize Cal.com for quick booking
+  useEffect(() => {
+    (async function () {
+      try {
+        const cal = await getCalApi({ namespace: "hero-15min" });
+        cal("ui", {
+          theme: "auto",
+          styles: { branding: { brandColor: "#3b82f6" } },
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+        setCalLoaded(true);
+      } catch (error) {
+        console.error('[Cal.com] Error initializing quick booking:', error);
+      }
+    })();
+  }, []);
+
+  const handleQuickBook = async () => {
+    try {
+      const cal = await getCalApi({ namespace: "hero-15min" });
+      cal("modal", {
+        calLink: "ukimsanov/15min",
+        config: {
+          layout: "month_view",
+        }
+      });
+    } catch (error) {
+      console.error('[Cal.com] Error opening booking modal:', error);
+    }
+  };
 
   const titleVariants = {
     initial: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
@@ -87,8 +123,8 @@ const Hero = () => {
       </div>
       
       {/* Contact Icons in Circles */}
-      <motion.div 
-        className="flex items-center gap-4 mb-8"
+      <motion.div
+        className="flex items-center gap-4 mb-8 flex-wrap"
         variants={iconsContainerVariants}
         initial="initial"
         animate="animate"
@@ -106,7 +142,7 @@ const Hero = () => {
         >
           <Mail className="w-4 h-4" />
         </motion.a>
-        
+
         <motion.a
           href={resumeData.contact.socials[1].url}
           target="_blank"
@@ -122,7 +158,7 @@ const Hero = () => {
         >
           <Github className="w-4 h-4" />
         </motion.a>
-        
+
         <motion.a
           href={resumeData.contact.socials[0].url}
           target="_blank"
@@ -138,7 +174,7 @@ const Hero = () => {
         >
           <Linkedin className="w-4 h-4" />
         </motion.a>
-        
+
         <motion.a
           href="/cv.pdf"
           target="_blank"
@@ -154,6 +190,27 @@ const Hero = () => {
         >
           <FileText className="w-4 h-4" />
         </motion.a>
+
+        {/* Quick Book Button */}
+        <motion.div
+          variants={iconVariants}
+          initial="initial"
+          animate="animate"
+          custom={4}
+          className="w-full sm:w-auto sm:ml-auto"
+        >
+          <Button
+            onClick={handleQuickBook}
+            disabled={!calLoaded}
+            variant="outline"
+            size="default"
+            className="gap-2 w-full sm:w-auto"
+            title="Book a 15-minute call"
+          >
+            <Calendar className="w-4 h-4" />
+            Book w me
+          </Button>
+        </motion.div>
       </motion.div>
     </section>
   );
