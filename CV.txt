@@ -57,17 +57,8 @@ onboarding time of under 60 seconds.
 Arcadia University IT Department - Glenside, PA
 Advanced IT Assistan
 
-Arcadia University IT Department - Glenside, PA
-Advanced IT Assistan
-
-May 2024 - Present
-
-Provide Tier 1 technical support for a community of over 4,000 students, faculty, and staff, resolving 45+ tickets weekly via
-Zendesk with a 90% same-day resolution rate.
-Authored and deployed automation scripts using Bash and PowerShell for imaging and configuring over 500 lab and faculty
-devices (Windows & macOS), reducing manual setup time by 35%.
-Led a project to stabilize the campus printer fleet by refining network configurations and implementing a preventive
-maintenance schedule, resulting in a 20% reduction in recurring outages.
+ZanEt Analytics Corporation - Philadelphia, PA                                                                                                                      September 2025 - PresentSoftware Engineer Intern
+Built production-certified OAuth SSO integration with Clever API for Unity WebGL educational game, implementing secureJWT-based session management, cross-origin cookie auth, and dual-flow login system using TypeScript, React, and CloudflareWorkers edge infrastructure.Optimized large-scale asset delivery (2.5GB) through Cloudflare R2 + Workers architecture, implementing intelligent cachinglayer (Service Worker API, Brotli compression) that reduced load times by 60% while solving browser quota limitations.
 
 PROJECTS
 Horizon Banking App (Next.js, TypeScript, Appwrite, TailwindCSS, Plaid, Dwolla)

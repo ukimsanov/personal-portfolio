@@ -142,6 +142,17 @@ export const resumeData: {
       websiteComingSoon: true,
     },
     {
+      title: "ZanEt Analytics - Game Authentication System",
+      techStack: ["TypeScript", "React", "OAuth 2.0", "Clever API", "Cloudflare Workers", "Cloudflare R2", "Unity", "JWT"],
+      description: [
+        "Built production-certified OAuth SSO integration with Clever API for Unity WebGL educational game.",
+        "Implemented secure JWT-based session management, cross-origin cookie auth, and dual-flow login system using TypeScript, React, and Cloudflare Workers edge infrastructure.",
+        "Optimized large-scale asset delivery (2.5GB) through Cloudflare R2 + Workers architecture, implementing intelligent caching layer (Service Worker API, Brotli compression) that reduced load times by 60% while solving browser quota limitations.",
+      ],
+      websiteUrl: "#",
+      websiteComingSoon: true,
+    },
+    {
       title: "NSF Cybersecurity Platform",
       imageUrl: "/projects/nsf-cybersecurity/cyberford-preview.png",
       techStack: ["Next.js", "TypeScript", "FastAPI", "Cloudflare Workers", "D1 Database", "TailwindCSS"],

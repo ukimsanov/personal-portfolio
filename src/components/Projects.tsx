@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { resumeData } from "@/data/resume";
 import { Card } from "@/components/ui/card";
@@ -36,7 +36,29 @@ export function Projects() {
   const [modalImageLoaded, setModalImageLoaded] = useState(false);
   const [modalMobileImagesLoaded, setModalMobileImagesLoaded] = useState<Record<number, boolean>>({});
   const [modalDesktopImagesLoaded, setModalDesktopImagesLoaded] = useState<Record<number, boolean>>({});
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const showMoreButtonRef = useRef<HTMLDivElement>(null);
   const projects = resumeData.projects as Project[];
+
+  const INITIAL_PROJECTS_COUNT = 4;
+  const visibleProjects = showAllProjects ? projects : projects.slice(0, INITIAL_PROJECTS_COUNT);
+  const hiddenProjectsCount = projects.length - INITIAL_PROJECTS_COUNT;
+
+  const handleToggleProjects = () => {
+    if (showAllProjects) {
+      // When collapsing, first update state, then scroll after DOM updates
+      setShowAllProjects(false);
+      // Wait for React to re-render, then scroll to button position
+      setTimeout(() => {
+        showMoreButtonRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 100);
+    } else {
+      setShowAllProjects(true);
+    }
+  };
 
   const handleProjectClick = (index: number) => {
     setSelectedProject(index);
@@ -94,7 +116,7 @@ export function Projects() {
         Projects
       </motion.h2>
       <div className="space-y-8">
-        {projects.map((project, index) => (
+        {visibleProjects.map((project, index) => (
           <motion.div
             key={index}
             initial={{ 
@@ -241,6 +263,52 @@ export function Projects() {
           </motion.div>
         ))}
       </div>
+
+      {/* Premium Show More/Less Button - Safari & Mobile Compatible */}
+      {projects.length > INITIAL_PROJECTS_COUNT && (
+        <motion.div
+          ref={showMoreButtonRef}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 10 : 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0.2 : 0.5,
+            delay: shouldReduceMotion ? 0.3 : 0.6,
+            ease: [0.16, 1, 0.3, 1] as const
+          }}
+          className="mt-12 flex justify-center"
+        >
+          <motion.button
+            onClick={handleToggleProjects}
+            whileHover={{ scale: shouldReduceMotion ? 1 : 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
+            className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 min-h-[44px] rounded-xl border-2 border-border bg-card/30 backdrop-blur-sm text-sm font-medium transition-all duration-300 hover:border-blue-500/50 hover:bg-card/50 hover:shadow-lg active:scale-[0.98]"
+            aria-label={showAllProjects ? "Show less projects" : `Show ${hiddenProjectsCount} more projects`}
+          >
+            {/* Subtle gradient overlay on hover - Safari compatible */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+            <span className="relative">
+              {showAllProjects
+                ? "Show less"
+                : `Show ${hiddenProjectsCount} more project${hiddenProjectsCount > 1 ? 's' : ''}`
+              }
+            </span>
+
+            {/* Animated icon */}
+            <motion.svg
+              className="relative w-4 h-4"
+              animate={{ rotate: showAllProjects ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </motion.svg>
+          </motion.button>
+        </motion.div>
+      )}
 
       {/* Project Modal */}
       {selectedProject !== null && (
